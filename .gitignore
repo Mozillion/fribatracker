@@ -1,0 +1,8 @@
+/server/vendor/
+/server/logs/*
+/server/propel.php
+/server/generated-conf/*
+/fribatracker.sublime-project
+/fribatracker.sublime-workspace
+/client/node_modules/.bin/*
+/server/auth.json

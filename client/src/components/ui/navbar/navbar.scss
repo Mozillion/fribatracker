@@ -1,0 +1,5 @@
+@import "theme";
+
+.navbar {
+    @include navbar($layout: 'fluid', $background-color: #000, $breakpoint: 0);
+}

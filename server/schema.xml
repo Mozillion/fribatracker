@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="default"
+          defaultIdMethod="native"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd"
+          namespace="Moz"
+        >
+    <table name="user">
+        <column name="id" type="integer" sqlType="INT UNSIGNED" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="username" type="varchar" size="50" required="true" />
+        <column name="password" type="varchar" size="255" required="true" />
+        <column name="role" type="varchar" sqlType="ENUM('ADMIN','REGISTERED')" required="true" defaultExpr="'REGISTERED'" />
+        <column name="player_id" type="integer" sqlType="INT UNSIGNED" required="false" />
+        <column name="time_created" type="timestamp" required="true" defaultExpr="CURRENT_TIMESTAMP" />
+        <column name="state" type="varchar" sqlType="ENUM('ACTIVE','DISABLED')" required="true" defaultExpr="'ACTIVE'" />
+        <foreign-key foreignTable="player">
+            <reference local="player_id" foreign="id" onDelete="restrict" onUpdate="cascade" />
+        </foreign-key>
+        <unique>
+            <unique-column name="username" />
+        </unique>
+    </table>
+    <table name="player">
+        <column name="id" type="integer" sqlType="INT UNSIGNED" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="first_name" type="varchar" size="100" required="true" />
+        <column name="last_name" type="varchar" size="100" required="true" />
+        <column name="time_created" type="timestamp" required="true" defaultExpr="CURRENT_TIMESTAMP" />
+        <column name="created_by_user_id" type="integer" sqlType="INT UNSIGNED" required="false" />
+        <foreign-key foreignTable="user">
+            <reference local="created_by_user_id" foreign="id" onDelete="restrict" onUpdate="cascade" />
+        </foreign-key>
+    </table>
+    <table name="course">
+        <column name="id" type="integer" sqlType="INT UNSIGNED" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" size="100" required="true" />
+        <column name="rating" type="varchar" size="4" required="false" />
+        <column name="user_id" required="false" type="integer" sqlType="INT UNSIGNED" />
+        <foreign-key foreignTable="user">
+            <reference local="user_id" foreign="id" onDelete="restrict" onUpdate="cascade" />
+        </foreign-key>
+    </table>
+    <table name="fairway">
+        <column name="id" type="integer" sqlType="INT UNSIGNED" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="course_id" type="integer" sqlType="INT UNSIGNED" required="true" />
+        <column name="ordinal" type="integer" required="true" sqlType="INT UNSIGNED" />
+        <column name="name" type="varchar" size="100" required="true" />
+        <column name="length" type="integer" required="false" sqlType="SMALLINT UNSIGNED" description="Pituus metrein&#228;" />
+        <column name="relief" type="integer" required="false" sqlType="SMALLINT UNSIGNED" description="Korkeusero metrein&#228;" />
+        <column name="par" type="tinyint" sqlType="TINYINT UNSIGNED" required="true" />
+        <foreign-key foreignTable="course">
+            <reference local="course_id" foreign="id" onDelete="cascade" onUpdate="cascade" />
+        </foreign-key>
+    </table>
+    <table name="layout">
+        <column name="id" type="integer" sqlType="INT UNSIGNED" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" size="100" required="true" />
+        <column name="course_id" type="integer" sqlType="INT UNSIGNED" required="true" />
+        <column name="user_id" type="integer" sqlType="INT UNSIGNED" required="false" />
+        <foreign-key foreignTable="course">
+            <reference local="course_id" foreign="id" onDelete="cascade" onUpdate="cascade" />
+        </foreign-key>
+        <foreign-key foreignTable="user">
+            <reference local="user_id" foreign="id" onDelete="restrict" onUpdate="cascade" />
+        </foreign-key>
+    </table>
+    <table name="layout_fairway">
+        <column name="layout_id" type="integer" sqlType="INT UNSIGNED" required="true" primaryKey="true" />
+        <column name="fairway_id" type="integer" sqlType="INT UNSIGNED" required="true" primaryKey="true" />
+        <column name="ordinal" type="integer" required="true" sqlType="INT UNSIGNED" />
+        <foreign-key foreignTable="layout">
+            <reference local="layout_id" foreign="id" onDelete="restrict" onUpdate="cascade" />
+        </foreign-key>
+        <foreign-key foreignTable="fairway">
+            <reference local="fairway_id" foreign="id" onDelete="restrict" onUpdate="cascade" />
+        </foreign-key>
+    </table>
+    <table name="round">
+        <column name="id" type="integer" sqlType="INT UNSIGNED" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="layout_id" type="integer" sqlType="INT UNSIGNED" required="true" />
+        <column name="starttime" type="timestamp" sqlType="DATETIME" required="true" />
+        <column name="endtime" type="timestamp" sqlType="DATETIME" required="true" />
+        <column name="user_id" type="integer" sqlType="INT UNSIGNED" required="true" />
+        <foreign-key foreignTable="layout">
+            <reference local="layout_id" foreign="id" onDelete="restrict" onUpdate="cascade" />
+        </foreign-key>
+        <foreign-key foreignTable="user">
+            <reference local="user_id" foreign="id" onDelete="restrict" onUpdate="cascade" />
+        </foreign-key>
+    </table>
+    <table name="round_fairway">
+        <column name="round_id" type="integer" sqlType="INT UNSIGNED" required="true" primaryKey="true" />
+        <column name="fairway_id" type="integer" sqlType="INT UNSIGNED" required="true" primaryKey="true" />
+        <column name="player_id" type="integer" sqlType="INT UNSIGNED" required="true" primaryKey="true" />
+        <column name="par" type="tinyint" sqlType="TINYINT UNSIGNED" required="true" />
+        <column name="result" type="tinyint" sqlType="TINYINT UNSIGNED" required="true" />
+        <foreign-key foreignTable="round">
+            <reference local="round_id" foreign="id" onDelete="cascade" onUpdate="cascade" />
+        </foreign-key>
+        <foreign-key foreignTable="fairway">
+            <reference local="fairway_id" foreign="id" onDelete="restrict" onUpdate="cascade" />
+        </foreign-key>
+        <foreign-key foreignTable="player">
+            <reference local="player_id" foreign="id" onDelete="restrict" onUpdate="cascade" />
+        </foreign-key>
+    </table>
+</database>

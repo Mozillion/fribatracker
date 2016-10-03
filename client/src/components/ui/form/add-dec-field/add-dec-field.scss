@@ -1,0 +1,10 @@
+.addDecField {
+    display: block;
+}
+.button {
+    border: none;
+    background: none;
+    &:hover {
+        box-shadow: none;
+    }
+}

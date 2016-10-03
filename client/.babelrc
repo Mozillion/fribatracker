@@ -1,0 +1,12 @@
+{
+    "presets": ["es2015"],
+    "plugins": [
+        "syntax-jsx",
+        ["transform-react-jsx", {"pragma": "html"}],
+        "transform-decorators-legacy",
+        "transform-object-rest-spread",
+        "transform-async-to-generator",
+        "transform-class-properties",
+        "transform-do-expressions"
+    ]
+}

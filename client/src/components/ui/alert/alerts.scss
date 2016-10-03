@@ -1,0 +1,29 @@
+@import "theme";
+
+.alert {
+    @include alert();
+    &.error {
+        background: map-get($colors, red);
+    }
+    &.success {
+        background: map-get($colors, green);
+    }
+}
+
+.closeButton {
+    float: right;
+
+    padding: 0;
+    background: none;
+    border: none;
+    width: 18px;
+    height: 24px;
+    color: #fff;
+
+    text-align: center;
+    &:active, &:hover {
+        box-shadow: none;
+        background: darken(map-get($colors, red), 10%);
+    }
+
+}

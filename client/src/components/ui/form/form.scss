@@ -1,0 +1,151 @@
+@import "theme";
+
+@mixin inputs() {
+    input[type="date"],
+    input[type="datetime"],
+    input[type="datetime-local"],
+    input[type="email"],
+    input[type="month"],
+    input[type="number"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="search"],
+    input[type="text"],
+    input[type="time"],
+    input[type="url"],
+    input[type="week"] {
+        @content;
+    }
+}
+
+@mixin notifications() {
+    span, div, p {
+        &.error, &.warning, &.success {
+            @content;
+        }
+    }
+}
+
+.form {
+    @include form();
+}
+.group {
+    @include form_group();
+    // input[type="date"],
+    // input[type="datetime"],
+    // input[type="datetime-local"],
+    // input[type="email"],
+    // input[type="month"],
+    // input[type="number"],
+    // input[type="password"],
+    // input[type="tel"],
+    // input[type="search"],
+    // input[type="text"],
+    // input[type="time"],
+    // input[type="url"],
+    // input[type="week"] {
+    //     width: 100%;
+    // }
+    // width: 100%;
+    span, div, p {
+        &.error, &.warning, &.success {
+            margin-left: 7.5px;
+            line-height: 1;
+        }
+    }
+}
+.horizontalGroup {
+    @include form_group('horizontal');
+}
+.gridGroup {
+    @include form_group();
+    @include row();
+    @include inputs {
+        display: inline-block;
+    }
+    label {
+        @include column('third');
+        &.radio {
+            margin-left: 0;
+        }
+    }
+    .inputGroup {
+        @include column('twothirds');
+    }
+    @include notifications {
+        margin-left: 15px;
+    }
+    input[type="checkbox"] {
+        margin-top: 13px;
+        vertical-align: text-bottom;
+    }
+}
+@include notifications {
+    font-style: italic;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+.inlineGroup {
+    > span {
+        position: relative;
+    }
+    @include inputs {
+        display: inline-block;
+        margin-right: 5px;
+    }
+    @include notifications {
+        position: absolute;
+        left: 6px;
+        top: -20px;
+    }
+    margin-bottom: 10px;
+}
+.horizontal {
+    @include form('horizontal');
+}
+.grid {
+    @include form('left');
+    .actions {
+        @include column('twothirds', $left: 'third');
+    }
+}
+.required {
+    color: red;
+}
+
+
+@mixin addon() {
+    background: #e6e6e6;
+    line-height: 1.45rem;
+    padding: 6px 8px 7px 8px;
+    border: 1px solid #CCC;
+}
+.appendGroup {
+    white-space: nowrap;
+    @include inputs {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+}
+.append {
+    @include addon();
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+    margin-left: -5px;
+    margin-right: 5px;
+    border-left: none;
+}
+.prependGroup {
+    white-space: nowrap;
+    @include inputs {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}
+.prepend {
+    @include addon();
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+    border-right: none;
+}
+

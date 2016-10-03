@@ -1,0 +1,116 @@
+@import "theme";
+
+.fluid {
+    @include wrapper($fluid: true);
+}
+.fluidFixed {
+    @include wrapper();
+}
+.row {
+    @include row();
+}
+
+.column1 {
+    @include column(1);
+}
+.column2 {
+    @include column(2);
+}
+.column3 {
+    @include column(3);
+}
+.column4 {
+    @include column(4);
+}
+.column5 {
+    @include column(5);
+}
+.column6 {
+    @include column(6);
+}
+.column7 {
+    @include column(7);
+}
+.column8 {
+    @include column(8);
+}
+.column9 {
+    @include column(9);
+}
+.column10 {
+    @include column(10);
+}
+.column11 {
+    @include column(11);
+}
+.column12 {
+    @include column(12);
+}
+
+.left1 {
+    @include left(1);
+}
+.left2 {
+    @include left(2);
+}
+.left3 {
+    @include left(3);
+}
+.left4 {
+    @include left(4);
+}
+.left5 {
+    @include left(5);
+}
+.left6 {
+    @include left(6);
+}
+.left7 {
+    @include left(7);
+}
+.left8 {
+    @include left(8);
+}
+.left9 {
+    @include left(9);
+}
+.left10 {
+    @include left(10);
+}
+.left11 {
+    @include left(11);
+}
+
+.right1 {
+    @include right(1);
+}
+.right2 {
+    @include right(2);
+}
+.right3 {
+    @include right(3);
+}
+.right4 {
+    @include right(4);
+}
+.right5 {
+    @include right(5);
+}
+.right6 {
+    @include right(6);
+}
+.right7 {
+    @include right(7);
+}
+.right8 {
+    @include right(8);
+}
+.right9 {
+    @include right(9);
+}
+.right10 {
+    @include right(10);
+}
+.right11 {
+    @include right(11);
+}

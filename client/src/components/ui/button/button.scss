@@ -1,0 +1,22 @@
+@import "theme";
+
+.default {
+    @include button();
+    &.primary {
+        @include button-color($primary-color);
+    }
+    &.plain {
+        padding: 0;
+        background: none;
+        border: none;
+
+        text-align: center;
+        &:active, &:hover {
+            box-shadow: none;
+            background: map-get($white, darkest);
+        }
+    }
+    &[disabled] {
+        opacity: 0.8;
+    }
+}

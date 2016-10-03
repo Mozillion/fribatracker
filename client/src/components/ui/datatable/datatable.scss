@@ -1,0 +1,15 @@
+@import "theme";
+
+.table {
+    @include table();
+}
+
+.sortButton {
+    padding: 0;
+    float: right;
+    background: none;
+    border: none;
+    &:active, &:hover {
+        box-shadow: none;
+    }
+}

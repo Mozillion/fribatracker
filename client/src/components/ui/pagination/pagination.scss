@@ -1,0 +1,20 @@
+.pagination {
+    text-align: center;
+    li {
+        list-style: none;
+        display: inline-block;
+        padding: 4px 8px;
+        a {
+            cursor: pointer;
+
+            &.disabled {
+                color: gray;
+                cursor: default;
+                pointer-events: none;
+            }
+        }
+    }
+    .currentPage {
+        text-decoration: underline;
+    }
+}
