@@ -11,7 +11,7 @@ function Login(sources) {
     const loginForm = LoginForm(sources);
     const router = xs.merge(
         sources.user$.take(1).filter(user => user).mapTo(routes.home),
-        xs.combine(sources.location$, loginForm.afterSubmit$.filter(({response}) => response.ok)).map(([location]) => R.pathOr(routes.home, ['state','redirect'], location))
+        xs.combine(sources.location$, loginForm.afterSubmit$.filter(({response}) => response && response.ok)).map(([location]) => R.pathOr(routes.home, ['state','redirect'], location))
     );
     return mergeSinks({
         router,

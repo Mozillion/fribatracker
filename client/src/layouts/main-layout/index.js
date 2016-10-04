@@ -27,9 +27,10 @@ function MainLayout(Page) {
         const router = xs.merge(logout$, changePage$);
 
         const page = Page(sources);
-        const vdom$ = xs.combine(navbar.DOM, page.DOM).map(([navbar, page]) => (
+        const vdom$ = xs.combine(navbar.DOM, page.DOM, sources.online$).map(([navbar, page, online]) => (
             <Layout type="fluid-fixed" className={styles.layout}>
                 <header>
+                    {online ? '' : <div className={styles.offline}>Ei verkkoyhteyttä</div>}
                     {navbar}
                 </header>
                 <main>

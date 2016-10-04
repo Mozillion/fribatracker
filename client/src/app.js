@@ -21,6 +21,7 @@ import makeDexieDriver from 'drivers/dexie-driver';
 import R from 'ramda';
 import {routeConfig} from './routes';
 import NotFound from 'pages/not-found';
+import onlineDriver from 'drivers/online-driver';
 
 import {MainHTTPSource} from '@cycle/http/lib/MainHTTPSource';
 const origSelect = MainHTTPSource.prototype.select;
@@ -33,14 +34,6 @@ MainHTTPSource.prototype.select = function() {
 
 // indexedDB.deleteDatabase('fribatracker')
 function main(sources) {
-
-    // const s = sources.db.select('query').flatten().debug();
-    // s.addListener({
-    //     next: () => {},
-    //     error: () => {},
-    //     complete: () => {}
-    // });
-
     const foo = Object.assign({'*': 'not-found'}, routeConfig);
     const page$ = sources.router.define(foo).map(function({path, value: page, location}) {
         return xs.fromPromise(new Promise(function(resolve, reject) {
@@ -81,6 +74,7 @@ const drivers = {
     HTTP: makeHTTPDriver(),
     preventDefault: preventDefaultDriver,
     user$: userDriver,
+    online$: onlineDriver,
     db: makeDexieDriver('fribatracker',
         [
             {

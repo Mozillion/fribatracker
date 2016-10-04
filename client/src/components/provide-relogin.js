@@ -6,7 +6,7 @@ import {html} from 'snabbdom-jsx';
 
 function provideRelogin(Component) {
     return sources => {
-        const errorResponse$ = sources.HTTP.select().flatten().filter(o => o.response.statusCode == 401);
+        const errorResponse$ = sources.HTTP.select().flatten().filter(o => o.response && o.response.statusCode == 401);
         const loginDialog$ = errorResponse$.map(({request}) => {
             const loginForm = LoginForm({renderActions$: xs.of(false), ...sources});
             const modal = Dialog({

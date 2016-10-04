@@ -64,7 +64,7 @@ function LoginForm({FormComponent, validatedValuesAfterSubmit$, ...sources}) {
         }),
         submitOn$: submitButton.click$,
         afterSubmit$: response$,
-        user$: response$.filter(({response}) => response.ok).map(({response}) => response.body.user)
+        user$: response$.filter(({response}) => response && response.ok).map(({response}) => response.body.user)
     };
 }
 
