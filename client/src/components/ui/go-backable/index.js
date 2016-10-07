@@ -2,6 +2,7 @@ import xs from 'xstream';
 import {html} from 'snabbdom-jsx';
 import mergeSinks from 'helpers/merge-sinks';
 import styles from './go-backable.scss';
+import Icon from 'components/ui/icon';
 
 function goBackable(Component) {
     return sources => {
@@ -11,7 +12,7 @@ function goBackable(Component) {
             DOM: component.DOM.map(component =>
                 <div>
                     <div className={styles.goBack}>
-                        <a href='#'><i className="fa fa-long-arrow-left"></i></a>
+                        <a href='#'><Icon glyph="long-arrow-left" /></a>
                     </div>
                     {component}
                 </div>

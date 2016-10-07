@@ -22,6 +22,7 @@ import R from 'ramda';
 import {routeConfig} from './routes';
 import NotFound from 'pages/not-found';
 import onlineDriver from 'drivers/online-driver';
+import Course from 'models/course';
 
 import {MainHTTPSource} from '@cycle/http/lib/MainHTTPSource';
 const origSelect = MainHTTPSource.prototype.select;
@@ -62,7 +63,7 @@ function main(sources) {
         HTTP: page$.map(s => s.HTTP ? s.HTTP : xs.never()).flatten(),
         preventDefault: page$.map(s => s.preventDefault ? s.preventDefault : xs.never()).flatten(),
         user$: page$.map(s => s.user$ ? s.user$ : xs.never()).flatten().startWith(window.__INITIAL_DATA__.user),
-        // db: xs.of({table: 'courseRatings', select: 'count', category: 'query'})
+        db: page$.map(s => s.db ? s.db : xs.never()).flatten(),
     }
 }
 
@@ -82,7 +83,12 @@ const drivers = {
                     courses: '++id'
                 }
             },
-        ]
+        ],
+        {
+            classMap:{
+                courses: Course
+            }
+        }
     )
 };
 

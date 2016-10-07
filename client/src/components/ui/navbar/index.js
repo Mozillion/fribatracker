@@ -19,7 +19,18 @@ function NavItem(link, location) {
             return url == link.url;
         });
     }
-    return <li><a dataset-link={JSON.stringify(link)} href={link.url} class={{[styles.active]: active}}>{link.title}</a></li>
+    const props = {
+        'attrs-data-link': JSON.stringify(R.omit(['title'], link)),
+        href: link.url,
+        class: {
+            [styles.active]: active
+        }
+    };
+    if (link.tooltip !== undefined) {
+        props['attrs-data-ks-tooltip'] = link.tooltip;
+        props['attrs-data-ks-tooltip-position'] = 'bottom';
+    }
+    return <li><a {...props}>{link.title}</a></li>
 }
 
 function view(location$, primaryLinks$, secondaryLinks$) {
@@ -43,7 +54,7 @@ function view(location$, primaryLinks$, secondaryLinks$) {
 function Navbar({DOM, location$, primaryLinks$ = xs.of([]), secondaryLinks$ = xs.of(false)}) {
     const vdom$ = view(location$, primaryLinks$, secondaryLinks$);
     const click$ = DOM.select('a').events('click');
-    const navigate$ = click$.map(event => JSON.parse(event.target.dataset.link));
+    const navigate$ = click$.map(event => JSON.parse(event.currentTarget.dataset.link));
     return  {
         DOM: vdom$,
         preventDefault: click$,

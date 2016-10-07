@@ -8,69 +8,69 @@ webpackJsonp([2],[
 	
 	var _xstream2 = _interopRequireDefault(_xstream);
 	
-	var _xstreamRun = __webpack_require__(115);
+	var _xstreamRun = __webpack_require__(118);
 	
-	var _dom = __webpack_require__(102);
+	var _dom = __webpack_require__(105);
 	
-	var _cyclicRouter = __webpack_require__(139);
+	var _cyclicRouter = __webpack_require__(142);
 	
-	var _http = __webpack_require__(113);
+	var _http = __webpack_require__(116);
 	
-	var _createBrowserHistory = __webpack_require__(192);
+	var _createBrowserHistory = __webpack_require__(197);
 	
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 	
 	var _snabbdomJsx = __webpack_require__(3);
 	
-	var _switchPath = __webpack_require__(224);
+	var _switchPath = __webpack_require__(229);
 	
 	var _switchPath2 = _interopRequireDefault(_switchPath);
 	
-	var _class = __webpack_require__(73);
+	var _class = __webpack_require__(77);
 	
 	var _class2 = _interopRequireDefault(_class);
 	
-	var _props = __webpack_require__(76);
+	var _props = __webpack_require__(80);
 	
 	var _props2 = _interopRequireDefault(_props);
 	
-	var _attributes = __webpack_require__(72);
+	var _attributes = __webpack_require__(76);
 	
 	var _attributes2 = _interopRequireDefault(_attributes);
 	
-	var _eventlisteners = __webpack_require__(74);
+	var _eventlisteners = __webpack_require__(78);
 	
 	var _eventlisteners2 = _interopRequireDefault(_eventlisteners);
 	
-	var _liveProps = __webpack_require__(117);
+	var _liveProps = __webpack_require__(120);
 	
 	var _liveProps2 = _interopRequireDefault(_liveProps);
 	
-	var _style = __webpack_require__(77);
+	var _style = __webpack_require__(81);
 	
 	var _style2 = _interopRequireDefault(_style);
 	
-	var _hero = __webpack_require__(75);
+	var _hero = __webpack_require__(79);
 	
 	var _hero2 = _interopRequireDefault(_hero);
 	
-	var _dataset = __webpack_require__(218);
+	var _dataset = __webpack_require__(223);
 	
 	var _dataset2 = _interopRequireDefault(_dataset);
 	
-	var _provideRelogin = __webpack_require__(118);
+	var _provideRelogin = __webpack_require__(121);
 	
 	var _provideRelogin2 = _interopRequireDefault(_provideRelogin);
 	
-	var _preventDefaultDriver = __webpack_require__(133);
+	var _preventDefaultDriver = __webpack_require__(136);
 	
 	var _preventDefaultDriver2 = _interopRequireDefault(_preventDefaultDriver);
 	
-	var _userDriver = __webpack_require__(134);
+	var _userDriver = __webpack_require__(137);
 	
 	var _userDriver2 = _interopRequireDefault(_userDriver);
 	
-	var _dexieDriver = __webpack_require__(132);
+	var _dexieDriver = __webpack_require__(134);
 	
 	var _dexieDriver2 = _interopRequireDefault(_dexieDriver);
 	
@@ -80,11 +80,19 @@ webpackJsonp([2],[
 	
 	var _routes = __webpack_require__(12);
 	
-	var _notFound = __webpack_require__(27);
+	var _notFound = __webpack_require__(31);
 	
 	var _notFound2 = _interopRequireDefault(_notFound);
 	
-	var _MainHTTPSource = __webpack_require__(45);
+	var _onlineDriver = __webpack_require__(135);
+	
+	var _onlineDriver2 = _interopRequireDefault(_onlineDriver);
+	
+	var _course = __webpack_require__(30);
+	
+	var _course2 = _interopRequireDefault(_course);
+	
+	var _MainHTTPSource = __webpack_require__(49);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -105,14 +113,6 @@ webpackJsonp([2],[
 	
 	// indexedDB.deleteDatabase('fribatracker')
 	function main(sources) {
-	
-	    // const s = sources.db.select('query').flatten().debug();
-	    // s.addListener({
-	    //     next: () => {},
-	    //     error: () => {},
-	    //     complete: () => {}
-	    // });
-	
 	    var foo = Object.assign({ '*': 'not-found' }, _routes.routeConfig);
 	    var page$ = sources.router.define(foo).map(function (_ref) {
 	        var path = _ref.path;
@@ -130,7 +130,7 @@ webpackJsonp([2],[
 	            });
 	            // try {
 	            __webpack_require__.e/* nsure */(1, function (require) {
-	                var component = __webpack_require__(277)("./" + page.filepath).default(pageSources);
+	                var component = __webpack_require__(283)("./" + page.filepath).default(pageSources);
 	                resolve(component);
 	            });
 	            // } catch (e) {
@@ -154,7 +154,10 @@ webpackJsonp([2],[
 	        }).flatten(),
 	        user$: page$.map(function (s) {
 	            return s.user$ ? s.user$ : _xstream2.default.never();
-	        }).flatten().startWith(window.__INITIAL_DATA__.user)
+	        }).flatten().startWith(window.__INITIAL_DATA__.user),
+	        db: page$.map(function (s) {
+	            return s.db ? s.db : _xstream2.default.never();
+	        }).flatten()
 	    };
 	}
 	
@@ -166,11 +169,16 @@ webpackJsonp([2],[
 	    HTTP: (0, _http.makeHTTPDriver)(),
 	    preventDefault: _preventDefaultDriver2.default,
 	    user$: _userDriver2.default,
+	    online$: _onlineDriver2.default,
 	    db: (0, _dexieDriver2.default)('fribatracker', [{
 	        schema: {
 	            courses: '++id'
 	        }
-	    }])
+	    }], {
+	        classMap: {
+	            courses: _course2.default
+	        }
+	    })
 	};
 	
 	(0, _xstreamRun.run)((0, _provideRelogin2.default)(main), drivers);
@@ -248,10 +256,10 @@ webpackJsonp([2],[
 
 	'use strict';
 	
-	var assign        = __webpack_require__(29)
-	  , normalizeOpts = __webpack_require__(162)
-	  , isCallable    = __webpack_require__(156)
-	  , contains      = __webpack_require__(57)
+	var assign        = __webpack_require__(33)
+	  , normalizeOpts = __webpack_require__(165)
+	  , isCallable    = __webpack_require__(159)
+	  , contains      = __webpack_require__(61)
 	
 	  , d;
 	
@@ -335,6 +343,8 @@ webpackJsonp([2],[
 	
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _xstream = __webpack_require__(2);
 	
 	var _xstream2 = _interopRequireDefault(_xstream);
@@ -345,15 +355,15 @@ webpackJsonp([2],[
 	
 	var _ramda2 = _interopRequireDefault(_ramda);
 	
-	var _validate = __webpack_require__(128);
+	var _validate = __webpack_require__(130);
 	
 	var _validate2 = _interopRequireDefault(_validate);
 	
-	var _form = __webpack_require__(16);
+	var _form = __webpack_require__(17);
 	
 	var _form2 = _interopRequireDefault(_form);
 	
-	var _classes = __webpack_require__(14);
+	var _classes = __webpack_require__(15);
 	
 	var _classes2 = _interopRequireDefault(_classes);
 	
@@ -375,11 +385,17 @@ webpackJsonp([2],[
 	        var prepend$ = _ref$prepend$ === undefined ? _xstream2.default.of(false) : _ref$prepend$;
 	        var _ref$submitTried$ = _ref.submitTried$;
 	        var submitTried$ = _ref$submitTried$ === undefined ? _xstream2.default.of(false) : _ref$submitTried$;
+	        var _ref$props$ = _ref.props$;
+	        var props$ = _ref$props$ === undefined ? _xstream2.default.of({}) : _ref$props$;
+	        var _ref$reset$ = _ref.reset$;
+	        var reset$ = _ref$reset$ === undefined ? _xstream2.default.never() : _ref$reset$;
 	
-	        var sources = _objectWithoutProperties(_ref, ['validators$', 'label$', 'layout$', 'append$', 'prepend$', 'submitTried$']);
+	        var sources = _objectWithoutProperties(_ref, ['validators$', 'label$', 'layout$', 'append$', 'prepend$', 'submitTried$', 'props$', 'reset$']);
 	
-	        sources.props$ = sources.props$ || _xstream2.default.of({});
-	        var sinks = Component(sources);
+	        var resettableProps$ = props$.map(function (props) {
+	            return reset$.mapTo(props).startWith(props);
+	        }).flatten().remember();
+	        var sinks = Component(_extends({ props$: resettableProps$ }, sources));
 	        var error$ = _xstream2.default.combine(sinks.value$, validators$).map(function (_ref2) {
 	            var _ref3 = _slicedToArray(_ref2, 2);
 	
@@ -392,7 +408,9 @@ webpackJsonp([2],[
 	            }
 	            return ok;
 	        }).remember();
-	        var dirty$ = sinks.value$.drop(1).take(1).mapTo(true).startWith(false);
+	        var dirty$ = reset$.map(function () {
+	            return sinks.value$.drop(1).take(1).mapTo(true).startWith(false);
+	        }).flatten().startWith(false);
 	        sinks.DOM = _xstream2.default.combine(sinks.DOM, layout$, label$, error$, submitTried$, validators$, dirty$, append$, prepend$).map(function (_ref4) {
 	            var _ref5 = _slicedToArray(_ref4, 9);
 	
@@ -800,6 +818,53 @@ webpackJsonp([2],[
 
 /***/ },
 /* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _snabbdomJsx = __webpack_require__(3);
+	
+	var _fontAwesome = __webpack_require__(184);
+	
+	var _fontAwesome2 = _interopRequireDefault(_fontAwesome);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function Icon(_ref, children) {
+	    var glyph = _ref.glyph;
+	    var size = _ref.size;
+	    var fixed = _ref.fixed;
+	    var spin = _ref.spin;
+	    var classNames = _ref.classNames;
+	    var props = _ref.props;
+	
+	    var classes = [_fontAwesome2.default.fa, _fontAwesome2.default['fa-' + glyph]];
+	    if (size !== undefined) {
+	        classes.push(_fontAwesome2.default['fa-' + size]);
+	    }
+	    if (fixed) {
+	        classes.push(_fontAwesome2.default['fa-fw']);
+	    }
+	    if (spin) {
+	        classes.push(_fontAwesome2.default['fa-spin']);
+	    }
+	
+	    if (classNames !== undefined) {
+	        classes = classes.concat(classNames);
+	    }
+	    return (0, _snabbdomJsx.html)('i', _extends({ classNames: classes }, props));
+	}
+	
+	exports.default = Icon;
+
+/***/ },
+/* 15 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -869,24 +934,24 @@ webpackJsonp([2],[
 	exports.default = classes;
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(176)() ? Symbol : __webpack_require__(178);
+	module.exports = __webpack_require__(179)() ? Symbol : __webpack_require__(181);
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"menu-item":"menu-item-3pJT2lXm4UWneCQc8UlCvJ","open":"open-kLlA_-iWTUzuIZ87frr0B","button-dropdown":"button-dropdown-3qZ_QOm2VptlZ7Ymo4QDEn","dismiss-modal":"dismiss-modal-1R5txxUJ4_v49YIGKVGc6z","errors":"errors-1I-j5cm9lA_ho-3_1AmXFo","warnings":"warnings-3NG3FSsgkUze5LbdbMpI9S","successes":"successes-pJr0Bcw0rpaFoH1u5m4s6","error":"error-1awBHoz0F0gbjzEqfKHC40","warning":"warning-3-aLtOR2QIh9MZbH1pej9K","success":"success-2xvzicZs6aDHkEVnZuiOGq","growl_container":"growl_container-3mAINYGx3g2gWdRntPSMGV","growl":"growl-1CcfCRLU3bs3qGFUxl0vb3","show":"show-z1TFnQmHM1uFQgCB52WxK","hide":"hide-1U4_65pRvyPdYYIwiIqmAs","fadeInDown":"fadeInDown-1Ewo_dBgj-yMQx94Z9CTtt","status_bar":"status_bar-3QiO7ZDo8gbdAwmPy_Umm6","status_bar-status":"status_bar-status-3gcVhQZF54MTJiOiDefzZk","tooltip":"tooltip-3-VVniBcd4Koo0kVwnLpeL","tooltip-bottom":"tooltip-bottom-28WVBvtl8WoeGYIrfkvMCD","tooltip-left":"tooltip-left-3VhEXWx2XiuGvabLcbknuq","tooltip-right":"tooltip-right-1DrK2TplnCQuYexlxFE5MK","tooltip-red":"tooltip-red-25eb4z9Gm405VpDstvUOVa","tooltip-orange":"tooltip-orange-1M0nN-ndbWxbDhY4nn-H1f","tooltip-yellow":"tooltip-yellow-2JdvtQ0YqgAYOAtxJO7vqQ","tooltip-green":"tooltip-green-KBixrt0ITFa0kZ-_jPt63","tooltip-blue":"tooltip-blue-15BGVwCvi8cRQBOgm3kWPC","tooltip-violet":"tooltip-violet-3YcezerVg-5kv4FdKI_UvS","tooltip-primary":"tooltip-primary-U6cjnJIxADEdYJbgO2Srh","tooltip-secondary":"tooltip-secondary-2fRgrErlVspInyIaoZp4jk","form":"form-6lB0uTBOpSoKn35HUMeW6","group":"group-3LOWnpa10tmo1HUNS8RTdj","horizontalGroup":"horizontalGroup-2s00mKfmbY8wR-9YNGIesP","gridGroup":"gridGroup-AW1ehtLuwORFV_8OH8QQ1","radio":"radio-2V-R1SexJRiufhczWfeqLM","inputGroup":"inputGroup-1fteNCEj2hEOEaNwsYU3GW","inlineGroup":"inlineGroup-2c_nL_4knQfUz0ZkP9JhPO","horizontal":"horizontal-3TT5i9HD8uUcAynN0RoUwc","grid":"grid-pYi66ykHicNaPvQVIdGrq","checkbox":"checkbox-2x7n-VzYi37TGsh-246Wj0","actions":"actions-60_h4Lf_y4gRghtdjd7Sz","required":"required-EUqE739MpR8_-xnJMpmaQ","appendGroup":"appendGroup-9CPig_JCmjI-7uWWqJSrr","append":"append-ChiwS8e9Kuc5VwvCGFpnB","prependGroup":"prependGroup-3kx10WGUWJgPDP-0_cymwI","prepend":"prepend-2PAjxOrm5Vwa8lXc7oE_Ht"};
 
 /***/ },
-/* 17 */,
-/* 18 */
+/* 18 */,
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -903,17 +968,21 @@ webpackJsonp([2],[
 	
 	var _snabbdomJsx = __webpack_require__(3);
 	
-	var _button = __webpack_require__(182);
+	var _button = __webpack_require__(187);
 	
 	var _button2 = _interopRequireDefault(_button);
 	
-	var _classes = __webpack_require__(14);
+	var _classes = __webpack_require__(15);
 	
 	var _classes2 = _interopRequireDefault(_classes);
 	
 	var _isolate = __webpack_require__(4);
 	
 	var _isolate2 = _interopRequireDefault(_isolate);
+	
+	var _icon = __webpack_require__(14);
+	
+	var _icon2 = _interopRequireDefault(_icon);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -941,7 +1010,7 @@ webpackJsonp([2],[
 	        }
 	        var spinner = '';
 	        if (props.type == 'submit' && submitting) {
-	            spinner = (0, _snabbdomJsx.html)('i', { className: 'fa fa-circle-o-notch fa-spin' });
+	            spinner = (0, _snabbdomJsx.html)(_icon2.default, { glyph: 'circle-o-notch', spin: true });
 	            others.disabled = true;
 	        }
 	        if (others.disabled === undefined) {
@@ -966,7 +1035,7 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -983,7 +1052,7 @@ webpackJsonp([2],[
 	
 	var _xstream2 = _interopRequireDefault(_xstream);
 	
-	var _mainLayout = __webpack_require__(188);
+	var _mainLayout = __webpack_require__(193);
 	
 	var _mainLayout2 = _interopRequireDefault(_mainLayout);
 	
@@ -995,11 +1064,23 @@ webpackJsonp([2],[
 	
 	var _routes2 = _interopRequireDefault(_routes);
 	
-	var _navbar = __webpack_require__(130);
+	var _navbar = __webpack_require__(132);
 	
 	var _navbar2 = _interopRequireDefault(_navbar);
 	
-	var _grid = __webpack_require__(48);
+	var _grid = __webpack_require__(29);
+	
+	var _icon = __webpack_require__(14);
+	
+	var _icon2 = _interopRequireDefault(_icon);
+	
+	var _gestures = __webpack_require__(286);
+	
+	var _gestures2 = _interopRequireDefault(_gestures);
+	
+	var _hammerjs = __webpack_require__(284);
+	
+	var _hammerjs2 = _interopRequireDefault(_hammerjs);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -1008,9 +1089,54 @@ webpackJsonp([2],[
 	        var navbar = (0, _navbar2.default)({
 	            DOM: sources.DOM,
 	            location$: sources.location$,
-	            primaryLinks$: _xstream2.default.of([{ title: 'Etusivu', url: _routes2.default.home }, { title: 'Radat', url: _routes2.default.courses.base }, { title: 'Pelaajat', url: _routes2.default.players }, { title: 'Etusivu', url: _routes2.default.results }]),
+	            primaryLinks$: _xstream2.default.of([{ title: (0, _snabbdomJsx.html)(
+	                    'div',
+	                    { className: _mainLayout2.default.link },
+	                    (0, _snabbdomJsx.html)(_icon2.default, { glyph: 'home', size: '2x' }),
+	                    (0, _snabbdomJsx.html)(
+	                        'div',
+	                        null,
+	                        'Etusivu'
+	                    )
+	                ), url: _routes2.default.home }, { title: (0, _snabbdomJsx.html)(
+	                    'div',
+	                    { className: _mainLayout2.default.link },
+	                    (0, _snabbdomJsx.html)(_icon2.default, { glyph: 'compass', size: '2x' }),
+	                    (0, _snabbdomJsx.html)(
+	                        'div',
+	                        null,
+	                        'Radat'
+	                    )
+	                ), url: _routes2.default.courses.base }, { title: (0, _snabbdomJsx.html)(
+	                    'div',
+	                    { className: _mainLayout2.default.link },
+	                    (0, _snabbdomJsx.html)(_icon2.default, { glyph: 'user', size: '2x' }),
+	                    (0, _snabbdomJsx.html)(
+	                        'div',
+	                        null,
+	                        'Pelaajat'
+	                    )
+	                ), url: _routes2.default.players }, { title: (0, _snabbdomJsx.html)(
+	                    'div',
+	                    { className: _mainLayout2.default.link },
+	                    (0, _snabbdomJsx.html)(_icon2.default, { glyph: 'bar-chart', size: '2x' }),
+	                    (0, _snabbdomJsx.html)(
+	                        'div',
+	                        null,
+	                        'Tulokset'
+	                    )
+	                ), url: _routes2.default.results }]),
 	            secondaryLinks$: sources.user$.map(function (user) {
-	                return [{ title: 'Kirjaudu ulos ' + (user ? user.username : 'Vieras'), url: '/logout' }];
+	                return [{ title: (0, _snabbdomJsx.html)(
+	                        'div',
+	                        { className: _mainLayout2.default.logoutLink },
+	                        (0, _snabbdomJsx.html)(_icon2.default, { glyph: 'sign-out', size: '2x' }),
+	                        (0, _snabbdomJsx.html)(
+	                            'div',
+	                            null,
+	                            user ? user.username : 'Vieras'
+	                        )
+	                    ), url: '/logout' }];
 	            })
 	        });
 	
@@ -1025,18 +1151,50 @@ webpackJsonp([2],[
 	        }).mapTo(_routes2.default.login);
 	        var router = _xstream2.default.merge(logout$, changePage$);
 	
+	        // hammer: xs.of({
+	        //     element: '#app',
+	        //     recognizers: ['swipe', {direction: 'horizontal'}]
+	        // })
+	
+	
+	        // const hooks = {
+	        //     insert: function() {
+	        //         debugger;
+	        //         const el = document.querySelector('main');
+	        //         const mc = new Hammer.Manager(el, {
+	        //             recognizers: [
+	        //                 [Hammer.Swipe, {direction: Hammer.DIRECTION_HORIZONTAL}]
+	        //             ]
+	        //         });
+	        //         mc.on('swipe', event => {
+	        //             console.log(event);
+	        //         });
+	        //     }
+	        // }
+	
+	
 	        var page = Page(sources);
-	        var vdom$ = _xstream2.default.combine(navbar.DOM, page.DOM).map(function (_ref2) {
-	            var _ref3 = _slicedToArray(_ref2, 2);
+	        var gestures = (0, _gestures2.default)({
+	            recognizers$: _xstream2.default.of([[_hammerjs2.default.Swipe, { direction: _hammerjs2.default.DIRECTION_HORIZONTAL }]]),
+	            element$: page.DOM
+	        });
+	        var vdom$ = _xstream2.default.combine(navbar.DOM, gestures.DOM, sources.online$).map(function (_ref2) {
+	            var _ref3 = _slicedToArray(_ref2, 3);
 	
 	            var navbar = _ref3[0];
 	            var page = _ref3[1];
+	            var online = _ref3[2];
 	            return (0, _snabbdomJsx.html)(
 	                _grid.Layout,
 	                { type: 'fluid-fixed', className: _mainLayout2.default.layout },
 	                (0, _snabbdomJsx.html)(
 	                    'header',
 	                    null,
+	                    online ? '' : (0, _snabbdomJsx.html)(
+	                        'div',
+	                        { className: _mainLayout2.default.offline },
+	                        'Ei verkkoyhteyttä'
+	                    ),
 	                    navbar
 	                ),
 	                (0, _snabbdomJsx.html)(
@@ -1063,18 +1221,18 @@ webpackJsonp([2],[
 	exports.default = MainLayout;
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(55)()
+	module.exports = __webpack_require__(59)()
 		? Object.setPrototypeOf
-		: __webpack_require__(56);
+		: __webpack_require__(60);
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1082,7 +1240,7 @@ webpackJsonp([2],[
 	exports.__esModule = true;
 	exports.createPath = exports.parsePath = exports.getQueryStringValueFromPath = exports.stripQueryStringValueFromPath = exports.addQueryStringValueToPath = undefined;
 	
-	var _warning = __webpack_require__(23);
+	var _warning = __webpack_require__(24);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -1180,7 +1338,7 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -1190,7 +1348,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1256,7 +1414,8 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 24 */
+/* 25 */,
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1279,12 +1438,12 @@ webpackJsonp([2],[
 	//# sourceMappingURL=fromEvent.js.map
 
 /***/ },
-/* 25 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var is = __webpack_require__(22);
-	var vnode = __webpack_require__(35);
+	var is = __webpack_require__(23);
+	var vnode = __webpack_require__(39);
 	function isGenericStream(x) {
 	    return !Array.isArray(x) && typeof x.map === "function";
 	}
@@ -1348,8 +1507,167 @@ webpackJsonp([2],[
 	//# sourceMappingURL=hyperscript.js.map
 
 /***/ },
-/* 26 */,
-/* 27 */
+/* 28 */,
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Column = exports.Row = exports.Layout = undefined;
+	
+	var _snabbdomJsx = __webpack_require__(3);
+	
+	var _grid = __webpack_require__(191);
+	
+	var _grid2 = _interopRequireDefault(_grid);
+	
+	var _classes = __webpack_require__(15);
+	
+	var _classes2 = _interopRequireDefault(_classes);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	function Layout(_ref, children) {
+	    var type = _ref.type;
+	    var width = _ref.width;
+	
+	    var other = _objectWithoutProperties(_ref, ['type', 'width']);
+	
+	    var props = Object.assign({}, other);
+	    switch (type) {
+	        case 'fixed':
+	            props = (0, _classes2.default)(props).add(_grid2.default.fluid).normalize();
+	            props.style = { 'max-width': width };
+	            break;
+	        case 'fluid':
+	            props = (0, _classes2.default)(props).add(_grid2.default.fluid).normalize();
+	            break;
+	        case 'fluid-fixed':
+	            props = (0, _classes2.default)(props).add(_grid2.default.fluidFixed).normalize();
+	            break;
+	    }
+	    return (0, _snabbdomJsx.html)(
+	        'div',
+	        props,
+	        children
+	    );
+	}
+	
+	function Row(props, children) {
+	    var p = (0, _classes2.default)(props).add(_grid2.default.row).normalize();
+	    return (0, _snabbdomJsx.html)(
+	        'div',
+	        p,
+	        children
+	    );
+	}
+	
+	function Column(props, children) {
+	    var classNames = [_grid2.default['column' + props.col]];
+	    if (props.left !== undefined) {
+	        classNames.push(_grid2.default['left' + props.left]);
+	    }
+	    if (props.right !== undefined) {
+	        classNames.push(_grid2.default['right' + props.right]);
+	    }
+	    return (0, _snabbdomJsx.html)(
+	        'div',
+	        { classNames: classNames },
+	        children
+	    );
+	}
+	
+	exports.Layout = Layout;
+	exports.Row = Row;
+	exports.Column = Column;
+
+/***/ },
+/* 30 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _class, _temp;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var QueryBuilder = function () {
+	    function QueryBuilder(table, category) {
+	        _classCallCheck(this, QueryBuilder);
+	
+	        this.query = {
+	            table: table,
+	            category: category
+	        };
+	    }
+	
+	    _createClass(QueryBuilder, [{
+	        key: 'findAll',
+	        value: function findAll() {
+	            return this.query;
+	        }
+	    }]);
+	
+	    return QueryBuilder;
+	}();
+	
+	var ActiveRecord = function () {
+	    function ActiveRecord() {
+	        _classCallCheck(this, ActiveRecord);
+	
+	        this.synced = false;
+	        this.serverId = null;
+	    }
+	
+	    _createClass(ActiveRecord, null, [{
+	        key: 'query',
+	        value: function query(category) {
+	            return new QueryBuilder(this.table, category);
+	        }
+	    }]);
+	
+	    return ActiveRecord;
+	}();
+	
+	var Course = (_temp = _class = function (_ActiveRecord) {
+	    _inherits(Course, _ActiveRecord);
+	
+	    function Course(_ref) {
+	        var name = _ref.name;
+	        var rating = _ref.rating;
+	        var fairways = _ref.fairways;
+	
+	        _classCallCheck(this, Course);
+	
+	        var _this = _possibleConstructorReturn(this, (Course.__proto__ || Object.getPrototypeOf(Course)).call(this));
+	
+	        _this.name = name;
+	        _this.rating = rating;
+	        _this.fairways = fairways;
+	        return _this;
+	    }
+	
+	    return Course;
+	}(ActiveRecord), _class.table = 'courses', _temp);
+	exports.default = Course;
+
+/***/ },
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1368,7 +1686,7 @@ webpackJsonp([2],[
 	
 	var _isolate2 = _interopRequireDefault(_isolate);
 	
-	var _mainLayout = __webpack_require__(19);
+	var _mainLayout = __webpack_require__(20);
 	
 	var _mainLayout2 = _interopRequireDefault(_mainLayout);
 	
@@ -1398,7 +1716,7 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 28 */
+/* 32 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1411,18 +1729,18 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 29 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(151)()
+	module.exports = __webpack_require__(154)()
 		? Object.assign
-		: __webpack_require__(152);
+		: __webpack_require__(155);
 
 
 /***/ },
-/* 30 */
+/* 34 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1438,18 +1756,18 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 31 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var clear    = __webpack_require__(54)
-	  , assign   = __webpack_require__(29)
+	var clear    = __webpack_require__(58)
+	  , assign   = __webpack_require__(33)
 	  , callable = __webpack_require__(9)
 	  , value    = __webpack_require__(7)
 	  , d        = __webpack_require__(8)
-	  , autoBind = __webpack_require__(142)
-	  , Symbol   = __webpack_require__(15)
+	  , autoBind = __webpack_require__(145)
+	  , Symbol   = __webpack_require__(16)
 	
 	  , defineProperty = Object.defineProperty
 	  , defineProperties = Object.defineProperties
@@ -1534,7 +1852,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 32 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1546,17 +1864,17 @@ webpackJsonp([2],[
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _invariant = __webpack_require__(64);
+	var _invariant = __webpack_require__(68);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
-	var _warning = __webpack_require__(23);
+	var _warning = __webpack_require__(24);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
-	var _PathUtils = __webpack_require__(21);
+	var _PathUtils = __webpack_require__(22);
 	
-	var _Actions = __webpack_require__(60);
+	var _Actions = __webpack_require__(64);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -1631,7 +1949,7 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 33 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -1694,10 +2012,10 @@ webpackJsonp([2],[
 	
 	module.exports = root;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(275)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(280)(module), (function() { return this; }())))
 
 /***/ },
-/* 34 */
+/* 38 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1731,7 +2049,7 @@ webpackJsonp([2],[
 	}
 
 /***/ },
-/* 35 */
+/* 39 */
 /***/ function(module, exports) {
 
 	module.exports = function(sel, data, children, text, elm) {
@@ -1742,10 +2060,10 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 36 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(208).nextTick;
+	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(213).nextTick;
 	var apply = Function.prototype.apply;
 	var slice = Array.prototype.slice;
 	var immediateIds = {};
@@ -1821,14 +2139,14 @@ webpackJsonp([2],[
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(36).setImmediate, __webpack_require__(36).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(40).setImmediate, __webpack_require__(40).clearImmediate))
 
 /***/ },
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1855,7 +2173,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ScopeChecker.js.map
 
 /***/ },
-/* 42 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1907,7 +2225,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=transposition.js.map
 
 /***/ },
-/* 43 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1931,7 +2249,7 @@ webpackJsonp([2],[
 	 * @return {Function} the History Driver function
 	 * @function makeHistoryDriver
 	 */
-	var makeHistoryDriver_1 = __webpack_require__(110);
+	var makeHistoryDriver_1 = __webpack_require__(113);
 	exports.makeHistoryDriver = makeHistoryDriver_1.makeHistoryDriver;
 	/**
 	 * Creates a "ServerHistory" object similar to the History objects that the
@@ -1944,15 +2262,15 @@ webpackJsonp([2],[
 	 * @return {object} a History object.
 	 * @function createServerHistory
 	 */
-	var serverHistory_1 = __webpack_require__(111);
+	var serverHistory_1 = __webpack_require__(114);
 	exports.createServerHistory = serverHistory_1.createServerHistory;
-	var util_1 = __webpack_require__(44);
+	var util_1 = __webpack_require__(48);
 	exports.supportsHistory = util_1.supportsHistory;
 	exports.createLocation = util_1.createLocation;
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 44 */
+/* 48 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1995,11 +2313,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=util.js.map
 
 /***/ },
-/* 45 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var isolate_1 = __webpack_require__(114);
+	var isolate_1 = __webpack_require__(117);
 	var xstream_adapter_1 = __webpack_require__(6);
 	var MainHTTPSource = (function () {
 	    function MainHTTPSource(_res$$, runStreamAdapter, _name, _namespace) {
@@ -2030,7 +2348,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=MainHTTPSource.js.map
 
 /***/ },
-/* 46 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2049,13 +2367,13 @@ webpackJsonp([2],[
 	
 	var _isolate2 = _interopRequireDefault(_isolate);
 	
-	var _form = __webpack_require__(16);
+	var _form = __webpack_require__(17);
 	
 	var _form2 = _interopRequireDefault(_form);
 	
-	var _form3 = __webpack_require__(47);
+	var _form3 = __webpack_require__(52);
 	
-	var _button = __webpack_require__(18);
+	var _button = __webpack_require__(19);
 	
 	var _button2 = _interopRequireDefault(_button);
 	
@@ -2123,7 +2441,7 @@ webpackJsonp([2],[
 	        afterSubmit$: response$,
 	        user$: response$.filter(function (_ref2) {
 	            var response = _ref2.response;
-	            return response.ok;
+	            return response && response.ok;
 	        }).map(function (_ref3) {
 	            var response = _ref3.response;
 	            return response.body.user;
@@ -2136,7 +2454,128 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 47 */
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
+	var _xstream = __webpack_require__(2);
+	
+	var _xstream2 = _interopRequireDefault(_xstream);
+	
+	var _snabbdomJsx = __webpack_require__(3);
+	
+	var _classes = __webpack_require__(15);
+	
+	var _classes2 = _interopRequireDefault(_classes);
+	
+	var _alerts = __webpack_require__(186);
+	
+	var _alerts2 = _interopRequireDefault(_alerts);
+	
+	var _isolate = __webpack_require__(4);
+	
+	var _isolate2 = _interopRequireDefault(_isolate);
+	
+	var _icon = __webpack_require__(14);
+	
+	var _icon2 = _interopRequireDefault(_icon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function intent(_ref) {
+	    var DOM = _ref.DOM;
+	    var close$ = _ref.close$;
+	
+	    return {
+	        close$: _xstream2.default.merge(close$, DOM.select('.' + _alerts2.default.closeButton).events('click'))
+	    };
+	}
+	
+	function model(actions) {
+	    return {
+	        open$: actions.close$.mapTo(false).startWith(true)
+	    };
+	}
+	
+	function view(_ref2) {
+	    var state = _ref2.state;
+	    var props$ = _ref2.props$;
+	    var header$ = _ref2.header$;
+	    var content$ = _ref2.content$;
+	    var type$ = _ref2.type$;
+	    var closable$ = _ref2.closable$;
+	
+	    return _xstream2.default.combine(state.open$, props$, header$, content$, type$, closable$).map(function (_ref3) {
+	        var _ref4 = _slicedToArray(_ref3, 6);
+	
+	        var open = _ref4[0];
+	        var props = _ref4[1];
+	        var header = _ref4[2];
+	        var content = _ref4[3];
+	        var type = _ref4[4];
+	        var closable = _ref4[5];
+	
+	        var newProps = (0, _classes2.default)(props).add(_alerts2.default.alert);
+	        if (type) {
+	            newProps.add(_alerts2.default[type]);
+	        }
+	        props = newProps.normalize();
+	        return (0, _snabbdomJsx.html)(
+	            'div',
+	            _extends({}, props, { hidden: !open }),
+	            header ? (0, _snabbdomJsx.html)(
+	                'h1',
+	                null,
+	                header
+	            ) : '',
+	            closable ? (0, _snabbdomJsx.html)(
+	                'button',
+	                { type: 'button', className: _alerts2.default.closeButton },
+	                (0, _snabbdomJsx.html)(_icon2.default, { glyph: 'times' })
+	            ) : '',
+	            content ? content : ''
+	        );
+	    });
+	}
+	
+	function Alert(_ref5) {
+	    var DOM = _ref5.DOM;
+	    var _ref5$props$ = _ref5.props$;
+	    var props$ = _ref5$props$ === undefined ? _xstream2.default.of({}) : _ref5$props$;
+	    var _ref5$header$ = _ref5.header$;
+	    var header$ = _ref5$header$ === undefined ? _xstream2.default.of(false) : _ref5$header$;
+	    var _ref5$content$ = _ref5.content$;
+	    var content$ = _ref5$content$ === undefined ? _xstream2.default.of(false) : _ref5$content$;
+	    var _ref5$type$ = _ref5.type$;
+	    var type$ = _ref5$type$ === undefined ? _xstream2.default.of(null) : _ref5$type$;
+	    var _ref5$close$ = _ref5.close$;
+	    var close$ = _ref5$close$ === undefined ? _xstream2.default.never() : _ref5$close$;
+	    var _ref5$closable$ = _ref5.closable$;
+	    var closable$ = _ref5$closable$ === undefined ? _xstream2.default.of(true) : _ref5$closable$;
+	
+	    var actions = intent({ DOM: DOM, close$: close$ });
+	    var state = model(actions);
+	    var vdom$ = view({ state: state, props$: props$, header$: header$, content$: content$, type$: type$, closable$: closable$ });
+	    return {
+	        DOM: vdom$
+	    };
+	}
+	
+	exports.default = function (sources) {
+	    return (0, _isolate2.default)(Alert)(sources);
+	};
+
+/***/ },
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2146,35 +2585,35 @@ webpackJsonp([2],[
 	});
 	exports.formStyles = exports.AddDecField = exports.RadioButtonGroup = exports.Checkbox = exports.TextArea = exports.Select = exports.TextField = exports.Form = undefined;
 	
-	var _form = __webpack_require__(123);
+	var _form = __webpack_require__(125);
 	
 	var _form2 = _interopRequireDefault(_form);
 	
-	var _textField = __webpack_require__(127);
+	var _textField = __webpack_require__(129);
 	
 	var _textField2 = _interopRequireDefault(_textField);
 	
-	var _select = __webpack_require__(125);
+	var _select = __webpack_require__(127);
 	
 	var _select2 = _interopRequireDefault(_select);
 	
-	var _textArea = __webpack_require__(126);
+	var _textArea = __webpack_require__(128);
 	
 	var _textArea2 = _interopRequireDefault(_textArea);
 	
-	var _checkbox = __webpack_require__(122);
+	var _checkbox = __webpack_require__(124);
 	
 	var _checkbox2 = _interopRequireDefault(_checkbox);
 	
-	var _radioButton = __webpack_require__(124);
+	var _radioButton = __webpack_require__(126);
 	
 	var _radioButton2 = _interopRequireDefault(_radioButton);
 	
-	var _addDecField = __webpack_require__(121);
+	var _addDecField = __webpack_require__(123);
 	
 	var _addDecField2 = _interopRequireDefault(_addDecField);
 	
-	var _form3 = __webpack_require__(16);
+	var _form3 = __webpack_require__(17);
 	
 	var _form4 = _interopRequireDefault(_form3);
 	
@@ -2190,89 +2629,11 @@ webpackJsonp([2],[
 	exports.formStyles = _form4.default;
 
 /***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Column = exports.Row = exports.Layout = undefined;
-	
-	var _snabbdomJsx = __webpack_require__(3);
-	
-	var _grid = __webpack_require__(186);
-	
-	var _grid2 = _interopRequireDefault(_grid);
-	
-	var _classes = __webpack_require__(14);
-	
-	var _classes2 = _interopRequireDefault(_classes);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-	
-	function Layout(_ref, children) {
-	    var type = _ref.type;
-	    var width = _ref.width;
-	
-	    var other = _objectWithoutProperties(_ref, ['type', 'width']);
-	
-	    var props = Object.assign({}, other);
-	    switch (type) {
-	        case 'fixed':
-	            props = (0, _classes2.default)(props).add(_grid2.default.fluid).normalize();
-	            props.style = { 'max-width': width };
-	            break;
-	        case 'fluid':
-	            props = (0, _classes2.default)(props).add(_grid2.default.fluid).normalize();
-	            break;
-	        case 'fluid-fixed':
-	            props = (0, _classes2.default)(props).add(_grid2.default.fluidFixed).normalize();
-	            break;
-	    }
-	    return (0, _snabbdomJsx.html)(
-	        'div',
-	        props,
-	        children
-	    );
-	}
-	
-	function Row(props, children) {
-	    return (0, _snabbdomJsx.html)(
-	        'div',
-	        { className: _grid2.default.row },
-	        children
-	    );
-	}
-	
-	function Column(props, children) {
-	    var classNames = [_grid2.default['column' + props.col]];
-	    if (props.left !== undefined) {
-	        classNames.push(_grid2.default['left' + props.left]);
-	    }
-	    if (props.right !== undefined) {
-	        classNames.push(_grid2.default['right' + props.right]);
-	    }
-	    return (0, _snabbdomJsx.html)(
-	        'div',
-	        { classNames: classNames },
-	        children
-	    );
-	}
-	
-	exports.Layout = Layout;
-	exports.Row = Row;
-	exports.Column = Column;
-
-/***/ },
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */
 /***/ function(module, exports) {
 
 	/*!
@@ -2384,7 +2745,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 54 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Inspired by Google Closure:
@@ -2402,7 +2763,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 55 */
+/* 59 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2419,7 +2780,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 56 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Big thanks to @WebReflection for sorting this out
@@ -2427,7 +2788,7 @@ webpackJsonp([2],[
 	
 	'use strict';
 	
-	var isObject      = __webpack_require__(157)
+	var isObject      = __webpack_require__(160)
 	  , value         = __webpack_require__(7)
 	
 	  , isPrototypeOf = Object.prototype.isPrototypeOf
@@ -2494,27 +2855,27 @@ webpackJsonp([2],[
 		return false;
 	}())));
 	
-	__webpack_require__(154);
+	__webpack_require__(157);
 
 
 /***/ },
-/* 57 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(164)()
+	module.exports = __webpack_require__(167)()
 		? String.prototype.contains
-		: __webpack_require__(165);
+		: __webpack_require__(168);
 
 
 /***/ },
-/* 58 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var isIterable = __webpack_require__(169);
+	var isIterable = __webpack_require__(172);
 	
 	module.exports = function (value) {
 		if (!isIterable(value)) throw new TypeError(value + " is not iterable");
@@ -2523,16 +2884,16 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 59 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(171)() ? Map : __webpack_require__(175);
+	module.exports = __webpack_require__(174)() ? Map : __webpack_require__(178);
 
 
 /***/ },
-/* 60 */
+/* 64 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2559,7 +2920,7 @@ webpackJsonp([2],[
 	var POP = exports.POP = 'POP';
 
 /***/ },
-/* 61 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2567,15 +2928,15 @@ webpackJsonp([2],[
 	exports.__esModule = true;
 	exports.go = exports.replaceLocation = exports.pushLocation = exports.startListener = exports.getUserConfirmation = exports.getCurrentLocation = undefined;
 	
-	var _LocationUtils = __webpack_require__(32);
+	var _LocationUtils = __webpack_require__(36);
 	
-	var _DOMUtils = __webpack_require__(62);
+	var _DOMUtils = __webpack_require__(66);
 	
-	var _DOMStateStorage = __webpack_require__(190);
+	var _DOMStateStorage = __webpack_require__(195);
 	
-	var _PathUtils = __webpack_require__(21);
+	var _PathUtils = __webpack_require__(22);
 	
-	var _ExecutionEnvironment = __webpack_require__(63);
+	var _ExecutionEnvironment = __webpack_require__(67);
 	
 	var PopStateEvent = 'popstate';
 	var HashChangeEvent = 'hashchange';
@@ -2662,7 +3023,7 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 62 */
+/* 66 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2707,7 +3068,7 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 63 */
+/* 67 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2716,7 +3077,7 @@ webpackJsonp([2],[
 	var canUseDOM = exports.canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 /***/ },
-/* 64 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2773,7 +3134,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 65 */
+/* 69 */
 /***/ function(module, exports) {
 
 	/**
@@ -2916,7 +3277,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 66 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2927,7 +3288,7 @@ webpackJsonp([2],[
 	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var root = __webpack_require__(33);
+	var root = __webpack_require__(37);
 	
 	/** Used as references for various `Number` constants. */
 	var INFINITY = 1 / 0;
@@ -3102,7 +3463,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 67 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3113,9 +3474,9 @@ webpackJsonp([2],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseFor = __webpack_require__(196),
-	    bindCallback = __webpack_require__(199),
-	    keys = __webpack_require__(204);
+	var baseFor = __webpack_require__(201),
+	    bindCallback = __webpack_require__(204),
+	    keys = __webpack_require__(209);
 	
 	/**
 	 * The base implementation of `_.forOwn` without support for callback
@@ -3179,7 +3540,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 68 */
+/* 72 */
 /***/ function(module, exports) {
 
 	/**
@@ -3414,7 +3775,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 69 */
+/* 73 */
 /***/ function(module, exports) {
 
 	/**
@@ -3600,7 +3961,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 70 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3610,7 +3971,7 @@ webpackJsonp([2],[
 	});
 	exports.default = selectorParser;
 	
-	var _browserSplit = __webpack_require__(53);
+	var _browserSplit = __webpack_require__(57);
 	
 	var _browserSplit2 = _interopRequireDefault(_browserSplit);
 	
@@ -3662,13 +4023,13 @@ webpackJsonp([2],[
 	}
 
 /***/ },
-/* 71 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
 	// https://github.com/Matt-Esch/virtual-dom/blob/master/virtual-hyperscript/parse-tag.js
 	
-	var split = __webpack_require__(53);
+	var split = __webpack_require__(57);
 	
 	var classIdSplit = /([\.#]?[a-zA-Z0-9\u007F-\uFFFF_:-]+)/;
 	var notClassId = /^\.|#/;
@@ -3713,7 +4074,7 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 72 */
+/* 76 */
 /***/ function(module, exports) {
 
 	var booleanAttrs = ["allowfullscreen", "async", "autofocus", "autoplay", "checked", "compact", "controls", "declare", 
@@ -3758,7 +4119,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 73 */
+/* 77 */
 /***/ function(module, exports) {
 
 	function updateClass(oldVnode, vnode) {
@@ -3782,10 +4143,10 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 74 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var is = __webpack_require__(22);
+	var is = __webpack_require__(23);
 	
 	function arrInvoker(arr) {
 	  return function() {
@@ -3846,7 +4207,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 75 */
+/* 79 */
 /***/ function(module, exports) {
 
 	var raf = (typeof window !== 'undefined' && window.requestAnimationFrame) || setTimeout;
@@ -4004,7 +4365,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 76 */
+/* 80 */
 /***/ function(module, exports) {
 
 	function updateProps(oldVnode, vnode) {
@@ -4028,7 +4389,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 77 */
+/* 81 */
 /***/ function(module, exports) {
 
 	var raf = (typeof window !== 'undefined' && window.requestAnimationFrame) || setTimeout;
@@ -4098,7 +4459,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 78 */
+/* 82 */
 /***/ function(module, exports) {
 
 	/**
@@ -4117,10 +4478,6 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
 /* 83 */,
 /* 84 */,
 /* 85 */,
@@ -4131,7 +4488,10 @@ webpackJsonp([2],[
 /* 90 */,
 /* 91 */,
 /* 92 */,
-/* 93 */
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -4246,13 +4606,13 @@ webpackJsonp([2],[
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 94 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var xstream_1 = __webpack_require__(2);
 	var xstream_adapter_1 = __webpack_require__(6);
-	var fromEvent_1 = __webpack_require__(24);
+	var fromEvent_1 = __webpack_require__(26);
 	var BodyDOMSource = (function () {
 	    function BodyDOMSource(_runStreamAdapter, _name) {
 	        this._runStreamAdapter = _runStreamAdapter;
@@ -4287,13 +4647,13 @@ webpackJsonp([2],[
 	//# sourceMappingURL=BodyDOMSource.js.map
 
 /***/ },
-/* 95 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var xstream_1 = __webpack_require__(2);
 	var xstream_adapter_1 = __webpack_require__(6);
-	var fromEvent_1 = __webpack_require__(24);
+	var fromEvent_1 = __webpack_require__(26);
 	var DocumentDOMSource = (function () {
 	    function DocumentDOMSource(_runStreamAdapter, _name) {
 	        this._runStreamAdapter = _runStreamAdapter;
@@ -4328,15 +4688,15 @@ webpackJsonp([2],[
 	//# sourceMappingURL=DocumentDOMSource.js.map
 
 /***/ },
-/* 96 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ScopeChecker_1 = __webpack_require__(41);
+	var ScopeChecker_1 = __webpack_require__(45);
 	var utils_1 = __webpack_require__(13);
 	var matchesSelector;
 	try {
-	    matchesSelector = __webpack_require__(34);
+	    matchesSelector = __webpack_require__(38);
 	}
 	catch (e) {
 	    matchesSelector = Function.prototype;
@@ -4375,15 +4735,15 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ElementFinder.js.map
 
 /***/ },
-/* 97 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ScopeChecker_1 = __webpack_require__(41);
+	var ScopeChecker_1 = __webpack_require__(45);
 	var utils_1 = __webpack_require__(13);
 	var matchesSelector;
 	try {
-	    matchesSelector = __webpack_require__(34);
+	    matchesSelector = __webpack_require__(38);
 	}
 	catch (e) {
 	    matchesSelector = Function.prototype;
@@ -4514,7 +4874,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=EventDelegator.js.map
 
 /***/ },
-/* 98 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4546,22 +4906,22 @@ webpackJsonp([2],[
 	//# sourceMappingURL=HTMLSource.js.map
 
 /***/ },
-/* 99 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var xstream_adapter_1 = __webpack_require__(6);
-	var DocumentDOMSource_1 = __webpack_require__(95);
-	var BodyDOMSource_1 = __webpack_require__(94);
+	var DocumentDOMSource_1 = __webpack_require__(98);
+	var BodyDOMSource_1 = __webpack_require__(97);
 	var xstream_1 = __webpack_require__(2);
-	var ElementFinder_1 = __webpack_require__(96);
-	var fromEvent_1 = __webpack_require__(24);
-	var isolate_1 = __webpack_require__(103);
-	var EventDelegator_1 = __webpack_require__(97);
+	var ElementFinder_1 = __webpack_require__(99);
+	var fromEvent_1 = __webpack_require__(26);
+	var isolate_1 = __webpack_require__(106);
+	var EventDelegator_1 = __webpack_require__(100);
 	var utils_1 = __webpack_require__(13);
 	var matchesSelector;
 	try {
-	    matchesSelector = __webpack_require__(34);
+	    matchesSelector = __webpack_require__(38);
 	}
 	catch (e) {
 	    matchesSelector = Function.prototype;
@@ -4741,13 +5101,13 @@ webpackJsonp([2],[
 	//# sourceMappingURL=MainDOMSource.js.map
 
 /***/ },
-/* 100 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var hyperscript_1 = __webpack_require__(25);
-	var classNameFromVNode_1 = __webpack_require__(209);
-	var selectorParser_1 = __webpack_require__(70);
+	var hyperscript_1 = __webpack_require__(27);
+	var classNameFromVNode_1 = __webpack_require__(214);
+	var selectorParser_1 = __webpack_require__(74);
 	var VNodeWrapper = (function () {
 	    function VNodeWrapper(rootElement) {
 	        this.rootElement = rootElement;
@@ -4778,11 +5138,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=VNodeWrapper.js.map
 
 /***/ },
-/* 101 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var hyperscript_1 = __webpack_require__(25);
+	var hyperscript_1 = __webpack_require__(27);
 	function isValidString(param) {
 	    return typeof param === 'string' && param.length > 0;
 	}
@@ -4855,11 +5215,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=hyperscript-helpers.js.map
 
 /***/ },
-/* 102 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var thunk = __webpack_require__(220);
+	var thunk = __webpack_require__(225);
 	exports.thunk = thunk;
 	/**
 	 * A factory for the DOM driver function.
@@ -4897,7 +5257,7 @@ webpackJsonp([2],[
 	 * of VNode as input, and outputs the DOMSource object.
 	 * @function makeDOMDriver
 	 */
-	var makeDOMDriver_1 = __webpack_require__(105);
+	var makeDOMDriver_1 = __webpack_require__(108);
 	exports.makeDOMDriver = makeDOMDriver_1.makeDOMDriver;
 	/**
 	 * A factory for the HTML driver function.
@@ -4945,7 +5305,7 @@ webpackJsonp([2],[
 	 * of VNode as input, and outputs the DOMSource object.
 	 * @function makeHTMLDriver
 	 */
-	var makeHTMLDriver_1 = __webpack_require__(106);
+	var makeHTMLDriver_1 = __webpack_require__(109);
 	exports.makeHTMLDriver = makeHTMLDriver_1.makeHTMLDriver;
 	/**
 	 * A factory function to create mocked DOMSource objects, for testing purposes.
@@ -4995,7 +5355,7 @@ webpackJsonp([2],[
 	 *
 	 * @function mockDOMSource
 	 */
-	var mockDOMSource_1 = __webpack_require__(107);
+	var mockDOMSource_1 = __webpack_require__(110);
 	exports.mockDOMSource = mockDOMSource_1.mockDOMSource;
 	/**
 	 * The hyperscript function `h()` is a function to create virtual DOM objects,
@@ -5037,9 +5397,9 @@ webpackJsonp([2],[
 	 *
 	 * @function h
 	 */
-	var hyperscript_1 = __webpack_require__(25);
+	var hyperscript_1 = __webpack_require__(27);
 	exports.h = hyperscript_1.h;
-	var hyperscript_helpers_1 = __webpack_require__(101);
+	var hyperscript_helpers_1 = __webpack_require__(104);
 	exports.svg = hyperscript_helpers_1.default.svg;
 	exports.a = hyperscript_helpers_1.default.a;
 	exports.abbr = hyperscript_helpers_1.default.abbr;
@@ -5144,7 +5504,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 103 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5173,11 +5533,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=isolate.js.map
 
 /***/ },
-/* 104 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var MapPolyfill = __webpack_require__(59);
+	var MapPolyfill = __webpack_require__(63);
 	var IsolateModule = (function () {
 	    function IsolateModule(isolatedElements) {
 	        this.isolatedElements = isolatedElements;
@@ -5282,20 +5642,20 @@ webpackJsonp([2],[
 	//# sourceMappingURL=isolateModule.js.map
 
 /***/ },
-/* 105 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var snabbdom_1 = __webpack_require__(219);
+	var snabbdom_1 = __webpack_require__(224);
 	var xstream_1 = __webpack_require__(2);
-	var MainDOMSource_1 = __webpack_require__(99);
-	var VNodeWrapper_1 = __webpack_require__(100);
+	var MainDOMSource_1 = __webpack_require__(102);
+	var VNodeWrapper_1 = __webpack_require__(103);
 	var utils_1 = __webpack_require__(13);
-	var modules_1 = __webpack_require__(108);
-	var isolateModule_1 = __webpack_require__(104);
-	var transposition_1 = __webpack_require__(42);
+	var modules_1 = __webpack_require__(111);
+	var isolateModule_1 = __webpack_require__(107);
+	var transposition_1 = __webpack_require__(46);
 	var xstream_adapter_1 = __webpack_require__(6);
-	var MapPolyfill = __webpack_require__(59);
+	var MapPolyfill = __webpack_require__(63);
 	function makeDOMDriverInputGuard(modules) {
 	    if (!Array.isArray(modules)) {
 	        throw new Error("Optional modules option must be " +
@@ -5346,14 +5706,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=makeDOMDriver.js.map
 
 /***/ },
-/* 106 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var xstream_adapter_1 = __webpack_require__(6);
-	var transposition_1 = __webpack_require__(42);
-	var HTMLSource_1 = __webpack_require__(98);
-	var toHTML = __webpack_require__(211);
+	var transposition_1 = __webpack_require__(46);
+	var HTMLSource_1 = __webpack_require__(101);
+	var toHTML = __webpack_require__(216);
 	/* tslint:disable:no-empty */
 	var noop = function () { };
 	/* tslint:enable:no-empty */
@@ -5381,7 +5741,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=makeHTMLDriver.js.map
 
 /***/ },
-/* 107 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5456,28 +5816,28 @@ webpackJsonp([2],[
 	//# sourceMappingURL=mockDOMSource.js.map
 
 /***/ },
-/* 108 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ClassModule = __webpack_require__(73);
+	var ClassModule = __webpack_require__(77);
 	exports.ClassModule = ClassModule;
-	var PropsModule = __webpack_require__(76);
+	var PropsModule = __webpack_require__(80);
 	exports.PropsModule = PropsModule;
-	var AttrsModule = __webpack_require__(72);
+	var AttrsModule = __webpack_require__(76);
 	exports.AttrsModule = AttrsModule;
-	var EventsModule = __webpack_require__(74);
+	var EventsModule = __webpack_require__(78);
 	exports.EventsModule = EventsModule;
-	var StyleModule = __webpack_require__(77);
+	var StyleModule = __webpack_require__(81);
 	exports.StyleModule = StyleModule;
-	var HeroModule = __webpack_require__(75);
+	var HeroModule = __webpack_require__(79);
 	exports.HeroModule = HeroModule;
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = [StyleModule, ClassModule, PropsModule, AttrsModule];
 	//# sourceMappingURL=modules.js.map
 
 /***/ },
-/* 109 */
+/* 112 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5543,11 +5903,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=captureClicks.js.map
 
 /***/ },
-/* 110 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var captureClicks_1 = __webpack_require__(109);
+	var captureClicks_1 = __webpack_require__(112);
 	function makeUpdateHistory(history) {
 	    return function updateHistory(location) {
 	        if ('string' === typeof location) {
@@ -5622,11 +5982,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=makeHistoryDriver.js.map
 
 /***/ },
-/* 111 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var util_1 = __webpack_require__(44);
+	var util_1 = __webpack_require__(48);
 	var ServerHistory = (function () {
 	    function ServerHistory(currentLocation) {
 	        this.currentLocation = currentLocation;
@@ -5672,14 +6032,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=serverHistory.js.map
 
 /***/ },
-/* 112 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var xstream_1 = __webpack_require__(2);
-	var MainHTTPSource_1 = __webpack_require__(45);
+	var MainHTTPSource_1 = __webpack_require__(49);
 	var xstream_adapter_1 = __webpack_require__(6);
-	var superagent = __webpack_require__(221);
+	var superagent = __webpack_require__(226);
 	function preprocessReqOptions(reqOptions) {
 	    reqOptions.withCredentials = reqOptions.withCredentials || false;
 	    reqOptions.redirects = typeof reqOptions.redirects === 'number' ? reqOptions.redirects : 5;
@@ -5831,7 +6191,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 113 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5890,12 +6250,12 @@ webpackJsonp([2],[
 	 * @return {Function} the HTTP Driver function
 	 * @function makeHTTPDriver
 	 */
-	var http_driver_1 = __webpack_require__(112);
+	var http_driver_1 = __webpack_require__(115);
 	exports.makeHTTPDriver = http_driver_1.makeHTTPDriver;
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 114 */
+/* 117 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5921,11 +6281,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=isolate.js.map
 
 /***/ },
-/* 115 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var base_1 = __webpack_require__(93);
+	var base_1 = __webpack_require__(96);
 	var xstream_adapter_1 = __webpack_require__(6);
 	/**
 	 * Takes a `main` function and circularly connects it to the given collection
@@ -6003,8 +6363,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 116 */,
-/* 117 */
+/* 119 */,
+/* 120 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -6025,7 +6385,7 @@ webpackJsonp([2],[
 	module.exports = { create: updateProps, update: updateProps };
 
 /***/ },
-/* 118 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6042,11 +6402,11 @@ webpackJsonp([2],[
 	
 	var _xstream2 = _interopRequireDefault(_xstream);
 	
-	var _dialog = __webpack_require__(120);
+	var _dialog = __webpack_require__(122);
 	
 	var _dialog2 = _interopRequireDefault(_dialog);
 	
-	var _loginForm = __webpack_require__(46);
+	var _loginForm = __webpack_require__(50);
 	
 	var _loginForm2 = _interopRequireDefault(_loginForm);
 	
@@ -6061,7 +6421,7 @@ webpackJsonp([2],[
 	function provideRelogin(Component) {
 	    return function (sources) {
 	        var errorResponse$ = sources.HTTP.select().flatten().filter(function (o) {
-	            return o.response.statusCode == 401;
+	            return o.response && o.response.statusCode == 401;
 	        });
 	        var loginDialog$ = errorResponse$.map(function (_ref) {
 	            var request = _ref.request;
@@ -6125,124 +6485,7 @@ webpackJsonp([2],[
 	exports.default = provideRelogin;
 
 /***/ },
-/* 119 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-	
-	var _xstream = __webpack_require__(2);
-	
-	var _xstream2 = _interopRequireDefault(_xstream);
-	
-	var _snabbdomJsx = __webpack_require__(3);
-	
-	var _classes = __webpack_require__(14);
-	
-	var _classes2 = _interopRequireDefault(_classes);
-	
-	var _alerts = __webpack_require__(181);
-	
-	var _alerts2 = _interopRequireDefault(_alerts);
-	
-	var _isolate = __webpack_require__(4);
-	
-	var _isolate2 = _interopRequireDefault(_isolate);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function intent(_ref) {
-	    var DOM = _ref.DOM;
-	    var close$ = _ref.close$;
-	
-	    return {
-	        close$: _xstream2.default.merge(close$, DOM.select('.' + _alerts2.default.closeButton).events('click'))
-	    };
-	}
-	
-	function model(actions) {
-	    return {
-	        open$: actions.close$.mapTo(false).startWith(true)
-	    };
-	}
-	
-	function view(_ref2) {
-	    var state = _ref2.state;
-	    var props$ = _ref2.props$;
-	    var header$ = _ref2.header$;
-	    var content$ = _ref2.content$;
-	    var type$ = _ref2.type$;
-	    var closable$ = _ref2.closable$;
-	
-	    return _xstream2.default.combine(state.open$, props$, header$, content$, type$, closable$).map(function (_ref3) {
-	        var _ref4 = _slicedToArray(_ref3, 6);
-	
-	        var open = _ref4[0];
-	        var props = _ref4[1];
-	        var header = _ref4[2];
-	        var content = _ref4[3];
-	        var type = _ref4[4];
-	        var closable = _ref4[5];
-	
-	        var newProps = (0, _classes2.default)(props).add(_alerts2.default.alert);
-	        if (type) {
-	            newProps.add(_alerts2.default[type]);
-	        }
-	        props = newProps.normalize();
-	        return (0, _snabbdomJsx.html)(
-	            'div',
-	            _extends({}, props, { hidden: !open }),
-	            header ? (0, _snabbdomJsx.html)(
-	                'h1',
-	                null,
-	                header
-	            ) : '',
-	            closable ? (0, _snabbdomJsx.html)(
-	                'button',
-	                { type: 'button', className: _alerts2.default.closeButton },
-	                (0, _snabbdomJsx.html)('i', { className: 'fa fa-times' })
-	            ) : '',
-	            content ? content : ''
-	        );
-	    });
-	}
-	
-	function Alert(_ref5) {
-	    var DOM = _ref5.DOM;
-	    var _ref5$props$ = _ref5.props$;
-	    var props$ = _ref5$props$ === undefined ? _xstream2.default.of({}) : _ref5$props$;
-	    var _ref5$header$ = _ref5.header$;
-	    var header$ = _ref5$header$ === undefined ? _xstream2.default.of(false) : _ref5$header$;
-	    var _ref5$content$ = _ref5.content$;
-	    var content$ = _ref5$content$ === undefined ? _xstream2.default.of(false) : _ref5$content$;
-	    var _ref5$type$ = _ref5.type$;
-	    var type$ = _ref5$type$ === undefined ? _xstream2.default.of(null) : _ref5$type$;
-	    var _ref5$close$ = _ref5.close$;
-	    var close$ = _ref5$close$ === undefined ? _xstream2.default.never() : _ref5$close$;
-	    var _ref5$closable$ = _ref5.closable$;
-	    var closable$ = _ref5$closable$ === undefined ? _xstream2.default.of(true) : _ref5$closable$;
-	
-	    var actions = intent({ DOM: DOM, close$: close$ });
-	    var state = model(actions);
-	    var vdom$ = view({ state: state, props$: props$, header$: header$, content$: content$, type$: type$, closable$: closable$ });
-	    return {
-	        DOM: vdom$
-	    };
-	}
-	
-	exports.default = function (sources) {
-	    return (0, _isolate2.default)(Alert)(sources);
-	};
-
-/***/ },
-/* 120 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6265,15 +6508,15 @@ webpackJsonp([2],[
 	
 	var _isolate2 = _interopRequireDefault(_isolate);
 	
-	var _dialog = __webpack_require__(183);
+	var _dialog = __webpack_require__(188);
 	
 	var _dialog2 = _interopRequireDefault(_dialog);
 	
-	var _classes = __webpack_require__(14);
+	var _classes = __webpack_require__(15);
 	
 	var _classes2 = _interopRequireDefault(_classes);
 	
-	var _button = __webpack_require__(18);
+	var _button = __webpack_require__(19);
 	
 	var _button2 = _interopRequireDefault(_button);
 	
@@ -6398,7 +6641,7 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 121 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6425,13 +6668,17 @@ webpackJsonp([2],[
 	
 	var _formField2 = _interopRequireDefault(_formField);
 	
-	var _addDecField = __webpack_require__(184);
+	var _addDecField = __webpack_require__(189);
 	
 	var _addDecField2 = _interopRequireDefault(_addDecField);
 	
 	var _ramda = __webpack_require__(5);
 	
 	var _ramda2 = _interopRequireDefault(_ramda);
+	
+	var _icon = __webpack_require__(14);
+	
+	var _icon2 = _interopRequireDefault(_icon);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -6489,13 +6736,13 @@ webpackJsonp([2],[
 	            (0, _snabbdomJsx.html)(
 	                'button',
 	                { type: 'button', classNames: [_addDecField2.default.button, 'addButton'] },
-	                (0, _snabbdomJsx.html)('i', { className: 'fa fa-minus-circle' })
+	                (0, _snabbdomJsx.html)(_icon2.default, { glyph: 'minus-circle' })
 	            ),
 	            (0, _snabbdomJsx.html)('input', _extends({ type: 'number' }, _ramda2.default.omit(['value'], props), { 'liveProps-value': value })),
 	            (0, _snabbdomJsx.html)(
 	                'button',
 	                { type: 'button', classNames: [_addDecField2.default.button, 'decButton'] },
-	                (0, _snabbdomJsx.html)('i', { className: 'fa fa-plus-circle' })
+	                (0, _snabbdomJsx.html)(_icon2.default, { glyph: 'plus-circle' })
 	            )
 	        );
 	    });
@@ -6510,7 +6757,7 @@ webpackJsonp([2],[
 	exports.default = FormAddDecField;
 
 /***/ },
-/* 122 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6562,7 +6809,7 @@ webpackJsonp([2],[
 	exports.default = FormCheckbox;
 
 /***/ },
-/* 123 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6583,25 +6830,25 @@ webpackJsonp([2],[
 	
 	var _ramda2 = _interopRequireDefault(_ramda);
 	
-	var _button = __webpack_require__(18);
+	var _button = __webpack_require__(19);
 	
 	var _button2 = _interopRequireDefault(_button);
 	
-	var _dropRepeats = __webpack_require__(92);
+	var _dropRepeats = __webpack_require__(44);
 	
 	var _dropRepeats2 = _interopRequireDefault(_dropRepeats);
 	
-	var _xsCombineObj = __webpack_require__(135);
+	var _xsCombineObj = __webpack_require__(138);
 	
 	var _xsCombineObj2 = _interopRequireDefault(_xsCombineObj);
 	
 	var _snabbdomJsx = __webpack_require__(3);
 	
-	var _alert = __webpack_require__(119);
+	var _alert = __webpack_require__(51);
 	
 	var _alert2 = _interopRequireDefault(_alert);
 	
-	var _form = __webpack_require__(16);
+	var _form = __webpack_require__(17);
 	
 	var _form2 = _interopRequireDefault(_form);
 	
@@ -6643,17 +6890,22 @@ webpackJsonp([2],[
 	
 	        var sources = _objectWithoutProperties(_ref, ['renderActions$']);
 	
-	        var alerts$ = sources.HTTP.select().flatten().map(function (_ref2) {
+	        var alerts$ = sources.HTTP.select().flatten().filter(function (_ref2) {
 	            var response = _ref2.response;
+	            return response && response.body;
+	        }).map(function (_ref3) {
+	            var response = _ref3.response;
 	            return response.body.alerts;
 	        }).startWith([]);
 	        var submitting$ = _xstream2.default.create();
 	        var submitTried$ = _xstream2.default.create();
+	        var reset$ = _xstream2.default.create();
 	        var FormComponent = function FormComponent(Component, cSources) {
 	            return Component(_extends({
 	                DOM: sources.DOM,
 	                submitTried$: submitTried$.startWith(false),
-	                submitting$: submitting$.startWith(false)
+	                submitting$: submitting$.startWith(false),
+	                reset$: reset$
 	            }, cSources));
 	        };
 	        var elementsProxy$ = _xstream2.default.create();
@@ -6672,25 +6924,25 @@ webpackJsonp([2],[
 	        });
 	
 	        var submitOn$ = _xstream2.default.create();
-	        var validatedValuesAfterSubmit$ = _xstream2.default.combine(valid$, values$).map(function (_ref3) {
-	            var _ref4 = _slicedToArray(_ref3, 2);
+	        var validatedValuesAfterSubmit$ = _xstream2.default.combine(valid$, values$).map(function (_ref4) {
+	            var _ref5 = _slicedToArray(_ref4, 2);
 	
-	            var valid = _ref4[0];
-	            var values = _ref4[1];
+	            var valid = _ref5[0];
+	            var values = _ref5[1];
 	            return submitOn$.map(function () {
 	                return [valid, values];
 	            });
-	        }).flatten().filter(function (_ref5) {
-	            var _ref6 = _slicedToArray(_ref5, 2);
+	        }).flatten().filter(function (_ref6) {
+	            var _ref7 = _slicedToArray(_ref6, 2);
 	
-	            var valid = _ref6[0];
-	            var values = _ref6[1];
+	            var valid = _ref7[0];
+	            var values = _ref7[1];
 	            return valid;
-	        }).map(function (_ref7) {
-	            var _ref8 = _slicedToArray(_ref7, 2);
+	        }).map(function (_ref8) {
+	            var _ref9 = _slicedToArray(_ref8, 2);
 	
-	            var valid = _ref8[0];
-	            var values = _ref8[1];
+	            var valid = _ref9[0];
+	            var values = _ref9[1];
 	            return values;
 	        });
 	
@@ -6702,6 +6954,9 @@ webpackJsonp([2],[
 	
 	        submitOn$.imitate(sinks.submitOn$);
 	        submitTried$.imitate(sinks.submitOn$.take(1));
+	        if (sinks.reset$) {
+	            reset$.imitate(sinks.reset$);
+	        }
 	        delete sinks.submitOn$;
 	        elementsProxy$.imitate(sinks.elements$);
 	        submitting$.imitate(_xstream2.default.merge(validatedValuesAfterSubmit$.mapTo(true), sinks.afterSubmit$.mapTo(false)));
@@ -6719,14 +6974,14 @@ webpackJsonp([2],[
 	            return (0, _xsCombineObj2.default)(_ramda2.default.map(function (elem) {
 	                return elem.DOM;
 	            }, actions));
-	        }).flatten(), elementsProxy$.compose(pluckCombineNestedObject('DOM'))).map(function (_ref9) {
-	            var _ref10 = _slicedToArray(_ref9, 5);
+	        }).flatten(), elementsProxy$.compose(pluckCombineNestedObject('DOM'))).map(function (_ref10) {
+	            var _ref11 = _slicedToArray(_ref10, 5);
 	
-	            var alerts = _ref10[0];
-	            var render = _ref10[1];
-	            var renderActions = _ref10[2];
-	            var actions = _ref10[3];
-	            var elements = _ref10[4];
+	            var alerts = _ref11[0];
+	            var render = _ref11[1];
+	            var renderActions = _ref11[2];
+	            var actions = _ref11[3];
+	            var elements = _ref11[4];
 	            return render(alerts, elements, renderActions ? actions : false, _form2.default);
 	        });
 	        sinks.preventDefault = _xstream2.default.merge(sources.DOM.select('form').events('submit'), sinks.preventDefault ? sinks.preventDefault : _xstream2.default.never());
@@ -6737,7 +6992,7 @@ webpackJsonp([2],[
 	exports.default = Form;
 
 /***/ },
-/* 124 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6764,7 +7019,7 @@ webpackJsonp([2],[
 	
 	var _formField2 = _interopRequireDefault(_formField);
 	
-	var _form = __webpack_require__(16);
+	var _form = __webpack_require__(17);
 	
 	var _form2 = _interopRequireDefault(_form);
 	
@@ -6827,7 +7082,7 @@ webpackJsonp([2],[
 	exports.default = FormRadioButtonGroup;
 
 /***/ },
-/* 125 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6864,27 +7119,31 @@ webpackJsonp([2],[
 	    var value$ = DOM.select('select').events('change').map(function (event) {
 	        return event.target.value;
 	    });
-	    var state$ = props$.map(function (props) {
-	        return value$.map(function (value) {
-	            return Object.assign({}, props, { value: value });
-	        }).startWith(Object.assign({ value: '' }, props));
-	    }).flatten().remember();
-	
-	    var vdom$ = _xstream2.default.combine(state$, options$).map(function (_ref2) {
+	    var state$ = _xstream2.default.combine(options$, props$).map(function (_ref2) {
 	        var _ref3 = _slicedToArray(_ref2, 2);
 	
-	        var state = _ref3[0];
-	        var options = _ref3[1];
+	        var options = _ref3[0];
+	        var props = _ref3[1];
+	        return value$.map(function (value) {
+	            return Object.assign({}, props, { value: value });
+	        }).startWith(Object.assign({ value: options.length > 0 ? options[0].value : '' }, props));
+	    }).flatten().remember();
+	
+	    var vdom$ = _xstream2.default.combine(state$, options$).map(function (_ref4) {
+	        var _ref5 = _slicedToArray(_ref4, 2);
+	
+	        var state = _ref5[0];
+	        var options = _ref5[1];
 	        var value = state.value;
 	        var props = state.props;
 	
 	        return (0, _snabbdomJsx.html)(
 	            'select',
 	            props,
-	            options.map(function (_ref4) {
-	                var text = _ref4.text;
+	            options.map(function (_ref6) {
+	                var text = _ref6.text;
 	
-	                var others = _objectWithoutProperties(_ref4, ['text']);
+	                var others = _objectWithoutProperties(_ref6, ['text']);
 	
 	                if (value == others.value) {
 	                    others.selected = true;
@@ -6910,7 +7169,7 @@ webpackJsonp([2],[
 	exports.default = FormSelect;
 
 /***/ },
-/* 126 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6970,7 +7229,7 @@ webpackJsonp([2],[
 	exports.default = FormTextArea;
 
 /***/ },
-/* 127 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7066,7 +7325,7 @@ webpackJsonp([2],[
 	exports.default = FormTextField;
 
 /***/ },
-/* 128 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7079,41 +7338,70 @@ webpackJsonp([2],[
 	
 	var _ramda2 = _interopRequireDefault(_ramda);
 	
-	var _validator = __webpack_require__(79);
+	var _validator = __webpack_require__(83);
 	
 	var _validator2 = _interopRequireDefault(_validator);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var capitalize = _ramda2.default.compose(_ramda2.default.join(''), _ramda2.default.over(_ramda2.default.lensIndex(0), _ramda2.default.toUpper));
+	
+	function minMaxError(params, _ref) {
+	    var onlyMin = _ref.onlyMin;
+	    var onlyMax = _ref.onlyMax;
+	    var both = _ref.both;
+	
+	    if (params.min === undefined) {
+	        return onlyMax;
+	    }
+	    if (params.max === undefined) {
+	        return onlyMin;
+	    }
+	    return both;
+	}
+	
 	function validate(value, validators) {
 	    value = _ramda2.default.trim(typeof value == 'string' ? value : _ramda2.default.toString(value));
-	    for (var i = 0; i < validators.length; ++i) {
-	        var type = validators[i][0];
-	        var params = validators[i].length > 1 ? validators[i][1] : null;
-	        if (typeof type == 'function') {
-	            return type(value);
-	        } else {
-	            switch (type) {
-	                case 'required':
-	                    if (!_validator2.default.isLength(value, { min: 1 })) {
-	                        return 'Pakollinen';
-	                    }
-	                    break;
-	                case 'length':
-	                    if (!_validator2.default.isLength(value, params)) {
-	                        return 'Kirjoita ' + params.min + ' - ' + params.max + ' merkkiä';
-	                    }
-	                    break;
+	    var required = _ramda2.default.find(_ramda2.default.equals(['required']), validators) !== undefined;
+	    if (_validator2.default.isLength(value, { min: 1 })) {
+	        for (var i = 0; i < validators.length; ++i) {
+	            var type = validators[i][0];
+	            var params = validators[i].length > 1 ? validators[i][1] : {};
+	            if (typeof type == 'function') {
+	                return type(value);
+	            } else {
+	                switch (type) {
+	                    case 'length':
+	                        if (!_validator2.default.isLength(value, params)) {
+	                            return minMaxError(params, {
+	                                onlyMin: 'Kirjoita vähintään ' + params.min + ' merkkiä',
+	                                onlyMax: 'Kirjoita enintään ' + params.max + ' merkkiä',
+	                                both: 'Kirjoita ' + params.min + ' - ' + params.max + ' merkkiä'
+	                            });
+	                        }
+	                        break;
+	                    case 'int':
+	                    case 'float':
+	                        if (!_validator2.default['is' + capitalize(type)](value, params)) {
+	                            return minMaxError(params, {
+	                                onlyMin: 'Arvon tulee olla vähintään ' + params.min,
+	                                onlyMax: 'Arvon tulee olla enintään ' + params.max,
+	                                both: 'Arvon tulee olla välillä ' + params.min + ' - ' + params.max
+	                            });
+	                        }
+	                        break;
+	                }
 	            }
 	        }
+	        return true;
 	    }
-	    return true;
+	    return required ? 'Pakollinen' : true;
 	}
 	exports.default = validate;
 
 /***/ },
-/* 129 */,
-/* 130 */
+/* 131 */,
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7134,7 +7422,7 @@ webpackJsonp([2],[
 	
 	var _isolate2 = _interopRequireDefault(_isolate);
 	
-	var _navbar = __webpack_require__(187);
+	var _navbar = __webpack_require__(192);
 	
 	var _navbar2 = _interopRequireDefault(_navbar);
 	
@@ -7166,24 +7454,33 @@ webpackJsonp([2],[
 	            });
 	        })();
 	    }
+	    var props = {
+	        'attrs-data-link': JSON.stringify(_ramda2.default.omit(['title'], link)),
+	        href: link.url,
+	        class: _defineProperty({}, _navbar2.default.active, active)
+	    };
+	    if (link.tooltip !== undefined) {
+	        props['attrs-data-ks-tooltip'] = link.tooltip;
+	        props['attrs-data-ks-tooltip-position'] = 'bottom';
+	    }
 	    return (0, _snabbdomJsx.html)(
 	        'li',
 	        null,
 	        (0, _snabbdomJsx.html)(
 	            'a',
-	            { 'dataset-link': JSON.stringify(link), href: link.url, 'class': _defineProperty({}, _navbar2.default.active, active) },
+	            props,
 	            link.title
 	        )
 	    );
 	}
 	
 	function view(location$, primaryLinks$, secondaryLinks$) {
-	    return _xstream2.default.combine(location$, primaryLinks$, secondaryLinks$).map(function (_ref2) {
-	        var _ref3 = _slicedToArray(_ref2, 3);
+	    return _xstream2.default.combine(location$, primaryLinks$, secondaryLinks$).map(function (_ref) {
+	        var _ref2 = _slicedToArray(_ref, 3);
 	
-	        var location = _ref3[0];
-	        var primaryLinks = _ref3[1];
-	        var secondaryLinks = _ref3[2];
+	        var location = _ref2[0];
+	        var primaryLinks = _ref2[1];
+	        var secondaryLinks = _ref2[2];
 	        return (0, _snabbdomJsx.html)(
 	            'div',
 	            { className: _navbar2.default.navbar },
@@ -7216,18 +7513,18 @@ webpackJsonp([2],[
 	    });
 	}
 	
-	function Navbar(_ref4) {
-	    var DOM = _ref4.DOM;
-	    var location$ = _ref4.location$;
-	    var _ref4$primaryLinks$ = _ref4.primaryLinks$;
-	    var primaryLinks$ = _ref4$primaryLinks$ === undefined ? _xstream2.default.of([]) : _ref4$primaryLinks$;
-	    var _ref4$secondaryLinks$ = _ref4.secondaryLinks$;
-	    var secondaryLinks$ = _ref4$secondaryLinks$ === undefined ? _xstream2.default.of(false) : _ref4$secondaryLinks$;
+	function Navbar(_ref3) {
+	    var DOM = _ref3.DOM;
+	    var location$ = _ref3.location$;
+	    var _ref3$primaryLinks$ = _ref3.primaryLinks$;
+	    var primaryLinks$ = _ref3$primaryLinks$ === undefined ? _xstream2.default.of([]) : _ref3$primaryLinks$;
+	    var _ref3$secondaryLinks$ = _ref3.secondaryLinks$;
+	    var secondaryLinks$ = _ref3$secondaryLinks$ === undefined ? _xstream2.default.of(false) : _ref3$secondaryLinks$;
 	
 	    var vdom$ = view(location$, primaryLinks$, secondaryLinks$);
 	    var click$ = DOM.select('a').events('click');
 	    var navigate$ = click$.map(function (event) {
-	        return JSON.parse(event.target.dataset.link);
+	        return JSON.parse(event.currentTarget.dataset.link);
 	    });
 	    return {
 	        DOM: vdom$,
@@ -7241,8 +7538,8 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 131 */,
-/* 132 */
+/* 133 */,
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7251,13 +7548,19 @@ webpackJsonp([2],[
 	    value: true
 	});
 	
-	var _dexie = __webpack_require__(143);
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
+	var _dexie = __webpack_require__(146);
 	
 	var _dexie2 = _interopRequireDefault(_dexie);
 	
 	var _xstream = __webpack_require__(2);
 	
 	var _xstream2 = _interopRequireDefault(_xstream);
+	
+	var _ramda = __webpack_require__(5);
+	
+	var _ramda2 = _interopRequireDefault(_ramda);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -7329,6 +7632,35 @@ webpackJsonp([2],[
 	            config.populate(db);
 	        });
 	    }
+	    if (config.classMap) {
+	        var _iteratorNormalCompletion = true;
+	        var _didIteratorError = false;
+	        var _iteratorError = undefined;
+	
+	        try {
+	            for (var _iterator = _ramda2.default.toPairs(config.classMap)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                var _step$value = _slicedToArray(_step.value, 2);
+	
+	                var table = _step$value[0];
+	                var prototype = _step$value[1];
+	
+	                db[table].mapToClass(prototype);
+	            }
+	        } catch (err) {
+	            _didIteratorError = true;
+	            _iteratorError = err;
+	        } finally {
+	            try {
+	                if (!_iteratorNormalCompletion && _iterator.return) {
+	                    _iterator.return();
+	                }
+	            } finally {
+	                if (_didIteratorError) {
+	                    throw _iteratorError;
+	                }
+	            }
+	        }
+	    }
 	    return function (query$) {
 	        var stream$$ = query$.map(function (query) {
 	            var params = ['get', 'add', 'put', 'delete', 'where', 'or', 'and', 'filter', 'offset', 'limit', 'orderBy', 'sortBy'];
@@ -7360,15 +7692,13 @@ webpackJsonp([2],[
 	                q = q.toArray();
 	            }
 	
-	            var out$ = _xstream2.default.fromPromise(q);
+	            var out$ = _xstream2.default.fromPromise(q); //.replaceError(e => xs.of(e));
 	            out$.category = query.category;
 	            return out$;
 	        });
 	        stream$$.addListener({
 	            next: function next() {},
-	            error: function error(e) {
-	                console.log(e);
-	            },
+	            error: function error() {},
 	            complete: function complete() {}
 	        });
 	        return Object.assign({}, {
@@ -7387,7 +7717,52 @@ webpackJsonp([2],[
 	exports.default = makeDexieDriver;
 
 /***/ },
-/* 133 */
+/* 135 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _xstream = __webpack_require__(2);
+	
+	var _xstream2 = _interopRequireDefault(_xstream);
+	
+	var _fromEvent = __webpack_require__(281);
+	
+	var _fromEvent2 = _interopRequireDefault(_fromEvent);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function onlineDriver() {
+	    var origOpen = XMLHttpRequest.prototype.open;
+	    var XMLHttpRequestOffline$ = _xstream2.default.create({
+	        start: function start(listener) {
+	            XMLHttpRequest.prototype.open = function () {
+	                this.addEventListener('error', function () {
+	                    listener.next(false);
+	                });
+	                origOpen.apply(this, arguments);
+	            };
+	        },
+	        stop: function stop() {
+	            XMLHttpRequest.prototype.open = origOpen;
+	        }
+	    });
+	
+	    var online$ = (0, _fromEvent2.default)(window, 'online');
+	    var offline$ = (0, _fromEvent2.default)(window, 'offline');
+	    return _xstream2.default.merge(XMLHttpRequestOffline$, _xstream2.default.merge(online$, offline$).map(function (event) {
+	        return navigator.onLine;
+	    })).startWith(true);
+	}
+	
+	exports.default = onlineDriver;
+
+/***/ },
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7419,7 +7794,7 @@ webpackJsonp([2],[
 	exports.default = preventDefaultDriver;
 
 /***/ },
-/* 134 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7447,7 +7822,7 @@ webpackJsonp([2],[
 	exports.default = userDriver;
 
 /***/ },
-/* 135 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7485,8 +7860,8 @@ webpackJsonp([2],[
 	}
 
 /***/ },
-/* 136 */,
-/* 137 */
+/* 139 */,
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -7655,11 +8030,11 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 138 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var util = __webpack_require__(141);
+	var util = __webpack_require__(144);
 	function isStrictlyInScope(namespace, path) {
 	    var pathParts = util.splitPath(path);
 	    return namespace.every(function (v, i) {
@@ -7712,25 +8087,25 @@ webpackJsonp([2],[
 	//# sourceMappingURL=RouterSource.js.map
 
 /***/ },
-/* 139 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var makeRouterDriver_1 = __webpack_require__(140);
+	var makeRouterDriver_1 = __webpack_require__(143);
 	exports.makeRouterDriver = makeRouterDriver_1.makeRouterDriver;
-	var history_1 = __webpack_require__(43);
+	var history_1 = __webpack_require__(47);
 	exports.supportsHistory = history_1.supportsHistory;
 	exports.createLocation = history_1.createLocation;
 	exports.createServerHistory = history_1.createServerHistory;
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 140 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var history_1 = __webpack_require__(43);
-	var RouterSource_1 = __webpack_require__(138);
+	var history_1 = __webpack_require__(47);
+	var RouterSource_1 = __webpack_require__(141);
 	/**
 	 * Instantiates an new router driver function using the same arguments required
 	 * by @cycle/history.
@@ -7759,7 +8134,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=makeRouterDriver.js.map
 
 /***/ },
-/* 141 */
+/* 144 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7797,13 +8172,13 @@ webpackJsonp([2],[
 	//# sourceMappingURL=util.js.map
 
 /***/ },
-/* 142 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var copy       = __webpack_require__(153)
-	  , map        = __webpack_require__(161)
+	var copy       = __webpack_require__(156)
+	  , map        = __webpack_require__(164)
 	  , callable   = __webpack_require__(9)
 	  , validValue = __webpack_require__(7)
 	
@@ -7834,7 +8209,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 143 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, setImmediate) {(function (global, factory) {
@@ -12373,15 +12748,15 @@ webpackJsonp([2],[
 	
 	}));
 	//# sourceMappingURL=dexie.js.map
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(36).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(40).setImmediate))
 
 /***/ },
-/* 144 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var toPosInt = __webpack_require__(149)
+	var toPosInt = __webpack_require__(152)
 	  , value    = __webpack_require__(7)
 	
 	  , indexOf = Array.prototype.indexOf
@@ -12411,18 +12786,18 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 145 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(146)()
+	module.exports = __webpack_require__(149)()
 		? Math.sign
-		: __webpack_require__(147);
+		: __webpack_require__(150);
 
 
 /***/ },
-/* 146 */
+/* 149 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12435,7 +12810,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 147 */
+/* 150 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12448,12 +12823,12 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 148 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var sign = __webpack_require__(145)
+	var sign = __webpack_require__(148)
 	
 	  , abs = Math.abs, floor = Math.floor;
 	
@@ -12466,12 +12841,12 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 149 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var toInteger = __webpack_require__(148)
+	var toInteger = __webpack_require__(151)
 	
 	  , max = Math.max;
 	
@@ -12479,7 +12854,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 150 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Internal method, used by iteration functions.
@@ -12514,7 +12889,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 151 */
+/* 154 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12529,12 +12904,12 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 152 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var keys  = __webpack_require__(158)
+	var keys  = __webpack_require__(161)
 	  , value = __webpack_require__(7)
 	
 	  , max = Math.max;
@@ -12557,12 +12932,12 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 153 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var assign = __webpack_require__(29)
+	var assign = __webpack_require__(33)
 	  , value  = __webpack_require__(7);
 	
 	module.exports = function (obj) {
@@ -12573,7 +12948,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 154 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Workaround for http://code.google.com/p/v8/issues/detail?id=2804
@@ -12582,8 +12957,8 @@ webpackJsonp([2],[
 	
 	var create = Object.create, shim;
 	
-	if (!__webpack_require__(55)()) {
-		shim = __webpack_require__(56);
+	if (!__webpack_require__(59)()) {
+		shim = __webpack_require__(60);
 	}
 	
 	module.exports = (function () {
@@ -12615,16 +12990,16 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 155 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(150)('forEach');
+	module.exports = __webpack_require__(153)('forEach');
 
 
 /***/ },
-/* 156 */
+/* 159 */
 /***/ function(module, exports) {
 
 	// Deprecated
@@ -12635,7 +13010,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 157 */
+/* 160 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12648,18 +13023,18 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 158 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(159)()
+	module.exports = __webpack_require__(162)()
 		? Object.keys
-		: __webpack_require__(160);
+		: __webpack_require__(163);
 
 
 /***/ },
-/* 159 */
+/* 162 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12673,7 +13048,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 160 */
+/* 163 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12686,13 +13061,13 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 161 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var callable = __webpack_require__(9)
-	  , forEach  = __webpack_require__(155)
+	  , forEach  = __webpack_require__(158)
 	
 	  , call = Function.prototype.call;
 	
@@ -12707,7 +13082,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 162 */
+/* 165 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12730,7 +13105,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 163 */
+/* 166 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12745,7 +13120,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 164 */
+/* 167 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12759,7 +13134,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 165 */
+/* 168 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12772,15 +13147,15 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 166 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var setPrototypeOf = __webpack_require__(20)
-	  , contains       = __webpack_require__(57)
+	var setPrototypeOf = __webpack_require__(21)
+	  , contains       = __webpack_require__(61)
 	  , d              = __webpack_require__(8)
-	  , Iterator       = __webpack_require__(31)
+	  , Iterator       = __webpack_require__(35)
 	
 	  , defineProperty = Object.defineProperty
 	  , ArrayIterator;
@@ -12808,15 +13183,15 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 167 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var isArguments = __webpack_require__(28)
+	var isArguments = __webpack_require__(32)
 	  , callable    = __webpack_require__(9)
-	  , isString    = __webpack_require__(30)
-	  , get         = __webpack_require__(168)
+	  , isString    = __webpack_require__(34)
+	  , get         = __webpack_require__(171)
 	
 	  , isArray = Array.isArray, call = Function.prototype.call
 	  , some = Array.prototype.some;
@@ -12860,17 +13235,17 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 168 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var isArguments    = __webpack_require__(28)
-	  , isString       = __webpack_require__(30)
-	  , ArrayIterator  = __webpack_require__(166)
-	  , StringIterator = __webpack_require__(170)
-	  , iterable       = __webpack_require__(58)
-	  , iteratorSymbol = __webpack_require__(15).iterator;
+	var isArguments    = __webpack_require__(32)
+	  , isString       = __webpack_require__(34)
+	  , ArrayIterator  = __webpack_require__(169)
+	  , StringIterator = __webpack_require__(173)
+	  , iterable       = __webpack_require__(62)
+	  , iteratorSymbol = __webpack_require__(16).iterator;
 	
 	module.exports = function (obj) {
 		if (typeof iterable(obj)[iteratorSymbol] === 'function') return obj[iteratorSymbol]();
@@ -12881,14 +13256,14 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 169 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var isArguments    = __webpack_require__(28)
-	  , isString       = __webpack_require__(30)
-	  , iteratorSymbol = __webpack_require__(15).iterator
+	var isArguments    = __webpack_require__(32)
+	  , isString       = __webpack_require__(34)
+	  , iteratorSymbol = __webpack_require__(16).iterator
 	
 	  , isArray = Array.isArray;
 	
@@ -12902,7 +13277,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 170 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Thanks @mathiasbynens
@@ -12910,9 +13285,9 @@ webpackJsonp([2],[
 	
 	'use strict';
 	
-	var setPrototypeOf = __webpack_require__(20)
+	var setPrototypeOf = __webpack_require__(21)
 	  , d              = __webpack_require__(8)
-	  , Iterator       = __webpack_require__(31)
+	  , Iterator       = __webpack_require__(35)
 	
 	  , defineProperty = Object.defineProperty
 	  , StringIterator;
@@ -12945,7 +13320,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 171 */
+/* 174 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12983,7 +13358,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 172 */
+/* 175 */
 /***/ function(module, exports) {
 
 	// Exports true if environment provides native `Map` implementation,
@@ -12998,26 +13373,26 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 173 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(163)('key',
+	module.exports = __webpack_require__(166)('key',
 		'value', 'key+value');
 
 
 /***/ },
-/* 174 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var setPrototypeOf    = __webpack_require__(20)
+	var setPrototypeOf    = __webpack_require__(21)
 	  , d                 = __webpack_require__(8)
-	  , Iterator          = __webpack_require__(31)
-	  , toStringTagSymbol = __webpack_require__(15).toStringTag
-	  , kinds             = __webpack_require__(173)
+	  , Iterator          = __webpack_require__(35)
+	  , toStringTagSymbol = __webpack_require__(16).toStringTag
+	  , kinds             = __webpack_require__(176)
 	
 	  , defineProperties = Object.defineProperties
 	  , unBind = Iterator.prototype._unBind
@@ -13052,23 +13427,23 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 175 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var clear          = __webpack_require__(54)
-	  , eIndexOf       = __webpack_require__(144)
-	  , setPrototypeOf = __webpack_require__(20)
+	var clear          = __webpack_require__(58)
+	  , eIndexOf       = __webpack_require__(147)
+	  , setPrototypeOf = __webpack_require__(21)
 	  , callable       = __webpack_require__(9)
 	  , validValue     = __webpack_require__(7)
 	  , d              = __webpack_require__(8)
-	  , ee             = __webpack_require__(180)
-	  , Symbol         = __webpack_require__(15)
-	  , iterator       = __webpack_require__(58)
-	  , forOf          = __webpack_require__(167)
-	  , Iterator       = __webpack_require__(174)
-	  , isNative       = __webpack_require__(172)
+	  , ee             = __webpack_require__(183)
+	  , Symbol         = __webpack_require__(16)
+	  , iterator       = __webpack_require__(62)
+	  , forOf          = __webpack_require__(170)
+	  , Iterator       = __webpack_require__(177)
+	  , isNative       = __webpack_require__(175)
 	
 	  , call = Function.prototype.call
 	  , defineProperties = Object.defineProperties, getPrototypeOf = Object.getPrototypeOf
@@ -13162,7 +13537,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 176 */
+/* 179 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13185,7 +13560,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 177 */
+/* 180 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13200,7 +13575,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 178 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// ES2015 Symbol polyfill for environments that do not support it (or partially support it)
@@ -13208,7 +13583,7 @@ webpackJsonp([2],[
 	'use strict';
 	
 	var d              = __webpack_require__(8)
-	  , validateSymbol = __webpack_require__(179)
+	  , validateSymbol = __webpack_require__(182)
 	
 	  , create = Object.create, defineProperties = Object.defineProperties
 	  , defineProperty = Object.defineProperty, objPrototype = Object.prototype
@@ -13324,12 +13699,12 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 179 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var isSymbol = __webpack_require__(177);
+	var isSymbol = __webpack_require__(180);
 	
 	module.exports = function (value) {
 		if (!isSymbol(value)) throw new TypeError(value + " is not a symbol");
@@ -13338,7 +13713,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 180 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13476,32 +13851,11 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 181 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"menu-item":"menu-item-3O-c8dTXIqSBJT7I3RwREt","open":"open-2HpBHV6ehBjbhE2FMIkokY","button-dropdown":"button-dropdown-3yU-UQavUy4xVgOu8kvtsZ","dismiss-modal":"dismiss-modal-Fq72gX8aFwS6K4QfWJi7K","errors":"errors-3vYYxFY7rgSVA-Hl57Jv8h","warnings":"warnings-R_UHjygOBcWZAeWYNnFdA","successes":"successes-1t_VzeGm-4aUpRkUf7qhj3","error":"error-18mZLW_SKivs7a1WO9qiw-","warning":"warning-23m6etBJlRBFd-HnO5Gx-v","success":"success-36ZWZXfqvvUR5bsPxD1jeg","growl_container":"growl_container-3mCAfymE10trOxhemBMZjh","growl":"growl-3LkOaAPOV-JVv0gPCNioaK","show":"show-18RYq_1qstc3to2E1Yjtl3","hide":"hide-3lra_BT1WWcfu5U8vcxslu","fadeInDown":"fadeInDown-pFHustFAbN43dhz8z0rW4","status_bar":"status_bar-1SUelCh5CsJETMDbEJzkiO","status_bar-status":"status_bar-status-1mSK-4r9NpBG8PEwYbksBe","tooltip":"tooltip-3CMGAcw41twmEgtJ5a099x","tooltip-bottom":"tooltip-bottom-1hm6yJRlZY5YbgMeD4XZeI","tooltip-left":"tooltip-left-2utogYskgdltlcOQ8uMKld","tooltip-right":"tooltip-right-1ap5s5XcORQdn3xgVecF4T","tooltip-red":"tooltip-red-1Ps3W5DF1aJjx48GJBqmOE","tooltip-orange":"tooltip-orange--EWnD1M6ylfE1rMrt41KO","tooltip-yellow":"tooltip-yellow-3a-6NwFU-FjZ-vKAcJR1bB","tooltip-green":"tooltip-green-3bv4Ka5zgz6pqfE97yF_1c","tooltip-blue":"tooltip-blue-3nVklUqSqfS1C5RYmrfEdv","tooltip-violet":"tooltip-violet-2BamgqtJaUma_y8nISwkUM","tooltip-primary":"tooltip-primary-1jn9-W7x3sqxLK9fHj8kHU","tooltip-secondary":"tooltip-secondary-236tWMfei-vgEnV-ZmU0Ps","alert":"alert-2w81z0oLPluLh36V63UvCz","closeButton":"closeButton-1HZ7VcqMiBZl5gJJK6g4x9"};
-
-/***/ },
-/* 182 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"menu-item":"menu-item-13Q7Y8UtGiz8-06DO7WVOe","open":"open-37j7cbJtWV93n5RBVq-tCH","button-dropdown":"button-dropdown-HZl49p-SqOEo5TdU0LlDd","dismiss-modal":"dismiss-modal-1QFSFLXhyGIFyqQlyi3QjY","errors":"errors-1XpkBeIlxozwgOfvGxIER8","warnings":"warnings-3knszsd5nXkAQsGsM2mvjc","successes":"successes-h-h0Y1mIFwEw5RpELP-rt","error":"error-19vo0y0-2OToZsmm97x9Gl","warning":"warning-1dnMHNKjcRPut_d1sfzsiz","success":"success-2EfNElz7k-u2v4MFo7q0gL","growl_container":"growl_container-1c6y_L_1zGQUy_7csVidRr","growl":"growl-2YTv7y71o1hCYOrmGLfva8","show":"show-3wKX98A7j6eD4l6Ye8WULN","hide":"hide-24a-m9nRYEst1dlZw68oUj","fadeInDown":"fadeInDown-2_FZFOEsSMpuQ7HqjO4dpu","status_bar":"status_bar-258nC_kzyUnYkeGChCt9aP","status_bar-status":"status_bar-status-AyqHlBrNuK4fPiw3H6is1","tooltip":"tooltip-1Ns3k43ndrgcWF03eGCIIf","tooltip-bottom":"tooltip-bottom-2lgDPY9EfUWOnhTPrx1MDN","tooltip-left":"tooltip-left-1f-2NKGU4C2Lfh1wtyZHTs","tooltip-right":"tooltip-right-YyzzZXim8p1uJhUxGeEOj","tooltip-red":"tooltip-red-__gDIwBSnrNu0hqqpbGkI","tooltip-orange":"tooltip-orange-kE8FkTDr5EBH3l5apZsAW","tooltip-yellow":"tooltip-yellow-3F3mU_6NXbIgYSeak073PL","tooltip-green":"tooltip-green-1C7UIAT5iZAWieKJR2wcDZ","tooltip-blue":"tooltip-blue-6YwT1c1L1rC-Dajo03YXk","tooltip-violet":"tooltip-violet-jfQvg_ZtgV373xYsJPHTr","tooltip-primary":"tooltip-primary-xntFPzdxyXEXpKj6_PyfN","tooltip-secondary":"tooltip-secondary-2EUPGgYTdr8xKl4jghdJqu","default":"default-11YURvskoNtSJdLloTR5eB","primary":"primary-_a8Du-alL6DCKk-pTBYIY","plain":"plain-VDgR4cK7QFOglJXECZGed"};
-
-/***/ },
-/* 183 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"menu-item":"menu-item-DqNAc9PkyXV_IgAAJqAZ5","open":"open-1XcltmVZAG7Mf8DjZFx3sG","button-dropdown":"button-dropdown-2--Rdwgu34UAg620QffpPd","dismiss-modal":"dismiss-modal-1JyQj0HeXfPbelfL6HVM3A","errors":"errors-2ZNk05CISYnRosd_ZoApIr","warnings":"warnings-3UEwR0MZHut1dp7hw1SCda","successes":"successes-2WhEexHAXDo9ZDjdcfQ008","error":"error-1c7vL7rKC-Uqh4q5ch24SQ","warning":"warning-3d-qOAp2_7mdbEDqPg_6N","success":"success-ndOX1ErwYISRYpfY7zP1r","growl_container":"growl_container-1sQLcMoK5SnfFtum3sOe4_","growl":"growl-3OtJ7NYEPQipBGxvvIE7z_","show":"show-1SZeXRX3_HKsPcYYgoSjzP","hide":"hide-PFGo3ItkBkalsM4EivMzA","fadeInDown":"fadeInDown-33IamQO0ISKd2RD_Low74E","status_bar":"status_bar-3YDKXCEMpKVJeewfmi6R5J","status_bar-status":"status_bar-status-5iNVHjtM5mUhi6GmslJuO","tooltip":"tooltip-13pMlgIfhhnCsQst1k4JRE","tooltip-bottom":"tooltip-bottom-Ypp1YhVZi-z384yBZUv2X","tooltip-left":"tooltip-left-2WMxWsKdiZQ3li1SDI_14h","tooltip-right":"tooltip-right-28SWHVOysFwkAf_1zaBqaR","tooltip-red":"tooltip-red-eFRA7O7tPoxhJbjRLwwzb","tooltip-orange":"tooltip-orange-1-RmQfzzuV0P1EL8Omg0en","tooltip-yellow":"tooltip-yellow-JFGJYMXCa5yB5zTwp5XIN","tooltip-green":"tooltip-green-3U_E4WzQ4TyUktmU0kCwAb","tooltip-blue":"tooltip-blue-UdCmbPMIR4PESLxHYLEpa","tooltip-violet":"tooltip-violet-3nX5Q3TVNiexxvny6-hHmn","tooltip-primary":"tooltip-primary-3asRlppAuwCdJqkD2K5hry","tooltip-secondary":"tooltip-secondary-19Swk_Q5ooJm0gg-mbpQGq","dialog":"dialog-3tjyS7QeDQLfX3mOGqFd7H","closeButton":"closeButton-J-xeYbXxXvVQIt8ZB6h6p","backdrop":"backdrop-3Bse76K2f8iiJOKVFfrXzq","shaker":"shaker-1gQy9Qp6ivXkxE45mhO1PT","shake":"shake-RgvufTFvEiH0baIpGX2ES"};
-
-/***/ },
 /* 184 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"addDecField":"addDecField-30Iu43vYHLuYwhfau3VuOG","button":"button-sdbRwDFM6eHdpPeCJyyE0"};
+	module.exports = {"fa":"fa-cu8IC70dD9bhIiMW6QgTL","fa-lg":"fa-lg-_L7X-5ttvnIOzr_ZhrSMK","fa-2x":"fa-2x-3SD69TV8k6wc8EGo-FmGA-","fa-3x":"fa-3x-3wZKfgsdmBHxvDNzOurFYt","fa-4x":"fa-4x-1WvcihPe0XCeocrAiLOlyj","fa-5x":"fa-5x-1ObPFBLlIJvsCKR9704Ped","fa-fw":"fa-fw-1uKXnxo7LqFFNrrdyA1KON","fa-ul":"fa-ul-3dbiEjk_K56TvZH0UjuBK5","fa-li":"fa-li-1uWie7jjem1FZ7wyad1Q6q","fa-border":"fa-border-1gA5pnYGdN6eM0oEF-Qplp","fa-pull-left":"fa-pull-left-2FgOrsQmitObOk38s_0-Ea","fa-pull-right":"fa-pull-right-1lZhteOE5JuiVQRpGy7wX0","pull-right":"pull-right-UM7A3nFHQ1Gmw9YuAzduP","pull-left":"pull-left-1Y_bLnnfJRX15J9nvhko3a","fa-spin":"fa-spin-3aIwb6faL6G0QMo2vIR_D4","fa-pulse":"fa-pulse-3yzfb9ZDNL1FrPK8IcqRlW","fa-rotate-90":"fa-rotate-90-1wK9624KAPrTjXM_rPZGHr","fa-rotate-180":"fa-rotate-180-1MjXmbjA-DhodQhTeHJOEb","fa-rotate-270":"fa-rotate-270-3uuFq5R9g5_gJvhP-PVDgK","fa-flip-horizontal":"fa-flip-horizontal-RBMq4kf7a1TyUViR_GYsv","fa-flip-vertical":"fa-flip-vertical-1Y_F00uQSqxYWfEF3AaNUx","fa-stack":"fa-stack-1ME5y6Zz2pJdErTEdybmvG","fa-stack-1x":"fa-stack-1x-1DSv5jqCvn4zjELrtHKl-3","fa-stack-2x":"fa-stack-2x-1KPA-0-0drtmZYYDvm9BHU","fa-inverse":"fa-inverse-34SF5rDV6Qe3-3A5JI3wFe","fa-glass":"fa-glass-3P1_s0wdF8Mi_33uxgAub4","fa-music":"fa-music-1bXixPA-KeQXtjWIZ0YWHx","fa-search":"fa-search-23Q9Cp6flhRDtAzHDJqcFw","fa-envelope-o":"fa-envelope-o-1NImil0nIA_v12QYfObhs3","fa-heart":"fa-heart-h3zP9mEmz2zTMhGJE3utS","fa-star":"fa-star-xbv9tPStpdtiTpwq25tId","fa-star-o":"fa-star-o-10S0przA2jTUkdBhLZo11F","fa-user":"fa-user-3vrrv-CEzy_ZXma5hPMQMM","fa-film":"fa-film-1fLlrYWu-QkvHTCVrcjNQA","fa-th-large":"fa-th-large-wLV6pTWWGKkmm7eSZWlLE","fa-th":"fa-th-lSk2ji9kZh-jQsexoPXh_","fa-th-list":"fa-th-list-1TLxGLNPBZQpvi6-8GYEt7","fa-check":"fa-check-3NTQjgqAkh6a8w67cFPXRP","fa-remove":"fa-remove-25v9hyfMjT_ju2G4QujJ1g","fa-close":"fa-close-2G65nyvyzWsmhmjY9QNHj9","fa-times":"fa-times-Cq3YI-lyoFZNzOKGncHu9","fa-search-plus":"fa-search-plus-1GVkjavuEWrhEHzIwdl9WF","fa-search-minus":"fa-search-minus-3mGyaLGAo0e2ItJJPDd8XK","fa-power-off":"fa-power-off-3Wkx22ZEvDKiOBgAZx6jTJ","fa-signal":"fa-signal-1zlAvpHRsXymf3EbWwIx_N","fa-gear":"fa-gear-21hKroR33F10tgkwKT8eG0","fa-cog":"fa-cog-1Zdtn0rQUgwYbDxJL0q0Ob","fa-trash-o":"fa-trash-o-24R4U1o9j2fWBIL4JyB1eP","fa-home":"fa-home-1n4J9vv5zHHPeFlZ2TtPbO","fa-file-o":"fa-file-o-1nEY5veN6eM3mbbuhki8fI","fa-clock-o":"fa-clock-o-I6jZDxCHBrp-mMAhmARLT","fa-road":"fa-road-2D6NncEgSPQKPNS1SZOfx7","fa-download":"fa-download-2WW07_BNawqILSl2s90dg1","fa-arrow-circle-o-down":"fa-arrow-circle-o-down-2XO5oNQm0aKDqlakvkEMlw","fa-arrow-circle-o-up":"fa-arrow-circle-o-up-U-CVyX11XnGYGCFaqZoSr","fa-inbox":"fa-inbox-3AdnKh9__Atvk9xz42EQT9","fa-play-circle-o":"fa-play-circle-o-1DChH5s6WnhEmfdmKnVna5","fa-rotate-right":"fa-rotate-right-3AS323_iD20Sos_YbZij0c","fa-repeat":"fa-repeat-2S_LGySDzyYJPIGbdcsR80","fa-refresh":"fa-refresh-37mh0v0GJVTECqA_-QVB2V","fa-list-alt":"fa-list-alt-1DNZZn4cd3it0V32GFSYut","fa-lock":"fa-lock-c8sieesPKZL67vbx86m45","fa-flag":"fa-flag-1ATIW9qOcgF8fN1EZ7gBZf","fa-headphones":"fa-headphones-1jGC00XMaV3EKE_L-ADGmn","fa-volume-off":"fa-volume-off-1Qg1fyX3rIHNZQxUf-sJ2","fa-volume-down":"fa-volume-down-3vdiwJNREszsjbzFZOmBnJ","fa-volume-up":"fa-volume-up-319bUwQAjrfpKshcQIgmKm","fa-qrcode":"fa-qrcode-c9krLm3knZsWMhaPvqj_I","fa-barcode":"fa-barcode-1uLXv1e20beOKGTJvjyzSp","fa-tag":"fa-tag-U7K2q_CF5yc0hlH1bxiwe","fa-tags":"fa-tags-Fh56VnJFY7QqGNxXuC-99","fa-book":"fa-book-1qw_IHQXxLQ-b3BWIsmS-a","fa-bookmark":"fa-bookmark-3JreBqn1naPRISlIXt-ITJ","fa-print":"fa-print-1pHF2O1-cc6cRlPt4OMsds","fa-camera":"fa-camera-1b14m_lBq4De-4YK85T-z0","fa-font":"fa-font-amn5KzwXAh9HJksE3BqgO","fa-bold":"fa-bold-2G_w6_UoXkHJpIudJROWHj","fa-italic":"fa-italic-15fcgnkAPdWfv-EJV8US2J","fa-text-height":"fa-text-height-25XCjfNQL9u6OwazDf9gSz","fa-text-width":"fa-text-width-2qRgaFzsUEOBKIEMr1ARgw","fa-align-left":"fa-align-left-102dSc8F2E2gzQQgtNmHqm","fa-align-center":"fa-align-center-36aszZP2GYGKjaWm9YsygP","fa-align-right":"fa-align-right-3K5E6Q6V_lc_kxvM9DKdSc","fa-align-justify":"fa-align-justify-2n99F5077iLDczMZgbpttH","fa-list":"fa-list-1PPzcsRpCgFp5sAjkmiILt","fa-dedent":"fa-dedent-1MGuYM2-Gun6nl5EvI0m23","fa-outdent":"fa-outdent-elEQSgg-oNqNx8vr9Wd63","fa-indent":"fa-indent-6wwKDd8Hog9pxquHt4Jgx","fa-video-camera":"fa-video-camera-10QeY5TTmMWjbCa__tDUr6","fa-photo":"fa-photo-fRLacjIsRlXyZzMn9CXGR","fa-image":"fa-image-apLZsAfOyz39zzqz1Gkzg","fa-picture-o":"fa-picture-o-3zQImfkATf6PAIDo20x_qt","fa-pencil":"fa-pencil-CWQzChZMQWfFbWmQqRYI7","fa-map-marker":"fa-map-marker-mCy9qrLlQoqpN7a0-ILM_","fa-adjust":"fa-adjust-1-cpFI0f7S-mCBf9nCNQKd","fa-tint":"fa-tint-U-VzwmkjvsciCYS5ZbiKw","fa-edit":"fa-edit-187KWj_M347SVUOxVBcgyM","fa-pencil-square-o":"fa-pencil-square-o-2scOiEEBUx70_ZU9AtTNVb","fa-share-square-o":"fa-share-square-o-2r6fdHDBRTRpLKOULkR0DC","fa-check-square-o":"fa-check-square-o-3TS08SHAWQ4yWLtTM8LDRf","fa-arrows":"fa-arrows-1Me_FV48Uka-AQRLHd8rQC","fa-step-backward":"fa-step-backward-3EwsAsOrZbiu8XK1Gq6d2R","fa-fast-backward":"fa-fast-backward-2QzVnwQYWO_qYm_dFy0rGd","fa-backward":"fa-backward-2mPvy_GqzcYvWKZNvwsOpZ","fa-play":"fa-play-14C2fBw9kmhVfEVZt6HEzW","fa-pause":"fa-pause-1jva5lljHDCK5P-O0nFV_a","fa-stop":"fa-stop-1HJJouUVV-b5bdoUBkgsng","fa-forward":"fa-forward-1KXUolnSHgx0cb85xSXMlR","fa-fast-forward":"fa-fast-forward-hXquB616lnSFy3yZvXJ6W","fa-step-forward":"fa-step-forward-3Xnvb8tUNxT3aDYmEZIPF5","fa-eject":"fa-eject-3rNN7OGobX05CLzIEyuDx_","fa-chevron-left":"fa-chevron-left-3gP31KZdWhEB7VBPLZBRea","fa-chevron-right":"fa-chevron-right-2SYJSntpE1vOTMFpb0DkQU","fa-plus-circle":"fa-plus-circle-nbcf_kp8NmDYbCY_LeHMt","fa-minus-circle":"fa-minus-circle-2rPfq9OnSFygml35qiSfeD","fa-times-circle":"fa-times-circle-2-1divpNyWPDFx2T0ViHFt","fa-check-circle":"fa-check-circle-2Lb8tYNiCHNIO_OQeX-gCA","fa-question-circle":"fa-question-circle-64G3VHMCCr2SCItdmWwIJ","fa-info-circle":"fa-info-circle-1Za2QOI-n6HciTuUK9MM2W","fa-crosshairs":"fa-crosshairs-3lNp6OYcIjRY3HWKguZZCq","fa-times-circle-o":"fa-times-circle-o-2iqHpl3coVINdffPv05btP","fa-check-circle-o":"fa-check-circle-o-rbtiPuuurOmzTSzBa0UYv","fa-ban":"fa-ban-2hH9_bXjjx5loQa1hsgvCJ","fa-arrow-left":"fa-arrow-left-2o5nU1qMWmmaGAgAWxnptQ","fa-arrow-right":"fa-arrow-right-3MqrgA9RckaBXI-sVz-xHr","fa-arrow-up":"fa-arrow-up-2OR2nQ7VIDJjBMplbm99D5","fa-arrow-down":"fa-arrow-down-3q-NJcb7uiVWquIfa_Bkgg","fa-mail-forward":"fa-mail-forward-1Hz30rQyOq0tjqEfi2TVKR","fa-share":"fa-share-2PwcGaWzezcphunOpLoKEO","fa-expand":"fa-expand-2WmxaFQWmzJrcl8YQWPCBN","fa-compress":"fa-compress-2u6lEGl087JKd9IIwiHzud","fa-plus":"fa-plus-15DhXGkGQBN7nFWNK0jlEs","fa-minus":"fa-minus-2RSPgdB8xhc9QYrxmNuoYg","fa-asterisk":"fa-asterisk-27IxdhjBHPOSyU0O4486IF","fa-exclamation-circle":"fa-exclamation-circle-JtaTlsotXJM-4bgAXu3yG","fa-gift":"fa-gift-1215fMF7H2RTOWBOTG-bnY","fa-leaf":"fa-leaf-2znymaU7tht9UXGcm8W0-J","fa-fire":"fa-fire-3RkgNsA6u9kuxx6ukMvNzc","fa-eye":"fa-eye-3v-D0XH_vFVbrvdbVDwPWR","fa-eye-slash":"fa-eye-slash-339fSFyE9e7u3hlAqi5-a4","fa-warning":"fa-warning-KIzJ9Bry7T0y7K8KPoJ62","fa-exclamation-triangle":"fa-exclamation-triangle-3ekZ2-4dvC9DazQno7gsbM","fa-plane":"fa-plane-2KFQA0j32Baz1K6lAWuFq6","fa-calendar":"fa-calendar-2Wt-zhY01bUWW5VS8kGymt","fa-random":"fa-random-jIxZD3gF7E0vk1x-YEbHl","fa-comment":"fa-comment-3ah4hINehiDU2CwSCt58NI","fa-magnet":"fa-magnet-3wfPPBMLWWTxegzJcMlsHb","fa-chevron-up":"fa-chevron-up-1vQs4djlhqrLEQod-JIEdi","fa-chevron-down":"fa-chevron-down-330bAeCxpPcFEU8hCstxE_","fa-retweet":"fa-retweet-3gmmPTx8GFevzyAie_ebiw","fa-shopping-cart":"fa-shopping-cart-3j0UurmnnjYkAnmKM5jgN_","fa-folder":"fa-folder-dlwFLR1Yh9C9CVF6dmJbK","fa-folder-open":"fa-folder-open-2eQN5CYXL3zz_ZeUhzjNzb","fa-arrows-v":"fa-arrows-v-992ZmY1re9wPnR16H2Yhi","fa-arrows-h":"fa-arrows-h-3e4jQ1kW4ZiqcuTuXEocUL","fa-bar-chart-o":"fa-bar-chart-o-3dYT0nl3R0UYvWcxCzJdyT","fa-bar-chart":"fa-bar-chart-ScbfkIlSTQmvNcY7Fk3hM","fa-twitter-square":"fa-twitter-square-29kRY15tT64zS-ROG-0e-q","fa-facebook-square":"fa-facebook-square-hIHRNJi6UOmVzMfIGrSGr","fa-camera-retro":"fa-camera-retro-1fl0f30VdqR1meyhxl-2iM","fa-key":"fa-key-2v2k1S5Wh6rHDmnR6SoAS9","fa-gears":"fa-gears-2lE19p0kwZ-Pv28kBvPxsr","fa-cogs":"fa-cogs-3S2aekLfFBpS7jsyYSVDcs","fa-comments":"fa-comments-1akEKArJ0T-eadxVX8P1tn","fa-thumbs-o-up":"fa-thumbs-o-up-3oqjyrkKP2o_Bxd3sI4kfx","fa-thumbs-o-down":"fa-thumbs-o-down-14t6UMMHFbgh7_5xTE9LH7","fa-star-half":"fa-star-half-XaqIj8OsL2JGoRltjhnEa","fa-heart-o":"fa-heart-o-2kJGGJJHjIcPkWPJZ34jA0","fa-sign-out":"fa-sign-out-fGfLLqVw6AU2CZwGfEDd4","fa-linkedin-square":"fa-linkedin-square-2PpluhSwkl4fCC0NM_h9X2","fa-thumb-tack":"fa-thumb-tack-2HEO8HChWgd-gC5WUSUKXY","fa-external-link":"fa-external-link-KoS3p_uAdUpFslWAuAcRr","fa-sign-in":"fa-sign-in-3OcEvlhZOkjCD573oFVyuf","fa-trophy":"fa-trophy-1y3pehf6dzGB8fYUDnigXJ","fa-github-square":"fa-github-square-27HSU1PSve9PHu2S9m8_IC","fa-upload":"fa-upload-3zmK4CcQ9-AP3cDBovBhlC","fa-lemon-o":"fa-lemon-o-qQbt5jKUPwVB879HwX55B","fa-phone":"fa-phone-2mk_iI2j1RXbMvIEzkL5Yc","fa-square-o":"fa-square-o-ITxi8JYLLJnhC0fnBBZ0F","fa-bookmark-o":"fa-bookmark-o-3T7PSJx6hibegsZQIU51lF","fa-phone-square":"fa-phone-square-2sgzkoeA_X9UBqAo7N--al","fa-twitter":"fa-twitter-2-FUN5hJIk3Out4GecVGQT","fa-facebook-f":"fa-facebook-f-DTxN-pDlbEuzpL9--yz1r","fa-facebook":"fa-facebook-1XiP2O5ZaoTbtHnOuyfot9","fa-github":"fa-github-37EFdAeJPgtq6w9YSvjnz","fa-unlock":"fa-unlock-2Unng26Z9W9lsDV8nNc1XZ","fa-credit-card":"fa-credit-card-HE27BfoPZu8omJ5yGBOi7","fa-feed":"fa-feed-2XVaAOWbV9pIjBL07yIgAu","fa-rss":"fa-rss-3bKNAD5OZLcC3eEqIU99Sy","fa-hdd-o":"fa-hdd-o-ME5sHIL6rdGmkRgs9P84s","fa-bullhorn":"fa-bullhorn-2LXZqH9GO-9V2mP_AuJjH9","fa-bell":"fa-bell-mLHJSyl6VAX-HPLDThoh0","fa-certificate":"fa-certificate-utp4UNBIUIJDBHHo1ugS8","fa-hand-o-right":"fa-hand-o-right-1zFrl3245Mmz4IJYxUnQSf","fa-hand-o-left":"fa-hand-o-left-VjU3faPOH63bKMT2xPni","fa-hand-o-up":"fa-hand-o-up-3GnYNd7Tl3seFCaiiXVYkh","fa-hand-o-down":"fa-hand-o-down-N1GwoFclJ9oTIDGbX5Crc","fa-arrow-circle-left":"fa-arrow-circle-left-K8jHyO1W1FZk3L1IUec9X","fa-arrow-circle-right":"fa-arrow-circle-right-HyqFINK6c8NyS5uhdxNB6","fa-arrow-circle-up":"fa-arrow-circle-up-3kiK74qQWbbAJafCC09IhO","fa-arrow-circle-down":"fa-arrow-circle-down-izSYPdmM46YLff_qH04Ov","fa-globe":"fa-globe-3XUirLERIlJIZRaUOMRIM3","fa-wrench":"fa-wrench-3ayz9ZjYfjqtZFWUO_7r3_","fa-tasks":"fa-tasks-2JA9CfAJ79JqAx3fyFoyEO","fa-filter":"fa-filter-1UkcG9pjqqIttGhMXsd8d9","fa-briefcase":"fa-briefcase-36UrVmMieCs-pJWa4V88Eo","fa-arrows-alt":"fa-arrows-alt-23NqwsxuvZjqyN0CLsHd-n","fa-group":"fa-group-UIHm6wQGk2elVra9rZ5sZ","fa-users":"fa-users-3lGT1i-Z6jbyKhpt6hI5Cg","fa-chain":"fa-chain-GIY6dofEjqQ56yGQ4O_qC","fa-link":"fa-link-kvZWraSfl7J3ZtxVID1-t","fa-cloud":"fa-cloud-3yC1mw28hEQsLIBnvk6jS7","fa-flask":"fa-flask-2qrH1iG6ByRbhESBS03i4C","fa-cut":"fa-cut-jUjOn3vJgJU-YPKzHUmK6","fa-scissors":"fa-scissors-1grqpTjB1ezLgiihd5LNTi","fa-copy":"fa-copy-cmTlRXuQWlEkv8ttQ2YFF","fa-files-o":"fa-files-o-ejTu2MhQaeSm9o7TuV0xt","fa-paperclip":"fa-paperclip-QrLShdfYBUN_zah5tlVss","fa-save":"fa-save-1vId8w0EQVmZ7XqzFO40DK","fa-floppy-o":"fa-floppy-o-3xcF9hl97ixhaYC9tmD2Gx","fa-square":"fa-square-30wnR4h1s1B_oN9U9oT4QM","fa-navicon":"fa-navicon-1sJKUOXOEl1OKu33C5mzsD","fa-reorder":"fa-reorder-3sK5iw8YJlREKw5A4W99Dr","fa-bars":"fa-bars-nbD15v0frIIIPLdVK3zZ2","fa-list-ul":"fa-list-ul-3rp5yeNor-YOVlu8sELMpY","fa-list-ol":"fa-list-ol-2i5pcoL3n6zYjjz6k5ktfm","fa-strikethrough":"fa-strikethrough-2fUAIAiaAi6Fv72HgnWymH","fa-underline":"fa-underline-T7dRXfV_CJQy3ny0e3dm_","fa-table":"fa-table-2kZa-RfBpUbCQP5P9wSxta","fa-magic":"fa-magic-i21h2Q1x9xtYWvfPyoInl","fa-truck":"fa-truck-zvbG7rNqu-gclnvv4kpDG","fa-pinterest":"fa-pinterest-2cdyae-6VHaTlAKlyAJ_uZ","fa-pinterest-square":"fa-pinterest-square-28zlI8xSUt9qVUwyV0haFF","fa-google-plus-square":"fa-google-plus-square-2Yh3ZMRpfrccf3Kf_9TyO8","fa-google-plus":"fa-google-plus-RntgjtNpHY8rOLpBnPBne","fa-money":"fa-money-2nBTkBi6YuUTNvuXwbiMko","fa-caret-down":"fa-caret-down-3mzWZWKLRKeaWg00wlvVgz","fa-caret-up":"fa-caret-up-2wN_VKGGww8r-rTV44CXN0","fa-caret-left":"fa-caret-left-UM3AD5Y90zTwDF8WQkYbU","fa-caret-right":"fa-caret-right-qwRZfLJyozE_bjQ3xICi3","fa-columns":"fa-columns-3expy6Ngamp4xJDBB4TnUX","fa-unsorted":"fa-unsorted-3VNZO7nSWfKzKZPanrKlc_","fa-sort":"fa-sort-1scyon_YZe0ssaqF5giuCd","fa-sort-down":"fa-sort-down-3ft9PCCjYOwZMI-0mWABJR","fa-sort-desc":"fa-sort-desc-1ndqgsKk_8aenPA3Ox4dbX","fa-sort-up":"fa-sort-up-3Lj78ET6PCN1G98fXptfog","fa-sort-asc":"fa-sort-asc-1saFLJhXzS1ywkbR766e0v","fa-envelope":"fa-envelope-1sgdsDQqx49e2GefY6fTKj","fa-linkedin":"fa-linkedin-1LrJ7VIHUlNdr5VHaW8z5D","fa-rotate-left":"fa-rotate-left-2TfRWEa2JqA3yhvepXavCw","fa-undo":"fa-undo-2CaIKkfrygiSo-cNDZnalX","fa-legal":"fa-legal-3ePuUJYeHryOEcuYeFFul-","fa-gavel":"fa-gavel-ZDEeoasTfgz7kh7doVeRM","fa-dashboard":"fa-dashboard-mtjWR4tGo3R7wZuEOtwFX","fa-tachometer":"fa-tachometer-1TEPgcYNj_SCtxlF6ByVX9","fa-comment-o":"fa-comment-o-1mSMq7GufaGbMDa2FNQ_Zs","fa-comments-o":"fa-comments-o-3rBFdUucoeArP-k1M-3Z-V","fa-flash":"fa-flash-1UhXh7FJumgT-_CFnN2_xa","fa-bolt":"fa-bolt-2SXkRFuW-esQyhvExCw7ri","fa-sitemap":"fa-sitemap-1eI2EJBBMavId3R9wNVDrL","fa-umbrella":"fa-umbrella-4-52cBVjuLs4dPnMIeuOD","fa-paste":"fa-paste-jbbsJxRpFuSH-GqmQ-lIO","fa-clipboard":"fa-clipboard-1m14OK41TB3gqLJQTL3y-S","fa-lightbulb-o":"fa-lightbulb-o-3VTzXRisJiEl54kRhsZEy2","fa-exchange":"fa-exchange-SAr_nR-kltLBmaVhhGyvb","fa-cloud-download":"fa-cloud-download-3r02cpSz2X2XdTESNPLUk6","fa-cloud-upload":"fa-cloud-upload-2dKgs7WIND-Kpu-V3iVjjl","fa-user-md":"fa-user-md-1iMxx5ejZb5L2gq90qegVj","fa-stethoscope":"fa-stethoscope-3EPcC0H7ClPeB4mGKmkhUF","fa-suitcase":"fa-suitcase-3dZy0uAQuTTwZOABKibYm","fa-bell-o":"fa-bell-o-2Ivz-6zcIku9UeoFnbl0Yc","fa-coffee":"fa-coffee-2K2EuN18uKEkLhJvZbhCCc","fa-cutlery":"fa-cutlery-1XZntPbIF_2fF9kBKmiLvd","fa-file-text-o":"fa-file-text-o-1ZpO14i8uJUpy7gu0qfUQX","fa-building-o":"fa-building-o-ftxpZoX_5FMEQJQ_uOsDo","fa-hospital-o":"fa-hospital-o-2W6dJ4D4DlGcY32w5inWYp","fa-ambulance":"fa-ambulance-2BQPNJjFtIU_sif_ewAL9B","fa-medkit":"fa-medkit-1-lw54lOS2Y5SmYKu_J07t","fa-fighter-jet":"fa-fighter-jet-IjPxGomiqBxWjzfYKUp4M","fa-beer":"fa-beer-2s6L9Tr2NvmILwWPOiJuve","fa-h-square":"fa-h-square-2x0Ayha_G4AbNUTnwxVhai","fa-plus-square":"fa-plus-square-2qswU0lbqu4RrbCtmwhh6j","fa-angle-double-left":"fa-angle-double-left-1C5PduvZWfgUNidXo6tKit","fa-angle-double-right":"fa-angle-double-right-2b0pIJ2g8Ccrgl3SQQXP8k","fa-angle-double-up":"fa-angle-double-up-1EQTf3Oi-cLeQSzEqrQpZ4","fa-angle-double-down":"fa-angle-double-down-161h1y537NCkIPe-JJO4K6","fa-angle-left":"fa-angle-left-27P5gkmXE-p3femRyKD-np","fa-angle-right":"fa-angle-right-2RYlyxjZYXF-GtXDAVxile","fa-angle-up":"fa-angle-up-2m7TAQOEqT1t3BxoCgGnYc","fa-angle-down":"fa-angle-down-3vRhKSGYiE_3sSwIZ2q19j","fa-desktop":"fa-desktop-3CRPW4Snz7apHj97BzzCnW","fa-laptop":"fa-laptop-nGKm95fJBWw2vu-iPLF4H","fa-tablet":"fa-tablet-1RkiJ1DIt5DdV4AJsbbZWt","fa-mobile-phone":"fa-mobile-phone-Wv_zjPD_d93RtwTRPw7AG","fa-mobile":"fa-mobile-OuoogStBKjxOUpwUfZ8Zy","fa-circle-o":"fa-circle-o-2kGVnZqGKmxMgl0-RoyBTv","fa-quote-left":"fa-quote-left-157AIO9mCHDk4tkzFA6KVr","fa-quote-right":"fa-quote-right-Y4Hw7afO5YfrdGkqwLTV1","fa-spinner":"fa-spinner-1wH5jhB9EqFqO-o7u6S_6Y","fa-circle":"fa-circle-OmufyAoIX3kZUF30lucGs","fa-mail-reply":"fa-mail-reply-2YiFWhcLporOevIlY4OfPt","fa-reply":"fa-reply-8w7UCWtJY37i1ssIrm90X","fa-github-alt":"fa-github-alt-2CHEK31kbWnlShMZy3w5Ww","fa-folder-o":"fa-folder-o-3u2ncy6CISW73ZFGB5xAyU","fa-folder-open-o":"fa-folder-open-o-3MA6vNvM6ZiVTUYdUbpWi1","fa-smile-o":"fa-smile-o-2zNKemRxUOp--TDTmoBbpd","fa-frown-o":"fa-frown-o-1Zav35Nw_WCRez0RVHu407","fa-meh-o":"fa-meh-o-oMIsXh8YF5mOX2tGu72xQ","fa-gamepad":"fa-gamepad-25BhfKRydMFrCLueZq-hIU","fa-keyboard-o":"fa-keyboard-o-2Ns34nbANjVxXNnusbJoJp","fa-flag-o":"fa-flag-o-1nmCF4hAb9UmAvM25fu0j5","fa-flag-checkered":"fa-flag-checkered-tCimUZITXLT95743UtFLz","fa-terminal":"fa-terminal-xTfxtY5gQxIZhWAv_dprZ","fa-code":"fa-code-2xnZT5M-tFPJw2QPrkQKfV","fa-mail-reply-all":"fa-mail-reply-all-2vJSRldwqknjhDa8cX8dpT","fa-reply-all":"fa-reply-all-2POEq2zA0stwnhuH-4Kl2I","fa-star-half-empty":"fa-star-half-empty-3tiaE9wZFfuwl4cIb4IGlQ","fa-star-half-full":"fa-star-half-full-2lWfetk8U0MIPZL2XWa395","fa-star-half-o":"fa-star-half-o-32cTRK54fYDv_kk0lkb-hI","fa-location-arrow":"fa-location-arrow-1YwnoaWR5yu2x_DoIxY9ia","fa-crop":"fa-crop-kqgEsnDiRlBUIFMX2S8Gu","fa-code-fork":"fa-code-fork-1jL7CHECiLyBuLA4y-bT_A","fa-unlink":"fa-unlink-co7w4E1mO1Rpub_zM2Lbo","fa-chain-broken":"fa-chain-broken-N1mGeXoYAixN6rmmVbaXC","fa-question":"fa-question-2k01VD3too5Tl0U539uOO1","fa-info":"fa-info-2xjJs8ttGjfZAGWQBMZwjI","fa-exclamation":"fa-exclamation-1DytfrbhW_TLYiH7wFDZRU","fa-superscript":"fa-superscript-2n3b6dZjchln9Z283KED-f","fa-subscript":"fa-subscript-2M4TR6jN0DYtgqRPim7jgA","fa-eraser":"fa-eraser-16KRz7JhSCkc5A9wGZCzQM","fa-puzzle-piece":"fa-puzzle-piece-1sliOmM0tOOGyqELbqGbNH","fa-microphone":"fa-microphone-10BE4_vL5z2sQydGzEBvBg","fa-microphone-slash":"fa-microphone-slash-2YEVqsuHSShADCg0CZiuYO","fa-shield":"fa-shield-2gmDP8VsKQHdZO0Ppzdy-i","fa-calendar-o":"fa-calendar-o-3DvxzQKacxJz8T40a5RSeE","fa-fire-extinguisher":"fa-fire-extinguisher-3fPagI1EcHQD2sWl42-0zx","fa-rocket":"fa-rocket-1NtYbP5z8LULLRHFStm0hQ","fa-maxcdn":"fa-maxcdn-2gssOlz4sCUKH8xR1CGUZa","fa-chevron-circle-left":"fa-chevron-circle-left-3nGEccVbA35q6EldlWko6y","fa-chevron-circle-right":"fa-chevron-circle-right-2S1ZkOleTbSBHVpNw2BZQ5","fa-chevron-circle-up":"fa-chevron-circle-up-ftUf7LVRHfPIpzco6XDxT","fa-chevron-circle-down":"fa-chevron-circle-down--9WGFdHMA9HMmJOWjU9ID","fa-html5":"fa-html5-1UDSyGrEkXUOD21_DvbJiB","fa-css3":"fa-css3-1Lj_rZhGctGOD7hQcLyzZn","fa-anchor":"fa-anchor-3ujY3DlTrxL-CsyKqPBalx","fa-unlock-alt":"fa-unlock-alt-a--SMPZZ7MJq8IO8cWAtk","fa-bullseye":"fa-bullseye-1bpgddVCCkbbGiT65IWed1","fa-ellipsis-h":"fa-ellipsis-h-3cLxyO17EN9jNvrtG6HwDD","fa-ellipsis-v":"fa-ellipsis-v-rx1uAd-345amrBstFdMwi","fa-rss-square":"fa-rss-square-2d85jk-SXBOUEw7QcF2Vy0","fa-play-circle":"fa-play-circle-Tzf70wDryVCAL25auS9Xe","fa-ticket":"fa-ticket-KLgD0TUKGUrMtImUNHpv0","fa-minus-square":"fa-minus-square-5Ml5EMonRpGVJ9pAblVoF","fa-minus-square-o":"fa-minus-square-o-66IKLuJrhnGhZLXR5JmLv","fa-level-up":"fa-level-up-3ewPAbRjCa9f4UOxuFicv7","fa-level-down":"fa-level-down-27kISVpIW_ZUc_voF1_5p8","fa-check-square":"fa-check-square-3rUxN2ZoMQhSkVxa3ILLhm","fa-pencil-square":"fa-pencil-square-39jS7XKp3Dba1e1xKzxFsh","fa-external-link-square":"fa-external-link-square-3a2Yl-wmU7SDr5cv8OwK6B","fa-share-square":"fa-share-square-2plYXdj247PfthnKrkJIqB","fa-compass":"fa-compass-3MqRNp6g9NsBtC44K8ubiB","fa-toggle-down":"fa-toggle-down-1ffYHFssO5jclqPNm5pkhQ","fa-caret-square-o-down":"fa-caret-square-o-down-NJ2gKiIG60CI4UnLytTs7","fa-toggle-up":"fa-toggle-up-1L011vwipMbWSC37UmH74O","fa-caret-square-o-up":"fa-caret-square-o-up-1Bq4Z64HRXt451mh3jwrIx","fa-toggle-right":"fa-toggle-right-1bzgby-ketKPo8c2a4aXbs","fa-caret-square-o-right":"fa-caret-square-o-right-qZGpOIvVeakg4nL7UDWlm","fa-euro":"fa-euro-1JiNW0vnlDD869lf1CFOkh","fa-eur":"fa-eur-35IPuL4Kk6Jm55vYQtGbkd","fa-gbp":"fa-gbp-1QI5NhormzcwBIHDpe6O_j","fa-dollar":"fa-dollar-2MbKplZXYMl5Xmigendk2q","fa-usd":"fa-usd-2rZ-IeU5Q-pmmgLDfr0ZBu","fa-rupee":"fa-rupee-1klChXIUEI2BBeeql5V4Ud","fa-inr":"fa-inr-jHIAop385jqkhKXb2YGnB","fa-cny":"fa-cny-11e4X00B6O7zROwEvu76zV","fa-rmb":"fa-rmb-3sXw4zpqJoY8ybzqoyZE8m","fa-yen":"fa-yen-1YjsU90hY7A0cqaMcnO-PQ","fa-jpy":"fa-jpy-3HaEiw_QJqQ529cEi8bmT5","fa-ruble":"fa-ruble-33bFKOcdVgVA2n27TrNHeN","fa-rouble":"fa-rouble-1iVM9ZX2N2UY0xTqvdck7_","fa-rub":"fa-rub-2ZAlth4_U302lngbH3EAfJ","fa-won":"fa-won-kf00NJ8PGloW8VwlDzYG1","fa-krw":"fa-krw-2NE8s3iAQvvFcu6O12Zjxd","fa-bitcoin":"fa-bitcoin-1G6El0JJauOUr6AX9U7-2w","fa-btc":"fa-btc-3iWng4w3jKeBdkzEf9Kbrh","fa-file":"fa-file-36Y4A20yTguESTsUjHpWPM","fa-file-text":"fa-file-text-3IulBTd5fk3zltLoZwvkn6","fa-sort-alpha-asc":"fa-sort-alpha-asc-_mmx4eHA9C0lKyrTFYBD3","fa-sort-alpha-desc":"fa-sort-alpha-desc-1E5eDLzKltuTqPkDHVEwoI","fa-sort-amount-asc":"fa-sort-amount-asc-1mr-SplE-9E1RutEPpL-Ut","fa-sort-amount-desc":"fa-sort-amount-desc-3u_jlPFCzuiDsgQIlbroQx","fa-sort-numeric-asc":"fa-sort-numeric-asc-25ClkL5rQ_i_hQ2BGdDp4Y","fa-sort-numeric-desc":"fa-sort-numeric-desc-2vjTTiFQ2rNpSnmrCk7kga","fa-thumbs-up":"fa-thumbs-up-2xcBn_RagWuP4GeAbLDANK","fa-thumbs-down":"fa-thumbs-down-31N7GbkxupGCD1qCzrmxgo","fa-youtube-square":"fa-youtube-square-2NR3qXvE_w5lFy8rHQW-4x","fa-youtube":"fa-youtube-3i5MXPruwr6xNx-K98N4hH","fa-xing":"fa-xing-3sAWmSVXU84yr27VxUoj0O","fa-xing-square":"fa-xing-square-3Hp63OxHgNGp5cGsvFP5pa","fa-youtube-play":"fa-youtube-play-2JSZFcw_dlmyxwDF6dpMQQ","fa-dropbox":"fa-dropbox-2zp9VVUrNVc9IIH1KH0ixk","fa-stack-overflow":"fa-stack-overflow-2dgfB78do896hkt_tU_1qy","fa-instagram":"fa-instagram-2kIgacCC7Dnrvfz9OJGbmG","fa-flickr":"fa-flickr-3Q4SfNh5HEsrHKa3wSDFcz","fa-adn":"fa-adn-2L4qG7HOQBzy5m96ExG2ly","fa-bitbucket":"fa-bitbucket-1drrogb5hd6BwUU2417ldb","fa-bitbucket-square":"fa-bitbucket-square-1HOYla9FsoVnATmc29lt9Q","fa-tumblr":"fa-tumblr-1P0_O_8RvkK9PStcIazAUK","fa-tumblr-square":"fa-tumblr-square-D_pEGUP_QLtlQwrrMZDVn","fa-long-arrow-down":"fa-long-arrow-down-1gwRT5iNpqzu0KPF_NGJ3v","fa-long-arrow-up":"fa-long-arrow-up-30OaZiYTsxfigkPd1nPVt3","fa-long-arrow-left":"fa-long-arrow-left-g37GZxs9DiA9XRDL8zYZQ","fa-long-arrow-right":"fa-long-arrow-right-1kua14u81Tz4kBIhRVRQhl","fa-apple":"fa-apple-3QVvl_4p1bBCsTFeGlPTd2","fa-windows":"fa-windows-Ox2HhxUg1ONg7m6nHTGCU","fa-android":"fa-android-3SkwC3C2dZdRxFIyPW7B9I","fa-linux":"fa-linux-1xJ7SNru7grBgfxqk-Iivg","fa-dribbble":"fa-dribbble-3Mfe37PbZoTYFzjkbhz4QC","fa-skype":"fa-skype-Jwi1cotjo89qe2zG90AZh","fa-foursquare":"fa-foursquare-CJwmL9194X08s3ScKGn8C","fa-trello":"fa-trello-2_S0WlRyXwSYR22PPH_I5X","fa-female":"fa-female-6rxTswSiHwWP3LFg52s8Y","fa-male":"fa-male-3ib1vuUGfeole_t21pzNUM","fa-gittip":"fa-gittip-s4ewJBwMTDqdoPkOtiTNj","fa-gratipay":"fa-gratipay-1Rz0XnwAB6ua_u8s6h4-yS","fa-sun-o":"fa-sun-o-36E7O4Wd0hHWAp5CLf17ps","fa-moon-o":"fa-moon-o-2LJHTZO5x9cAIDOS7vMsFI","fa-archive":"fa-archive-2WCOsqJNWnJ-Ho6lpjykt9","fa-bug":"fa-bug-1qecelXBs8FdjfoTOxJun9","fa-vk":"fa-vk--AjXNJ4zEoP0A3-hTimgH","fa-weibo":"fa-weibo-2d8xVe7vAC62Om2XYTtW1o","fa-renren":"fa-renren-2mNsbVk25_w8puMwpNQXQU","fa-pagelines":"fa-pagelines-2Xw6rxK6JJpaL3Dsq2LUOg","fa-stack-exchange":"fa-stack-exchange-1aEBLyiO8Yg8yi2xWAMU18","fa-arrow-circle-o-right":"fa-arrow-circle-o-right-1opPpvMScHdZiL7I7vsL21","fa-arrow-circle-o-left":"fa-arrow-circle-o-left-2xCBUL5INEJdLDQm8zWzoC","fa-toggle-left":"fa-toggle-left-YGH6SN4OdVDMS8gtZoJmQ","fa-caret-square-o-left":"fa-caret-square-o-left-1iFwzWayZGITEjzXekk_6c","fa-dot-circle-o":"fa-dot-circle-o-2cOpr-u_Whc1vCvlwSRDHo","fa-wheelchair":"fa-wheelchair-GUMf1Ojow322im4K-kXPX","fa-vimeo-square":"fa-vimeo-square-141uWLnELo0huVee17digE","fa-turkish-lira":"fa-turkish-lira-1xbC7ykLDrmGOQy_Fatmkv","fa-try":"fa-try-3F9uzK0FEqTu_qYe3RSFqL","fa-plus-square-o":"fa-plus-square-o-vy-389iu0oxqwYx7ZrbsN","fa-space-shuttle":"fa-space-shuttle-3GTl22XDQvkB0UJ2Rgb-dT","fa-slack":"fa-slack-3sw9UpG46eAANPZEsgNdfv","fa-envelope-square":"fa-envelope-square-HETfjC5JZKfAUqqeoQGqA","fa-wordpress":"fa-wordpress-26p6lvLRaMMlay8IXWf0NS","fa-openid":"fa-openid-EcDgQFTB5a_d9RaZGpsnu","fa-institution":"fa-institution-3HNpcHVVvKeyeZhTlZkK76","fa-bank":"fa-bank-1MTP31PpMXnJESR6WvXVQf","fa-university":"fa-university-11LVJpsX5MuYfypmogf9up","fa-mortar-board":"fa-mortar-board-2qICOa6siSfE0ilXyTlgr5","fa-graduation-cap":"fa-graduation-cap-2yp8ziR4ypMn7kdTUE-kaE","fa-yahoo":"fa-yahoo-1KRaWKXiGNoyeGIWmpa66k","fa-google":"fa-google-1Usbralwl1PVdonfNwe6ma","fa-reddit":"fa-reddit-MiK1PerQLhCGdxffhlGz2","fa-reddit-square":"fa-reddit-square-VVmHkpGF2qjmpNXYSDFPs","fa-stumbleupon-circle":"fa-stumbleupon-circle-1B9kpg2lVTC985admsjHPT","fa-stumbleupon":"fa-stumbleupon-DxC3r8ezDLm374mMyNTZI","fa-delicious":"fa-delicious-Bn3EcKzmhemRX5xyvOEMy","fa-digg":"fa-digg-3qrCWc9EQy57sf2_9BEn8d","fa-pied-piper-pp":"fa-pied-piper-pp-3PUaj7MLUKkFvYN3PIdS69","fa-pied-piper-alt":"fa-pied-piper-alt-1LXzKMltFjr2qNAZ_6MGIt","fa-drupal":"fa-drupal-lneK2lOL1ziGBzX_YGRlW","fa-joomla":"fa-joomla-3eu_JBCV0lBN9Vp40Edas2","fa-language":"fa-language-NDmdewd1DqhDpsEMxrDhj","fa-fax":"fa-fax-MeC9V9_UlxJP3bH97WmYi","fa-building":"fa-building-2BR0mhhYar0OIWMjtt5zka","fa-child":"fa-child-3xJf3Z43MMgd2RBOS1PJaG","fa-paw":"fa-paw-2aMWrhL15QrAau3hD1wAHI","fa-spoon":"fa-spoon-bnxHqnCmxrcUgxohW257J","fa-cube":"fa-cube-2q8R0IH6prCb-ETNN4uWD3","fa-cubes":"fa-cubes-1HG5s6aVtyYyadjps-7HHU","fa-behance":"fa-behance-3qf_JjzQ3M-eT0N4dC-HuP","fa-behance-square":"fa-behance-square-3ybCsffL6SXDoqyPIC8MAW","fa-steam":"fa-steam-1g0P29C80bv6eT1qxFDZxL","fa-steam-square":"fa-steam-square-1Tw5bFRNOd9kg14sOQzJUp","fa-recycle":"fa-recycle-1M-2LSCCXwK_4fEG8SfTYG","fa-automobile":"fa-automobile-ThtYFgI_BEln-Rfk--fSS","fa-car":"fa-car-_EBjr_9GE0KQwC2GhYQv5","fa-cab":"fa-cab-2WaPI06R6yoKN-t4VfWIrO","fa-taxi":"fa-taxi-1idy0o6jmQvF01DGDVd3RW","fa-tree":"fa-tree-1hllqhiUSfh_fzK1GFEcIG","fa-spotify":"fa-spotify-uYsZW-EMceOLLFeRsxt2H","fa-deviantart":"fa-deviantart-1Egv5Sd5E3kg7myUU5QXbz","fa-soundcloud":"fa-soundcloud-3nwkwYOOsImAz8UOEp7J2b","fa-database":"fa-database-3pWy-zzBZqFTrtlT8buJY6","fa-file-pdf-o":"fa-file-pdf-o-3ySq7LzLIk8MTwcJaMKRvW","fa-file-word-o":"fa-file-word-o-2waguxP3xaIG8UAPhZL3nL","fa-file-excel-o":"fa-file-excel-o-2t98kv5IcEIZKgPlRTDopq","fa-file-powerpoint-o":"fa-file-powerpoint-o-2nGbZSvUM9hB8XlrsMXORL","fa-file-photo-o":"fa-file-photo-o-1_WtHmwMIif0ZP4MqpKG_9","fa-file-picture-o":"fa-file-picture-o-1qItUaVZ0WjslLsWmfnX2X","fa-file-image-o":"fa-file-image-o-2Sxdz-NYnhoTjVmzvfB8MZ","fa-file-zip-o":"fa-file-zip-o-3kdjLn2Hzm_Vh35y2UcYjZ","fa-file-archive-o":"fa-file-archive-o-ltGGdY3VeQl4y_dWda13y","fa-file-sound-o":"fa-file-sound-o-zzeMOooDyXvU9NWxRaiqG","fa-file-audio-o":"fa-file-audio-o-1i4TxhOi8Y6WuC8oymnTn9","fa-file-movie-o":"fa-file-movie-o-1VesXYcOQBBDI0H_6WTr9K","fa-file-video-o":"fa-file-video-o-1OUAfe8FNQ3F7nMk2H6P5X","fa-file-code-o":"fa-file-code-o-1fsOY0cwXULTtGNu4SaWXm","fa-vine":"fa-vine-gCBZUbyaKelSdhjNIXLYt","fa-codepen":"fa-codepen-2RAeTVGcKMO1rzcEeZIKoi","fa-jsfiddle":"fa-jsfiddle-v0swWBfE-aXJ6IR3tF76k","fa-life-bouy":"fa-life-bouy-uIMFP2SpgGZbOMN79Gkrm","fa-life-buoy":"fa-life-buoy-RPn5Z4vhByrmmgQ3HtCoW","fa-life-saver":"fa-life-saver-3xvUGULUwCQkYxblzwZm8_","fa-support":"fa-support-1aFJiO4OJ8u-BW7Ta9a2-T","fa-life-ring":"fa-life-ring-3rn5BKI1M5-MuN_jYIYeBr","fa-circle-o-notch":"fa-circle-o-notch-32pAaInelm9pDHgOtHf5vA","fa-ra":"fa-ra-we0Vkraf_FoFYzAeUwuhQ","fa-resistance":"fa-resistance-1emeFcovs8Co1aeKPOuWlw","fa-rebel":"fa-rebel-2e_TPlXZ6-DKy_klT5eVps","fa-ge":"fa-ge-3ygYeODr0n-NxjrKugmDDX","fa-empire":"fa-empire-3YIqx1e4_JN3WIRRGCzNXU","fa-git-square":"fa-git-square-2Funa7vGWnyIUCx-o1RN_3","fa-git":"fa-git-fqaoOkGBw_j6g35VpE6tk","fa-y-combinator-square":"fa-y-combinator-square-36xl6BDuoeaWkPO6zJDUmT","fa-yc-square":"fa-yc-square-hisjddyqiXWeGHjSHsSP4","fa-hacker-news":"fa-hacker-news-vIjJGvQFxP5sz7Mvk6dz4","fa-tencent-weibo":"fa-tencent-weibo-3AcgfVFBJy_VmeJBglJ1qv","fa-qq":"fa-qq-3E1VdELQXMkPZ1w-3yeYJz","fa-wechat":"fa-wechat-1Pw4XK1GXQX0BJPDmmHasw","fa-weixin":"fa-weixin-yUd8dF1PfimtZMx4CQbgP","fa-send":"fa-send-35WqVOm_l6DB6RfObUtXAm","fa-paper-plane":"fa-paper-plane-22zxHdIRj7-1mHXSyNmna5","fa-send-o":"fa-send-o-3qxoKbZgVoogtXeffeF4VT","fa-paper-plane-o":"fa-paper-plane-o-27avJ0hFB6gevwMYnb46Io","fa-history":"fa-history-1VWBjBBfxDFl8ZG90D2E8i","fa-circle-thin":"fa-circle-thin--FH4NMOcuhDaTyxkPh3o6","fa-header":"fa-header-104Jhu2LDRpMZl7Nwm98D2","fa-paragraph":"fa-paragraph-1I3HylMj1DkVfFM2mkSfBS","fa-sliders":"fa-sliders-l-nMj7A53Qi-PGEcDNTjU","fa-share-alt":"fa-share-alt-2f5r5MVguguOgRMYL3q_Cj","fa-share-alt-square":"fa-share-alt-square-25ZiTFQSNP7iTNVZ1gAuCh","fa-bomb":"fa-bomb-1BkezD7by0EidEGE5o7N23","fa-soccer-ball-o":"fa-soccer-ball-o-oMjwnAkHjKYtxO0ArNBdG","fa-futbol-o":"fa-futbol-o-1BadokC43AxWyJtDHYhlwz","fa-tty":"fa-tty-2l6CX3wYqxadc8228XuXKt","fa-binoculars":"fa-binoculars-QEgUH9tFYZ5EX429oHQbk","fa-plug":"fa-plug-1yoCiJ4o4swosE__kkPflE","fa-slideshare":"fa-slideshare-5py8XIbF0T5VD4bgLRCmq","fa-twitch":"fa-twitch-1nfbmvcpGWqtY7V3OHmbOy","fa-yelp":"fa-yelp-3DVuK-apt6X19rbHV7Xo0x","fa-newspaper-o":"fa-newspaper-o--MrLQgQUeO-0a605ljEsP","fa-wifi":"fa-wifi-3jmZIbZMNzrKKoMME1uJ-S","fa-calculator":"fa-calculator-3I8CfhuCpjmcJ4PTQ2zWiT","fa-paypal":"fa-paypal-oUisr6QgIhtzW3y18L4z4","fa-google-wallet":"fa-google-wallet-FRhNbDOK6fpi_Da3mJ_dW","fa-cc-visa":"fa-cc-visa-2_-F_ztkNn8Sf2-lvCwesA","fa-cc-mastercard":"fa-cc-mastercard-3JiUAvia2Kx2032NvoVTHY","fa-cc-discover":"fa-cc-discover-3eTHVcmFLiSy1a6SOdiqG5","fa-cc-amex":"fa-cc-amex-1bJECU37vaZWdsF-KMoCUx","fa-cc-paypal":"fa-cc-paypal-2nmjPIGH4VA_euPXpI2w62","fa-cc-stripe":"fa-cc-stripe-2kEK31CP9j9SHqhNqXitZ0","fa-bell-slash":"fa-bell-slash-1KBQt_zu0ZSanRZpSmJf0Q","fa-bell-slash-o":"fa-bell-slash-o-3BpTs3YCQKigFEl6nqEwtR","fa-trash":"fa-trash-1iYwmOcIvxwdU69ahAJt1n","fa-copyright":"fa-copyright-1UgW7F6wq8iI8-O5F3O6t2","fa-at":"fa-at-3b4l4hGKwutfgaqLiQVME-","fa-eyedropper":"fa-eyedropper-2y67PDf3QJuL_qwPqjwSOB","fa-paint-brush":"fa-paint-brush-3g38ix0skt8XaSUEblgWR5","fa-birthday-cake":"fa-birthday-cake-3lS0sKhfQ5DPfJogbc36hD","fa-area-chart":"fa-area-chart-2j48nOeSOyp000y0xVptlb","fa-pie-chart":"fa-pie-chart-50kjkQb7PM6OijFUADiYA","fa-line-chart":"fa-line-chart-2RlPx7sZ780v-j5SOj38w7","fa-lastfm":"fa-lastfm-1R5uCrWIotf3b2egUAGv06","fa-lastfm-square":"fa-lastfm-square-2e38EC4S7-lOPJbg9djU0H","fa-toggle-off":"fa-toggle-off-3z0JzJ1kPmr765rsvvBY7y","fa-toggle-on":"fa-toggle-on-2UeoaonAndhHOEfEZLWoCC","fa-bicycle":"fa-bicycle-3LPW3u5McPtZYZ0amyZlfZ","fa-bus":"fa-bus-1X9nxsgypuh804_s9VqsuI","fa-ioxhost":"fa-ioxhost-3s_6WJQFu7ugW0aGR9wNsk","fa-angellist":"fa-angellist-1T7F-D8eSWeFriIkVjXb8o","fa-cc":"fa-cc-1xMlb-D7UjEZxtgnewxvab","fa-shekel":"fa-shekel-2EA9j-Iqr1jYr7NEM-99tB","fa-sheqel":"fa-sheqel-1ViQAUCmrm02Mp5dDuLRAB","fa-ils":"fa-ils-1Oul0l9Y3QGHGmLPlxffjH","fa-meanpath":"fa-meanpath-3l7MUsWzxmjAeX4VoDpP52","fa-buysellads":"fa-buysellads-2PRyvPbqIICu6kUaM5L6XA","fa-connectdevelop":"fa-connectdevelop-3PTzmIH172K9Nvi7S-y0CA","fa-dashcube":"fa-dashcube-3jSwakA7Cv6JBwYtEknfPX","fa-forumbee":"fa-forumbee-3eltl5aqTt51LQ2_Fsalcn","fa-leanpub":"fa-leanpub-3Y7zPjtmJPajl-8FiZdGE7","fa-sellsy":"fa-sellsy-2SllNRkIV0Npiff0C8Nb5q","fa-shirtsinbulk":"fa-shirtsinbulk-2efpmL6f7dTFQBIgMfkM1C","fa-simplybuilt":"fa-simplybuilt-3zJlrs7M2S5IF-Wn6jOBKu","fa-skyatlas":"fa-skyatlas-46dmwjHonyNLfX0s5uQkW","fa-cart-plus":"fa-cart-plus-2N4qX2OWF-EVWt9Uxtg1sS","fa-cart-arrow-down":"fa-cart-arrow-down-2j0EM0w9zSC4txvbL3fCs8","fa-diamond":"fa-diamond-1yDndoOsiQX1aBLnT2h9oo","fa-ship":"fa-ship-2VmEPu11FJYYbrMEryUJvk","fa-user-secret":"fa-user-secret-2v_TnBkil9Z8BNOhMrdwEE","fa-motorcycle":"fa-motorcycle-1psJ2qr8wnpqxJ5qSkrSF6","fa-street-view":"fa-street-view-cLshfIckSFBC31jTF3pUb","fa-heartbeat":"fa-heartbeat-1PAEfHSPqUDT_YONRdNlSj","fa-venus":"fa-venus-1VQ7oceGdnEDp5MKEcMePG","fa-mars":"fa-mars-2ry34PBvq7t884gPSf7F-b","fa-mercury":"fa-mercury-3gvCzL3HY32JQ1NHqiIJbf","fa-intersex":"fa-intersex-QQYtINbtpubA03vLXcCFE","fa-transgender":"fa-transgender-1Kgnpbruk5tq-BHBBMvS3y","fa-transgender-alt":"fa-transgender-alt-3ghMH6B65O9KRu0Xsn9fsx","fa-venus-double":"fa-venus-double-gYo4TewueGYgCXtntHxFb","fa-mars-double":"fa-mars-double-RVxk6ir0zq7p4Z8NmVBIe","fa-venus-mars":"fa-venus-mars-1LiX9Qq5zkZbnC-TMLk_aE","fa-mars-stroke":"fa-mars-stroke-YslLQbNs4-teBi17fC8AS","fa-mars-stroke-v":"fa-mars-stroke-v-2JxGo_UFTcLY-qSJ0RQcWA","fa-mars-stroke-h":"fa-mars-stroke-h-3jZ_ZVCPeyX7ZL67G9Ml02","fa-neuter":"fa-neuter-XUCKyqaq_bfsfR98_wV7o","fa-genderless":"fa-genderless-YSw_83KZc3Uq6dLhNMp2z","fa-facebook-official":"fa-facebook-official-3N-6xUwyBH-8LoBlK0QndC","fa-pinterest-p":"fa-pinterest-p-b4dxb0mLAWO6JaJ-Al3MK","fa-whatsapp":"fa-whatsapp-13yT8DlZtB7fdCjJzIFkA1","fa-server":"fa-server-1-Z1fGorYFrorDQNjt1BhS","fa-user-plus":"fa-user-plus-1kKhxELMcJIXTVGOGWyIiX","fa-user-times":"fa-user-times-22a1WHm3PMBtsLfFTn8zKt","fa-hotel":"fa-hotel-1vDXrqAQ0JDN0qtmX5d3al","fa-bed":"fa-bed-22F77PilKJjJd0ELI0FVbH","fa-viacoin":"fa-viacoin-2IzxX8ChAh69VgyhrnV8nv","fa-train":"fa-train-1Dmv3pcuri-GVjh9SVaiCC","fa-subway":"fa-subway-1gKMpKe12ujeetY1OF5ekN","fa-medium":"fa-medium-1qw-syGlUv9kDhkx7qryQv","fa-yc":"fa-yc-vol9-hqTJTWpgis7LNTxk","fa-y-combinator":"fa-y-combinator-2LhNJRmUT9A5xPDUiMgG_F","fa-optin-monster":"fa-optin-monster-1shEdOFVryhY1ZXTl0qXUR","fa-opencart":"fa-opencart-1zakNNgbmcS7xLlnRhQcpT","fa-expeditedssl":"fa-expeditedssl-3PyIohPnRWHD82emYop5bi","fa-battery-4":"fa-battery-4-2rlamSt6bcxsnhDPemz8lb","fa-battery-full":"fa-battery-full-2Sf0l649pnjDQ2hKcBbb56","fa-battery-3":"fa-battery-3-105nQSSG3i-29VuFS7dwoZ","fa-battery-three-quarters":"fa-battery-three-quarters-2w8-wPawaDQ6eIbZN2uEik","fa-battery-2":"fa-battery-2-25LX0cWXINLpDL1Qo6dKbk","fa-battery-half":"fa-battery-half-34IOfi6maK6DtNrDaHhQfU","fa-battery-1":"fa-battery-1-2y_DXcKePwIXMHWLcvDEPC","fa-battery-quarter":"fa-battery-quarter-3wC5-v3764GBEjCLiOI8Ec","fa-battery-0":"fa-battery-0-29DeIcCX2iY-wF1LGzIIbU","fa-battery-empty":"fa-battery-empty-1RWv-WRzIDGB5AddMoC_c8","fa-mouse-pointer":"fa-mouse-pointer-1RuGZHuCfk6-mcPSemgA78","fa-i-cursor":"fa-i-cursor-3-tALfKiAKRhLBLGXtj_l1","fa-object-group":"fa-object-group-1SBMKsHM9VuWPuuyzd0BKb","fa-object-ungroup":"fa-object-ungroup-3dHOR0eHVn2cLN507igiOF","fa-sticky-note":"fa-sticky-note-2e2kv4JQWYFV1pSIbENGCB","fa-sticky-note-o":"fa-sticky-note-o-1whIvWxiK0yIwrZT4RPHsB","fa-cc-jcb":"fa-cc-jcb-1ucwuXKWG7Kihdv9IG1hfb","fa-cc-diners-club":"fa-cc-diners-club-1Bw0IwtPz-AA0HufWb7Obo","fa-clone":"fa-clone-2e-eUZSDkTTe1QvqTqUaOQ","fa-balance-scale":"fa-balance-scale-2J3_qh02HDVu9yK5rOXFX-","fa-hourglass-o":"fa-hourglass-o-1D8-SDBbL3ivFvyaJIB4PN","fa-hourglass-1":"fa-hourglass-1-35t2lNneLNuepsCss8mJnq","fa-hourglass-start":"fa-hourglass-start-3a7S7D1dQo79_yF1b4O8WN","fa-hourglass-2":"fa-hourglass-2-2zjQqC5dYHOhvPBnak1BGA","fa-hourglass-half":"fa-hourglass-half-2YWUY-E_0cUvWrKGkZ-YL-","fa-hourglass-3":"fa-hourglass-3-2e7eySsfe2TDnnI86TJRzp","fa-hourglass-end":"fa-hourglass-end-3pqLxnVfdQAxmZgPtbGtUj","fa-hourglass":"fa-hourglass-EhQ8faUzhTrOmM5yeszWd","fa-hand-grab-o":"fa-hand-grab-o-3gRSKTkqzdNMjSQvnDoSPG","fa-hand-rock-o":"fa-hand-rock-o-3kvv5Smjouk4CxZXohz5dV","fa-hand-stop-o":"fa-hand-stop-o-2OqjA-fc5d_LJmz4Ff3gIy","fa-hand-paper-o":"fa-hand-paper-o-3RoauAVmdvYo0PuRHycyJg","fa-hand-scissors-o":"fa-hand-scissors-o-3Q0YUVYqzahZf2jnePp6h-","fa-hand-lizard-o":"fa-hand-lizard-o-1M1FKn2L66uPYLb0h5bN_3","fa-hand-spock-o":"fa-hand-spock-o-2Zr0dxZ6HWyWxAwvSyZrxZ","fa-hand-pointer-o":"fa-hand-pointer-o-2BNtpyvtrm7T2reorRme6X","fa-hand-peace-o":"fa-hand-peace-o-3G3adRS6uiRt-GtxZzEtqB","fa-trademark":"fa-trademark-2zfmFbxpugYs43nsIdnxaB","fa-registered":"fa-registered-2tQckCzsUK89JfXrTZ7jpi","fa-creative-commons":"fa-creative-commons-dcvpe83yPEZKQJqyllK15","fa-gg":"fa-gg-3H0dRnf-XMpLSWdANn0wqO","fa-gg-circle":"fa-gg-circle-1oZ_imbW5y_4Ls9IvdOF4l","fa-tripadvisor":"fa-tripadvisor-2FFH11Tp08S-Vx5AwCvKX9","fa-odnoklassniki":"fa-odnoklassniki-1rKJ-gqdX-1ZVT-Re-wThp","fa-odnoklassniki-square":"fa-odnoklassniki-square-1ulpA-BTsPBgrdRahZQOds","fa-get-pocket":"fa-get-pocket-12jfjr3n8dxWVvNnNUzEJd","fa-wikipedia-w":"fa-wikipedia-w-2Qe5rdea2Ot9zQ0UFhWA34","fa-safari":"fa-safari-3cMnnp6kTYgZWCMB1kNLbh","fa-chrome":"fa-chrome-3hggKHX2pcVT4IGpxOBt2y","fa-firefox":"fa-firefox-3sqC2pOmWO8ntLgfLfZogK","fa-opera":"fa-opera-dblmrJoO85-GJBr-L8KQL","fa-internet-explorer":"fa-internet-explorer-ZQ89GTvV2dGU52FWQVugO","fa-tv":"fa-tv-1nD-CF7duWKDoY1b0Zr7_F","fa-television":"fa-television-wpwspN97EJuFq-_4mXKXX","fa-contao":"fa-contao-9JYXe_N2xeh9PY4sCqYNF","fa-500px":"fa-500px-owuAZtBOXQhS3dBOS6XMr","fa-amazon":"fa-amazon-39JLT6yEibinlMAFH-rwRn","fa-calendar-plus-o":"fa-calendar-plus-o-21Cy1yQkEAoNN9Ga6d5KiD","fa-calendar-minus-o":"fa-calendar-minus-o-3NhhIlNKPJ6xU0UGACqeMn","fa-calendar-times-o":"fa-calendar-times-o-1uGbaR0qF701DA63zmwDG2","fa-calendar-check-o":"fa-calendar-check-o-1OqoxTmvuV4JaVIpvcpyeA","fa-industry":"fa-industry-2S3j1cIVpdZzxp7OsQ2XLS","fa-map-pin":"fa-map-pin-z0lfmwglu2CmqmkiOq_ll","fa-map-signs":"fa-map-signs-1d43R4nFX6r-FA4kRgkUb3","fa-map-o":"fa-map-o-1l1Z2YUySWUuVUnGJYV9Wa","fa-map":"fa-map-y8yFXCbySiQv-_FfvCT2Y","fa-commenting":"fa-commenting-_9V3Aef1Y_sLKGw7ZJMWH","fa-commenting-o":"fa-commenting-o-1BX5pQZ2-_AK3FUbUsUkUP","fa-houzz":"fa-houzz-CY80c7TONWYM3qK8kQk8a","fa-vimeo":"fa-vimeo-djFFo-jHlJweRrOvM1BRF","fa-black-tie":"fa-black-tie-1IuCgEOLUfPAwDUkoT-19j","fa-fonticons":"fa-fonticons-3Hkv1aSyP9o0ffOR8qycyF","fa-reddit-alien":"fa-reddit-alien-3c9UT6ZCgwd9SFypFMJQnB","fa-edge":"fa-edge-27Xo9U8qoq6v3bCVq11WRJ","fa-credit-card-alt":"fa-credit-card-alt-2tVZDQ59h9cKA-Qc69PsUR","fa-codiepie":"fa-codiepie-2lKBAYoDvzTViZ7Asg2hWX","fa-modx":"fa-modx-25QE8kLZPTlDIa0vEngioi","fa-fort-awesome":"fa-fort-awesome-1EX2WeAmmo9cGejKFNseEg","fa-usb":"fa-usb-3ClhWHbyjHH4QIBsmYHIvy","fa-product-hunt":"fa-product-hunt-1xuhyM5A4gFvzBwzBIteWa","fa-mixcloud":"fa-mixcloud-2j0kTBk7YR0is1QI9OOGkm","fa-scribd":"fa-scribd-3qDO9rLifuM8a09ZQJ6nTz","fa-pause-circle":"fa-pause-circle-8PaRkYvVZGxFtSwfC3U21","fa-pause-circle-o":"fa-pause-circle-o-3IeCSr3ztlXNj58rx8OaIR","fa-stop-circle":"fa-stop-circle-3S0ti7YpZ_55LdzXUSLlA1","fa-stop-circle-o":"fa-stop-circle-o-1lc4Zyrk8aXnm6MJvP7Qk0","fa-shopping-bag":"fa-shopping-bag-3aJIV2etxo0V4kgcaOzew7","fa-shopping-basket":"fa-shopping-basket-2tjThq5SBWMMeu132TTxYC","fa-hashtag":"fa-hashtag-ODWHJjHf-nrbWkYUJOkF4","fa-bluetooth":"fa-bluetooth-28_xj3VM4EiMO72RNnb82O","fa-bluetooth-b":"fa-bluetooth-b-387OIBFTqZMDBBcVK8023C","fa-percent":"fa-percent-BGllo37THO0Z6844GaF_i","fa-gitlab":"fa-gitlab-rNwm9CvoAtydIxqoEBw51","fa-wpbeginner":"fa-wpbeginner-3h35HfgTsLg3jKzWNZ9cly","fa-wpforms":"fa-wpforms-33QeeEhIOI5UAubxpXOnFD","fa-envira":"fa-envira-2YUy6OaWCddgXL3gtEocPZ","fa-universal-access":"fa-universal-access-2vJc_cdxU32vtk9zI8Gpz6","fa-wheelchair-alt":"fa-wheelchair-alt-3rN2H2ID_4Ctz0XrT3oe7H","fa-question-circle-o":"fa-question-circle-o-3O21o-3IpVx4iQDQsyTMns","fa-blind":"fa-blind-XrgnswWAZfxEnJAaxS-4R","fa-audio-description":"fa-audio-description-1F8GwPSVoEliVOEhz-dSEl","fa-volume-control-phone":"fa-volume-control-phone-3ki1KJ5m_JOZt_STLwEY7k","fa-braille":"fa-braille-2PJ40q5Yc635LcW0STPqhq","fa-assistive-listening-systems":"fa-assistive-listening-systems-23R9cRV7ayrpLXKSO07Zp8","fa-asl-interpreting":"fa-asl-interpreting-32pLBkOT4juZpqwtcBPCA_","fa-american-sign-language-interpreting":"fa-american-sign-language-interpreting-2Ti5rAlkn32qqKGNWFsAjU","fa-deafness":"fa-deafness-7XCWcOejad_nl_yh8KzOh","fa-hard-of-hearing":"fa-hard-of-hearing-3jnn5zYYYsTJ1xQxlG2Ok1","fa-deaf":"fa-deaf-35EQH1N8VaZXjNrY5MVlPL","fa-glide":"fa-glide-1HaExe1FlmTk5RB7Fxu1NW","fa-glide-g":"fa-glide-g-kI-Caq_e-D-J6BSraGV0_","fa-signing":"fa-signing-3vHpbl41DUyTi8q8UEQqVz","fa-sign-language":"fa-sign-language-1fWkWinZ5SDCFN3thTTGws","fa-low-vision":"fa-low-vision-2WqW1izocZgVjvUdKpaySd","fa-viadeo":"fa-viadeo-3TBlI_Dg3fPIDK9qrbTzB0","fa-viadeo-square":"fa-viadeo-square-28lABLWSyk_nuHZtKi_yk8","fa-snapchat":"fa-snapchat-1AlXpELpYJhEFysGmMp0EJ","fa-snapchat-ghost":"fa-snapchat-ghost-69BiFYTDjZgUErUlsQvYU","fa-snapchat-square":"fa-snapchat-square-2colSTGlW0XU9cEL5-qXjQ","fa-pied-piper":"fa-pied-piper-2bwIBZtxBPNxnus33PwuD9","fa-first-order":"fa-first-order-3VV3D9RLl2Kxr8h4MSojsI","fa-yoast":"fa-yoast-ZBZAvXOenYRfg1Jptjeby","fa-themeisle":"fa-themeisle-2mRfg7CUXFh-SoV2yVdE2Y","fa-google-plus-circle":"fa-google-plus-circle-2E1pZouoEYKrZggaa_n4gw","fa-google-plus-official":"fa-google-plus-official-ixmrJ0c8d1AcAdNOFZ2bL","fa-fa":"fa-fa-3mGfBjhnOP4s1VECgg17pZ","fa-font-awesome":"fa-font-awesome-3E_-BSjQfM0xkoUK5CRqJL","sr-only":"sr-only-2FV5wkJp9ecb6LooTqxE7w","sr-only-focusable":"sr-only-focusable-2xudnGTQuYmymMsJ9O4Old"};
 
 /***/ },
 /* 185 */,
@@ -13509,24 +13863,53 @@ webpackJsonp([2],[
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"menu-item":"menu-item-3Pi-XziLHaYzft6P3mvF5l","open":"open-7PQfH_ttizuWtfbz810ux","button-dropdown":"button-dropdown-3AfjF-GqW8hz279yU2JPM_","dismiss-modal":"dismiss-modal-2HPI8kwyVlOCtizKPC12FF","errors":"errors-1Fo88ZyAkmckS_y4xQ90hI","warnings":"warnings-Iwfmye13VyOAweLAfy5Kt","successes":"successes-3G5jc9WLaZGhRq6fQr77QT","error":"error-2L3p6ioxtp2DkT6EBFxz73","warning":"warning-2badHJlFbSviZJIlk_JN-1","success":"success-1IyPIsc_jQMQjXXLfDd--l","growl_container":"growl_container-ztNSgKbkI8VaiktIx29NJ","growl":"growl-m0fysUiwQmf0dhuRiQzxl","show":"show-jp0tC49oXSjUfFN8WmQ4i","hide":"hide-1lo87812LM_yJNlbyZ4ILS","fadeInDown":"fadeInDown-1h8CZ60VWfac_Larbx3GsD","status_bar":"status_bar-115p_78BcRxHBx86CMcmdE","status_bar-status":"status_bar-status-zOYCa1ySg-zTQhQkIVf33","tooltip":"tooltip-15FxzRnSUk8Fy7FBAJTKZ1","tooltip-bottom":"tooltip-bottom-k0qqYZq87VM9FjyDpyKOF","tooltip-left":"tooltip-left-3jtoCeVeya_GYravMlYsUl","tooltip-right":"tooltip-right-2-cIOOt4lreG6znN2OcZ-0","tooltip-red":"tooltip-red-LKizXKn4bfpmjp8nialgN","tooltip-orange":"tooltip-orange-RQH3AN2WoPqudUfmhr9F4","tooltip-yellow":"tooltip-yellow-eyHbMMGeqkgGNtdQFY8-K","tooltip-green":"tooltip-green-2h69v4Thc82SfJhfsubEbA","tooltip-blue":"tooltip-blue-hNi31jZLARqy0VEZS9k3M","tooltip-violet":"tooltip-violet-2w0yidCYEsfsOwpRVhc3Kn","tooltip-primary":"tooltip-primary-XIP_BzjwRoiBX1p86-Hj0","tooltip-secondary":"tooltip-secondary-2idLgHZGGX502xeTZBHc7s","fluid":"fluid-VZ7o9pPa6qkvYmJy4TTbm","fluidFixed":"fluidFixed-2AukGEB_pRmti-aBYurmkG","row":"row-1pefQb51Ua-26IysbzERHT","column1":"column1-1DTrg9z4FS_jFLkGuic_tv","column2":"column2-3iFkpEi1x3v-Rdh2xdJem6","column3":"column3-2vm2xMZJIoNkqSFeE_xGi7","column4":"column4-1P9SEq8ZLNnv5-X9Rd5pBe","column5":"column5-2-ZIpLDvjm0U9diKJe5EN","column6":"column6-3bQLSByDovrhzj4NAgNFPZ","column7":"column7-1QsOXUl16K3PmRNF25Ypv_","column8":"column8-4BzIFSLxyRszasSqXczFg","column9":"column9-1DRjR63tZYexQ29zXeZ0Oc","column10":"column10-F040SUobymOJ5IsuEq7Mh","column11":"column11-2e9jr3IOXA3GlnZ7GenTBS","column12":"column12-3QHdB1En2X-apq8ZLeS2xD","left1":"left1-2GmALSK83sgN0j3d9UjFsX","left2":"left2-1DOv8-YaPT3atrmeoaBH1P","left3":"left3-1JgassuiXqx7nZin4Jf7UX","left4":"left4-2ZCsAy0e1FcruX2Gfxw93Q","left5":"left5-3s09Ywux6HPhPrlhHSFaHS","left6":"left6-3KZjEtGBWYxROomkWEQFGN","left7":"left7-2sBey6bACciJ_KvqVkDe0n","left8":"left8-Af5L-RtFwMWGKPJ_qCuig","left9":"left9-3wV2el89gOx_Av0e--Kqu9","left10":"left10-3ueBBY8IoMFbUD3uUu-yn2","left11":"left11-F2BY5-YHUqVVdwz2J7wn0","right1":"right1-2QsSIk2A6bbtGtA5xqGW_r","right2":"right2-2kvK-vTIqOPtYHVLYmMQcK","right3":"right3-3B9fMzFqAHgZRJ_nZ_J93e","right4":"right4-rY6l-p_CdOFV9C5CUzP49","right5":"right5-3Ss11RcErguYG3tsg-ftoE","right6":"right6-15KpxloijvqACKB2ivQAXR","right7":"right7-26UhH0jyJ_XSdPrBX-c86z","right8":"right8-2DzD5sHcCzOD1oGvGzWvqG","right9":"right9-s1EilHihz_fDfoUKjzAWi","right10":"right10-2zAVSOYq90NX_OA2ICDm3y","right11":"right11-1ul7i6ppYHTuMJyFx7yA3_"};
+	module.exports = {"menu-item":"menu-item-3O-c8dTXIqSBJT7I3RwREt","open":"open-2HpBHV6ehBjbhE2FMIkokY","button-dropdown":"button-dropdown-3yU-UQavUy4xVgOu8kvtsZ","dismiss-modal":"dismiss-modal-Fq72gX8aFwS6K4QfWJi7K","errors":"errors-3vYYxFY7rgSVA-Hl57Jv8h","warnings":"warnings-R_UHjygOBcWZAeWYNnFdA","successes":"successes-1t_VzeGm-4aUpRkUf7qhj3","error":"error-18mZLW_SKivs7a1WO9qiw-","warning":"warning-23m6etBJlRBFd-HnO5Gx-v","success":"success-36ZWZXfqvvUR5bsPxD1jeg","growl_container":"growl_container-3mCAfymE10trOxhemBMZjh","growl":"growl-3LkOaAPOV-JVv0gPCNioaK","show":"show-18RYq_1qstc3to2E1Yjtl3","hide":"hide-3lra_BT1WWcfu5U8vcxslu","fadeInDown":"fadeInDown-pFHustFAbN43dhz8z0rW4","status_bar":"status_bar-1SUelCh5CsJETMDbEJzkiO","status_bar-status":"status_bar-status-1mSK-4r9NpBG8PEwYbksBe","tooltip":"tooltip-3CMGAcw41twmEgtJ5a099x","tooltip-bottom":"tooltip-bottom-1hm6yJRlZY5YbgMeD4XZeI","tooltip-left":"tooltip-left-2utogYskgdltlcOQ8uMKld","tooltip-right":"tooltip-right-1ap5s5XcORQdn3xgVecF4T","tooltip-red":"tooltip-red-1Ps3W5DF1aJjx48GJBqmOE","tooltip-orange":"tooltip-orange--EWnD1M6ylfE1rMrt41KO","tooltip-yellow":"tooltip-yellow-3a-6NwFU-FjZ-vKAcJR1bB","tooltip-green":"tooltip-green-3bv4Ka5zgz6pqfE97yF_1c","tooltip-blue":"tooltip-blue-3nVklUqSqfS1C5RYmrfEdv","tooltip-violet":"tooltip-violet-2BamgqtJaUma_y8nISwkUM","tooltip-primary":"tooltip-primary-1jn9-W7x3sqxLK9fHj8kHU","tooltip-secondary":"tooltip-secondary-236tWMfei-vgEnV-ZmU0Ps","alert":"alert-2w81z0oLPluLh36V63UvCz","closeButton":"closeButton-1HZ7VcqMiBZl5gJJK6g4x9"};
 
 /***/ },
 /* 187 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"menu-item":"menu-item-1B41YInmX6Shzh44VMU5kd","open":"open-O-XK3h7d3P9MmC8dSuN9t","button-dropdown":"button-dropdown-23W1nZSRmAbWqF-jtcysPP","dismiss-modal":"dismiss-modal-6CrCHeWT4406amAprZxq7","errors":"errors-2IpXg_lBJ3xMrozpIWi5Dt","warnings":"warnings-3Dm8JKCdVu_Sfxvf3y5PS0","successes":"successes-1z3MSlI42oqXD3L4L0Vf1a","error":"error-3xChCo34bNXkIwkz1Ho9Ce","warning":"warning-25LTzDIwNfZSms4tavBSy5","success":"success-F53-VKI6IonsNoYN1kg3a","growl_container":"growl_container-qprsyAUwhmn-MaHJDR9H","growl":"growl-2WDd1tlEmD1vbl_IYTcYDx","show":"show-1_PnVKJvoONX44qN4yhOUp","hide":"hide-1UGl3_iQ3Qr1pruiW9xP3e","fadeInDown":"fadeInDown-2NBXtkWlG0eHEWKJK0xAht","status_bar":"status_bar-wPxKc2IJgEa0dN3qGN51e","status_bar-status":"status_bar-status-3qcvtbXeUVK-6_4rU2Ewvo","tooltip":"tooltip-1jXt6hfU5XhCrggIB2949I","tooltip-bottom":"tooltip-bottom-7OB6Gj16U74RB6d7bqa8p","tooltip-left":"tooltip-left-2tHGXEWTr2_cWkXxnHNaLc","tooltip-right":"tooltip-right-2idGVKlMbg6SByLyy3zJdM","tooltip-red":"tooltip-red-32cz1fjv9Mt01mr82yqZRL","tooltip-orange":"tooltip-orange-2p92sEk8VUjS_tmK0q29YI","tooltip-yellow":"tooltip-yellow-jPGhUgQn8xVCgSHS2KWEk","tooltip-green":"tooltip-green-3gEcyyDzU-j5AuXw8ENxd3","tooltip-blue":"tooltip-blue-16aJD10M_gTZI1V51SIlIh","tooltip-violet":"tooltip-violet-spWwrSrHJ74Mgqf0vNXre","tooltip-primary":"tooltip-primary-1oJ3___aK2Jf7W6LgVAC5r","tooltip-secondary":"tooltip-secondary-f1z-TefrzCiyofazhsleq","navbar":"navbar-1x32-S2Jdwh7nGllunvYps","navbar-title":"navbar-title-1HDpoFp1_jn8gO4eH5qq3M","active":"active-3fczsTOMeCbVjAFhVY_ElN"};
+	module.exports = {"menu-item":"menu-item-13Q7Y8UtGiz8-06DO7WVOe","open":"open-37j7cbJtWV93n5RBVq-tCH","button-dropdown":"button-dropdown-HZl49p-SqOEo5TdU0LlDd","dismiss-modal":"dismiss-modal-1QFSFLXhyGIFyqQlyi3QjY","errors":"errors-1XpkBeIlxozwgOfvGxIER8","warnings":"warnings-3knszsd5nXkAQsGsM2mvjc","successes":"successes-h-h0Y1mIFwEw5RpELP-rt","error":"error-19vo0y0-2OToZsmm97x9Gl","warning":"warning-1dnMHNKjcRPut_d1sfzsiz","success":"success-2EfNElz7k-u2v4MFo7q0gL","growl_container":"growl_container-1c6y_L_1zGQUy_7csVidRr","growl":"growl-2YTv7y71o1hCYOrmGLfva8","show":"show-3wKX98A7j6eD4l6Ye8WULN","hide":"hide-24a-m9nRYEst1dlZw68oUj","fadeInDown":"fadeInDown-2_FZFOEsSMpuQ7HqjO4dpu","status_bar":"status_bar-258nC_kzyUnYkeGChCt9aP","status_bar-status":"status_bar-status-AyqHlBrNuK4fPiw3H6is1","tooltip":"tooltip-1Ns3k43ndrgcWF03eGCIIf","tooltip-bottom":"tooltip-bottom-2lgDPY9EfUWOnhTPrx1MDN","tooltip-left":"tooltip-left-1f-2NKGU4C2Lfh1wtyZHTs","tooltip-right":"tooltip-right-YyzzZXim8p1uJhUxGeEOj","tooltip-red":"tooltip-red-__gDIwBSnrNu0hqqpbGkI","tooltip-orange":"tooltip-orange-kE8FkTDr5EBH3l5apZsAW","tooltip-yellow":"tooltip-yellow-3F3mU_6NXbIgYSeak073PL","tooltip-green":"tooltip-green-1C7UIAT5iZAWieKJR2wcDZ","tooltip-blue":"tooltip-blue-6YwT1c1L1rC-Dajo03YXk","tooltip-violet":"tooltip-violet-jfQvg_ZtgV373xYsJPHTr","tooltip-primary":"tooltip-primary-xntFPzdxyXEXpKj6_PyfN","tooltip-secondary":"tooltip-secondary-2EUPGgYTdr8xKl4jghdJqu","default":"default-11YURvskoNtSJdLloTR5eB","primary":"primary-_a8Du-alL6DCKk-pTBYIY","plain":"plain-VDgR4cK7QFOglJXECZGed"};
 
 /***/ },
 /* 188 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"menu-item":"menu-item-1bRoDYkjyT3AZn-Pc6CZPU","open":"open-K7D08RFWNRx8MH2EdxQTP","button-dropdown":"button-dropdown-1DE_7oaAURgndujT6El27p","dismiss-modal":"dismiss-modal-3tqbSVkAIySaOxSNabQUiY","errors":"errors-l5dueXJnQcVzOsedTvfD4","warnings":"warnings-3mLj3Lz__R5WEUs_b5N_KQ","successes":"successes-CFbdbW40ex2HoNVl75Mxn","error":"error-1sVNly1p-WRPj3jyU27_F5","warning":"warning-1t90A1qd8hS8BUjRvoBXZE","success":"success-_stPtrQ3UnHfEeR3VXHMo","growl_container":"growl_container-exoBREDR-dKWb6TPzWO2W","growl":"growl-26IirubhblrOLKtgkqsrLo","show":"show-1_FbouJuzXT6HYPNV6x-5Q","hide":"hide-3Bp_sbZ6I55_2nQqYzOfIi","fadeInDown":"fadeInDown-3Q91ptjgqwUehHMZj6mcgB","status_bar":"status_bar-tgxdU3DCNZXAr8kBJFlfc","status_bar-status":"status_bar-status-1dxT9rLOecTOo_TfB0nadZ","tooltip":"tooltip-1YFhobStFizc8QZsozUsB0","tooltip-bottom":"tooltip-bottom-1vTiCsk1R5S0RHXi4FEtSC","tooltip-left":"tooltip-left-1-X2ddQI1_Z_ssgXNTE0zR","tooltip-right":"tooltip-right-3ea_s1oF1I7DCUOAK4_RPb","tooltip-red":"tooltip-red-3SQSKkUOi56OYihtQvcNc9","tooltip-orange":"tooltip-orange-XeVqLi_nMluG4smfMi9n","tooltip-yellow":"tooltip-yellow-1KZP0rfQroy3DkMwNk8ozc","tooltip-green":"tooltip-green-1_EPH0dftBW-NK_4k5-GC","tooltip-blue":"tooltip-blue-LsSW4i5f8CmTSp0ZRyW9D","tooltip-violet":"tooltip-violet-3UyjlwIoQwGiRYPrCCWP3N","tooltip-primary":"tooltip-primary-3EO_ohgkzuEE3sdcOIqtXA","tooltip-secondary":"tooltip-secondary-1YEL818F8rDKm4n7N7_W0O","layout":"layout-23dCOFki3RiQbLBVAHFbpk"};
+	module.exports = {"menu-item":"menu-item-DqNAc9PkyXV_IgAAJqAZ5","open":"open-1XcltmVZAG7Mf8DjZFx3sG","button-dropdown":"button-dropdown-2--Rdwgu34UAg620QffpPd","dismiss-modal":"dismiss-modal-1JyQj0HeXfPbelfL6HVM3A","errors":"errors-2ZNk05CISYnRosd_ZoApIr","warnings":"warnings-3UEwR0MZHut1dp7hw1SCda","successes":"successes-2WhEexHAXDo9ZDjdcfQ008","error":"error-1c7vL7rKC-Uqh4q5ch24SQ","warning":"warning-3d-qOAp2_7mdbEDqPg_6N","success":"success-ndOX1ErwYISRYpfY7zP1r","growl_container":"growl_container-1sQLcMoK5SnfFtum3sOe4_","growl":"growl-3OtJ7NYEPQipBGxvvIE7z_","show":"show-1SZeXRX3_HKsPcYYgoSjzP","hide":"hide-PFGo3ItkBkalsM4EivMzA","fadeInDown":"fadeInDown-33IamQO0ISKd2RD_Low74E","status_bar":"status_bar-3YDKXCEMpKVJeewfmi6R5J","status_bar-status":"status_bar-status-5iNVHjtM5mUhi6GmslJuO","tooltip":"tooltip-13pMlgIfhhnCsQst1k4JRE","tooltip-bottom":"tooltip-bottom-Ypp1YhVZi-z384yBZUv2X","tooltip-left":"tooltip-left-2WMxWsKdiZQ3li1SDI_14h","tooltip-right":"tooltip-right-28SWHVOysFwkAf_1zaBqaR","tooltip-red":"tooltip-red-eFRA7O7tPoxhJbjRLwwzb","tooltip-orange":"tooltip-orange-1-RmQfzzuV0P1EL8Omg0en","tooltip-yellow":"tooltip-yellow-JFGJYMXCa5yB5zTwp5XIN","tooltip-green":"tooltip-green-3U_E4WzQ4TyUktmU0kCwAb","tooltip-blue":"tooltip-blue-UdCmbPMIR4PESLxHYLEpa","tooltip-violet":"tooltip-violet-3nX5Q3TVNiexxvny6-hHmn","tooltip-primary":"tooltip-primary-3asRlppAuwCdJqkD2K5hry","tooltip-secondary":"tooltip-secondary-19Swk_Q5ooJm0gg-mbpQGq","dialog":"dialog-3tjyS7QeDQLfX3mOGqFd7H","closeButton":"closeButton-J-xeYbXxXvVQIt8ZB6h6p","backdrop":"backdrop-3Bse76K2f8iiJOKVFfrXzq","shaker":"shaker-1gQy9Qp6ivXkxE45mhO1PT","shake":"shake-RgvufTFvEiH0baIpGX2ES"};
 
 /***/ },
 /* 189 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"addDecField":"addDecField-30Iu43vYHLuYwhfau3VuOG","button":"button-sdbRwDFM6eHdpPeCJyyE0"};
+
+/***/ },
+/* 190 */,
+/* 191 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"menu-item":"menu-item-3Pi-XziLHaYzft6P3mvF5l","open":"open-7PQfH_ttizuWtfbz810ux","button-dropdown":"button-dropdown-3AfjF-GqW8hz279yU2JPM_","dismiss-modal":"dismiss-modal-2HPI8kwyVlOCtizKPC12FF","errors":"errors-1Fo88ZyAkmckS_y4xQ90hI","warnings":"warnings-Iwfmye13VyOAweLAfy5Kt","successes":"successes-3G5jc9WLaZGhRq6fQr77QT","error":"error-2L3p6ioxtp2DkT6EBFxz73","warning":"warning-2badHJlFbSviZJIlk_JN-1","success":"success-1IyPIsc_jQMQjXXLfDd--l","growl_container":"growl_container-ztNSgKbkI8VaiktIx29NJ","growl":"growl-m0fysUiwQmf0dhuRiQzxl","show":"show-jp0tC49oXSjUfFN8WmQ4i","hide":"hide-1lo87812LM_yJNlbyZ4ILS","fadeInDown":"fadeInDown-1h8CZ60VWfac_Larbx3GsD","status_bar":"status_bar-115p_78BcRxHBx86CMcmdE","status_bar-status":"status_bar-status-zOYCa1ySg-zTQhQkIVf33","tooltip":"tooltip-15FxzRnSUk8Fy7FBAJTKZ1","tooltip-bottom":"tooltip-bottom-k0qqYZq87VM9FjyDpyKOF","tooltip-left":"tooltip-left-3jtoCeVeya_GYravMlYsUl","tooltip-right":"tooltip-right-2-cIOOt4lreG6znN2OcZ-0","tooltip-red":"tooltip-red-LKizXKn4bfpmjp8nialgN","tooltip-orange":"tooltip-orange-RQH3AN2WoPqudUfmhr9F4","tooltip-yellow":"tooltip-yellow-eyHbMMGeqkgGNtdQFY8-K","tooltip-green":"tooltip-green-2h69v4Thc82SfJhfsubEbA","tooltip-blue":"tooltip-blue-hNi31jZLARqy0VEZS9k3M","tooltip-violet":"tooltip-violet-2w0yidCYEsfsOwpRVhc3Kn","tooltip-primary":"tooltip-primary-XIP_BzjwRoiBX1p86-Hj0","tooltip-secondary":"tooltip-secondary-2idLgHZGGX502xeTZBHc7s","fluid":"fluid-VZ7o9pPa6qkvYmJy4TTbm","fluidFixed":"fluidFixed-2AukGEB_pRmti-aBYurmkG","row":"row-1pefQb51Ua-26IysbzERHT","column1":"column1-1DTrg9z4FS_jFLkGuic_tv","column2":"column2-3iFkpEi1x3v-Rdh2xdJem6","column3":"column3-2vm2xMZJIoNkqSFeE_xGi7","column4":"column4-1P9SEq8ZLNnv5-X9Rd5pBe","column5":"column5-2-ZIpLDvjm0U9diKJe5EN","column6":"column6-3bQLSByDovrhzj4NAgNFPZ","column7":"column7-1QsOXUl16K3PmRNF25Ypv_","column8":"column8-4BzIFSLxyRszasSqXczFg","column9":"column9-1DRjR63tZYexQ29zXeZ0Oc","column10":"column10-F040SUobymOJ5IsuEq7Mh","column11":"column11-2e9jr3IOXA3GlnZ7GenTBS","column12":"column12-3QHdB1En2X-apq8ZLeS2xD","left1":"left1-2GmALSK83sgN0j3d9UjFsX","left2":"left2-1DOv8-YaPT3atrmeoaBH1P","left3":"left3-1JgassuiXqx7nZin4Jf7UX","left4":"left4-2ZCsAy0e1FcruX2Gfxw93Q","left5":"left5-3s09Ywux6HPhPrlhHSFaHS","left6":"left6-3KZjEtGBWYxROomkWEQFGN","left7":"left7-2sBey6bACciJ_KvqVkDe0n","left8":"left8-Af5L-RtFwMWGKPJ_qCuig","left9":"left9-3wV2el89gOx_Av0e--Kqu9","left10":"left10-3ueBBY8IoMFbUD3uUu-yn2","left11":"left11-F2BY5-YHUqVVdwz2J7wn0","right1":"right1-2QsSIk2A6bbtGtA5xqGW_r","right2":"right2-2kvK-vTIqOPtYHVLYmMQcK","right3":"right3-3B9fMzFqAHgZRJ_nZ_J93e","right4":"right4-rY6l-p_CdOFV9C5CUzP49","right5":"right5-3Ss11RcErguYG3tsg-ftoE","right6":"right6-15KpxloijvqACKB2ivQAXR","right7":"right7-26UhH0jyJ_XSdPrBX-c86z","right8":"right8-2DzD5sHcCzOD1oGvGzWvqG","right9":"right9-s1EilHihz_fDfoUKjzAWi","right10":"right10-2zAVSOYq90NX_OA2ICDm3y","right11":"right11-1ul7i6ppYHTuMJyFx7yA3_"};
+
+/***/ },
+/* 192 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"menu-item":"menu-item-1B41YInmX6Shzh44VMU5kd","open":"open-O-XK3h7d3P9MmC8dSuN9t","button-dropdown":"button-dropdown-23W1nZSRmAbWqF-jtcysPP","dismiss-modal":"dismiss-modal-6CrCHeWT4406amAprZxq7","errors":"errors-2IpXg_lBJ3xMrozpIWi5Dt","warnings":"warnings-3Dm8JKCdVu_Sfxvf3y5PS0","successes":"successes-1z3MSlI42oqXD3L4L0Vf1a","error":"error-3xChCo34bNXkIwkz1Ho9Ce","warning":"warning-25LTzDIwNfZSms4tavBSy5","success":"success-F53-VKI6IonsNoYN1kg3a","growl_container":"growl_container-qprsyAUwhmn-MaHJDR9H","growl":"growl-2WDd1tlEmD1vbl_IYTcYDx","show":"show-1_PnVKJvoONX44qN4yhOUp","hide":"hide-1UGl3_iQ3Qr1pruiW9xP3e","fadeInDown":"fadeInDown-2NBXtkWlG0eHEWKJK0xAht","status_bar":"status_bar-wPxKc2IJgEa0dN3qGN51e","status_bar-status":"status_bar-status-3qcvtbXeUVK-6_4rU2Ewvo","tooltip":"tooltip-1jXt6hfU5XhCrggIB2949I","tooltip-bottom":"tooltip-bottom-7OB6Gj16U74RB6d7bqa8p","tooltip-left":"tooltip-left-2tHGXEWTr2_cWkXxnHNaLc","tooltip-right":"tooltip-right-2idGVKlMbg6SByLyy3zJdM","tooltip-red":"tooltip-red-32cz1fjv9Mt01mr82yqZRL","tooltip-orange":"tooltip-orange-2p92sEk8VUjS_tmK0q29YI","tooltip-yellow":"tooltip-yellow-jPGhUgQn8xVCgSHS2KWEk","tooltip-green":"tooltip-green-3gEcyyDzU-j5AuXw8ENxd3","tooltip-blue":"tooltip-blue-16aJD10M_gTZI1V51SIlIh","tooltip-violet":"tooltip-violet-spWwrSrHJ74Mgqf0vNXre","tooltip-primary":"tooltip-primary-1oJ3___aK2Jf7W6LgVAC5r","tooltip-secondary":"tooltip-secondary-f1z-TefrzCiyofazhsleq","navbar":"navbar-1x32-S2Jdwh7nGllunvYps","navbar-title":"navbar-title-1HDpoFp1_jn8gO4eH5qq3M","active":"active-3fczsTOMeCbVjAFhVY_ElN"};
+
+/***/ },
+/* 193 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"menu-item":"menu-item-1bRoDYkjyT3AZn-Pc6CZPU","open":"open-K7D08RFWNRx8MH2EdxQTP","button-dropdown":"button-dropdown-1DE_7oaAURgndujT6El27p","dismiss-modal":"dismiss-modal-3tqbSVkAIySaOxSNabQUiY","errors":"errors-l5dueXJnQcVzOsedTvfD4","warnings":"warnings-3mLj3Lz__R5WEUs_b5N_KQ","successes":"successes-CFbdbW40ex2HoNVl75Mxn","error":"error-1sVNly1p-WRPj3jyU27_F5","warning":"warning-1t90A1qd8hS8BUjRvoBXZE","success":"success-_stPtrQ3UnHfEeR3VXHMo","growl_container":"growl_container-exoBREDR-dKWb6TPzWO2W","growl":"growl-26IirubhblrOLKtgkqsrLo","show":"show-1_FbouJuzXT6HYPNV6x-5Q","hide":"hide-3Bp_sbZ6I55_2nQqYzOfIi","fadeInDown":"fadeInDown-3Q91ptjgqwUehHMZj6mcgB","status_bar":"status_bar-tgxdU3DCNZXAr8kBJFlfc","status_bar-status":"status_bar-status-1dxT9rLOecTOo_TfB0nadZ","tooltip":"tooltip-1YFhobStFizc8QZsozUsB0","tooltip-bottom":"tooltip-bottom-1vTiCsk1R5S0RHXi4FEtSC","tooltip-left":"tooltip-left-1-X2ddQI1_Z_ssgXNTE0zR","tooltip-right":"tooltip-right-3ea_s1oF1I7DCUOAK4_RPb","tooltip-red":"tooltip-red-3SQSKkUOi56OYihtQvcNc9","tooltip-orange":"tooltip-orange-XeVqLi_nMluG4smfMi9n","tooltip-yellow":"tooltip-yellow-1KZP0rfQroy3DkMwNk8ozc","tooltip-green":"tooltip-green-1_EPH0dftBW-NK_4k5-GC","tooltip-blue":"tooltip-blue-LsSW4i5f8CmTSp0ZRyW9D","tooltip-violet":"tooltip-violet-3UyjlwIoQwGiRYPrCCWP3N","tooltip-primary":"tooltip-primary-3EO_ohgkzuEE3sdcOIqtXA","tooltip-secondary":"tooltip-secondary-1YEL818F8rDKm4n7N7_W0O","layout":"layout-23dCOFki3RiQbLBVAHFbpk","link":"link-27I_f2R1GC5ZAjDvyS3sT5","logoutLink":"logoutLink-3978p83UuC1N1Qc4RMsuht link-27I_f2R1GC5ZAjDvyS3sT5","offline":"offline-35hlto1JZNxKz6I1TbYsOF"};
+
+/***/ },
+/* 194 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -13587,7 +13970,7 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 190 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13595,7 +13978,7 @@ webpackJsonp([2],[
 	exports.__esModule = true;
 	exports.readState = exports.saveState = undefined;
 	
-	var _warning = __webpack_require__(23);
+	var _warning = __webpack_require__(24);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -13677,7 +14060,7 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 191 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13685,7 +14068,7 @@ webpackJsonp([2],[
 	exports.__esModule = true;
 	exports.replaceLocation = exports.pushLocation = exports.getCurrentLocation = exports.go = exports.getUserConfirmation = undefined;
 	
-	var _BrowserProtocol = __webpack_require__(61);
+	var _BrowserProtocol = __webpack_require__(65);
 	
 	Object.defineProperty(exports, 'getUserConfirmation', {
 	  enumerable: true,
@@ -13700,9 +14083,9 @@ webpackJsonp([2],[
 	  }
 	});
 	
-	var _LocationUtils = __webpack_require__(32);
+	var _LocationUtils = __webpack_require__(36);
 	
-	var _PathUtils = __webpack_require__(21);
+	var _PathUtils = __webpack_require__(22);
 	
 	var getCurrentLocation = exports.getCurrentLocation = function getCurrentLocation() {
 	  return (0, _LocationUtils.createLocation)(window.location);
@@ -13719,7 +14102,7 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 192 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13728,23 +14111,23 @@ webpackJsonp([2],[
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _invariant = __webpack_require__(64);
+	var _invariant = __webpack_require__(68);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
-	var _ExecutionEnvironment = __webpack_require__(63);
+	var _ExecutionEnvironment = __webpack_require__(67);
 	
-	var _BrowserProtocol = __webpack_require__(61);
+	var _BrowserProtocol = __webpack_require__(65);
 	
 	var BrowserProtocol = _interopRequireWildcard(_BrowserProtocol);
 	
-	var _RefreshProtocol = __webpack_require__(191);
+	var _RefreshProtocol = __webpack_require__(196);
 	
 	var RefreshProtocol = _interopRequireWildcard(_RefreshProtocol);
 	
-	var _DOMUtils = __webpack_require__(62);
+	var _DOMUtils = __webpack_require__(66);
 	
-	var _createHistory = __webpack_require__(193);
+	var _createHistory = __webpack_require__(198);
 	
 	var _createHistory2 = _interopRequireDefault(_createHistory);
 	
@@ -13818,24 +14201,24 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 193 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _AsyncUtils = __webpack_require__(189);
+	var _AsyncUtils = __webpack_require__(194);
 	
-	var _PathUtils = __webpack_require__(21);
+	var _PathUtils = __webpack_require__(22);
 	
-	var _runTransitionHook = __webpack_require__(194);
+	var _runTransitionHook = __webpack_require__(199);
 	
 	var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
 	
-	var _Actions = __webpack_require__(60);
+	var _Actions = __webpack_require__(64);
 	
-	var _LocationUtils = __webpack_require__(32);
+	var _LocationUtils = __webpack_require__(36);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -13999,14 +14382,14 @@ webpackJsonp([2],[
 	exports.default = createHistory;
 
 /***/ },
-/* 194 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _warning = __webpack_require__(23);
+	var _warning = __webpack_require__(24);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -14027,7 +14410,7 @@ webpackJsonp([2],[
 	exports.default = runTransitionHook;
 
 /***/ },
-/* 195 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14038,8 +14421,8 @@ webpackJsonp([2],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var isArguments = __webpack_require__(68),
-	    isArray = __webpack_require__(69);
+	var isArguments = __webpack_require__(72),
+	    isArray = __webpack_require__(73);
 	
 	/**
 	 * Checks if `value` is object-like.
@@ -14164,7 +14547,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 196 */
+/* 201 */
 /***/ function(module, exports) {
 
 	/**
@@ -14218,7 +14601,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 197 */
+/* 202 */
 /***/ function(module, exports) {
 
 	/**
@@ -14281,7 +14664,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 198 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14292,9 +14675,9 @@ webpackJsonp([2],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseIndexOf = __webpack_require__(197),
-	    cacheIndexOf = __webpack_require__(200),
-	    createCache = __webpack_require__(201);
+	var baseIndexOf = __webpack_require__(202),
+	    cacheIndexOf = __webpack_require__(205),
+	    createCache = __webpack_require__(206);
 	
 	/** Used as the size to enable large array optimizations. */
 	var LARGE_ARRAY_SIZE = 200;
@@ -14355,7 +14738,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 199 */
+/* 204 */
 /***/ function(module, exports) {
 
 	/**
@@ -14426,7 +14809,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 200 */
+/* 205 */
 /***/ function(module, exports) {
 
 	/**
@@ -14485,7 +14868,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 201 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -14496,7 +14879,7 @@ webpackJsonp([2],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(65);
+	var getNative = __webpack_require__(69);
 	
 	/** Native method references. */
 	var Set = getNative(global, 'Set');
@@ -14583,7 +14966,7 @@ webpackJsonp([2],[
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 202 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14594,7 +14977,7 @@ webpackJsonp([2],[
 	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var root = __webpack_require__(33);
+	var root = __webpack_require__(37);
 	
 	/** Used as references for various `Number` constants. */
 	var INFINITY = 1 / 0;
@@ -14772,7 +15155,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 203 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14783,8 +15166,8 @@ webpackJsonp([2],[
 	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var deburr = __webpack_require__(202),
-	    words = __webpack_require__(207);
+	var deburr = __webpack_require__(207),
+	    words = __webpack_require__(212);
 	
 	/**
 	 * A specialized version of `_.reduce` for arrays without support for
@@ -14850,7 +15233,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 204 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14861,9 +15244,9 @@ webpackJsonp([2],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(65),
-	    isArguments = __webpack_require__(68),
-	    isArray = __webpack_require__(69);
+	var getNative = __webpack_require__(69),
+	    isArguments = __webpack_require__(72),
+	    isArray = __webpack_require__(73);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -15092,7 +15475,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 205 */
+/* 210 */
 /***/ function(module, exports) {
 
 	/**
@@ -15165,7 +15548,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 206 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15176,9 +15559,9 @@ webpackJsonp([2],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseFlatten = __webpack_require__(195),
-	    baseUniq = __webpack_require__(198),
-	    restParam = __webpack_require__(205);
+	var baseFlatten = __webpack_require__(200),
+	    baseUniq = __webpack_require__(203),
+	    restParam = __webpack_require__(210);
 	
 	/**
 	 * Creates an array of unique values, in order, of the provided arrays using
@@ -15206,7 +15589,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 207 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15217,7 +15600,7 @@ webpackJsonp([2],[
 	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var root = __webpack_require__(33);
+	var root = __webpack_require__(37);
 	
 	/** Used as references for various `Number` constants. */
 	var INFINITY = 1 / 0;
@@ -15410,7 +15793,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 208 */
+/* 213 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -15576,7 +15959,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 209 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15586,7 +15969,7 @@ webpackJsonp([2],[
 	});
 	exports.default = classNameFromVNode;
 	
-	var _selectorParser2 = __webpack_require__(70);
+	var _selectorParser2 = __webpack_require__(74);
 	
 	var _selectorParser3 = _interopRequireDefault(_selectorParser2);
 	
@@ -15622,7 +16005,7 @@ webpackJsonp([2],[
 	}
 
 /***/ },
-/* 210 */
+/* 215 */
 /***/ function(module, exports) {
 
 	
@@ -15649,22 +16032,22 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 211 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var init = __webpack_require__(212);
+	var init = __webpack_require__(217);
 	
-	module.exports = init([__webpack_require__(213), __webpack_require__(214)]);
+	module.exports = init([__webpack_require__(218), __webpack_require__(219)]);
 
 /***/ },
-/* 212 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var parseSelector = __webpack_require__(71);
-	var VOID_ELEMENTS = __webpack_require__(215);
-	var CONTAINER_ELEMENTS = __webpack_require__(210);
+	var parseSelector = __webpack_require__(75);
+	var VOID_ELEMENTS = __webpack_require__(220);
+	var CONTAINER_ELEMENTS = __webpack_require__(215);
 	
 	module.exports = function init(modules) {
 	  function parse(data) {
@@ -15722,15 +16105,15 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 213 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var forOwn = __webpack_require__(67);
-	var escape = __webpack_require__(66);
-	var union = __webpack_require__(206);
+	var forOwn = __webpack_require__(71);
+	var escape = __webpack_require__(70);
+	var union = __webpack_require__(211);
 	
-	var parseSelector = __webpack_require__(71);
+	var parseSelector = __webpack_require__(75);
 	
 	// data.attrs, data.props, data.class
 	
@@ -15791,14 +16174,14 @@ webpackJsonp([2],[
 	}
 
 /***/ },
-/* 214 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var forOwn = __webpack_require__(67);
-	var escape = __webpack_require__(66);
-	var kebabCase = __webpack_require__(203);
+	var forOwn = __webpack_require__(71);
+	var escape = __webpack_require__(70);
+	var kebabCase = __webpack_require__(208);
 	
 	// data.style
 	
@@ -15822,7 +16205,7 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 215 */
+/* 220 */
 /***/ function(module, exports) {
 
 	
@@ -15847,11 +16230,11 @@ webpackJsonp([2],[
 	};
 
 /***/ },
-/* 216 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var VNode = __webpack_require__(35);
-	var is = __webpack_require__(22);
+	var VNode = __webpack_require__(39);
+	var is = __webpack_require__(23);
 	
 	function addNS(data, children) {
 	  data.ns = 'http://www.w3.org/2000/svg';
@@ -15886,7 +16269,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 217 */
+/* 222 */
 /***/ function(module, exports) {
 
 	function createElement(tagName){
@@ -15946,7 +16329,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 218 */
+/* 223 */
 /***/ function(module, exports) {
 
 	function updateDataset(oldVnode, vnode) {
@@ -15971,16 +16354,16 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 219 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// jshint newcap: false
 	/* global require, module, document, Node */
 	'use strict';
 	
-	var VNode = __webpack_require__(35);
-	var is = __webpack_require__(22);
-	var domApi = __webpack_require__(217);
+	var VNode = __webpack_require__(39);
+	var is = __webpack_require__(23);
+	var domApi = __webpack_require__(222);
 	
 	function isUndef(s) { return s === undefined; }
 	function isDef(s) { return s !== undefined; }
@@ -16235,10 +16618,10 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 220 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var h = __webpack_require__(216);
+	var h = __webpack_require__(221);
 	
 	function copyToThunk(vnode, thunk) {
 	  thunk.elm = vnode.elm;
@@ -16287,7 +16670,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 221 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16304,9 +16687,9 @@ webpackJsonp([2],[
 	  root = this;
 	}
 	
-	var Emitter = __webpack_require__(137);
-	var requestBase = __webpack_require__(222);
-	var isObject = __webpack_require__(78);
+	var Emitter = __webpack_require__(140);
+	var requestBase = __webpack_require__(227);
+	var isObject = __webpack_require__(82);
 	
 	/**
 	 * Noop.
@@ -16318,7 +16701,7 @@ webpackJsonp([2],[
 	 * Expose `request`.
 	 */
 	
-	var request = module.exports = __webpack_require__(223).bind(null, Request);
+	var request = module.exports = __webpack_require__(228).bind(null, Request);
 	
 	/**
 	 * Determine XHR.
@@ -17267,13 +17650,13 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 222 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module of mixed-in functions shared between node and client code
 	 */
-	var isObject = __webpack_require__(78);
+	var isObject = __webpack_require__(82);
 	
 	/**
 	 * Clear previous timeout.
@@ -17620,7 +18003,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 223 */
+/* 228 */
 /***/ function(module, exports) {
 
 	// The node and browser modules expose versions of this with the
@@ -17658,7 +18041,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 224 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17667,7 +18050,7 @@ webpackJsonp([2],[
 	  value: true
 	});
 	
-	var _util = __webpack_require__(225);
+	var _util = __webpack_require__(230);
 	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
@@ -17777,7 +18160,7 @@ webpackJsonp([2],[
 	exports.default = switchPath;
 
 /***/ },
-/* 225 */
+/* 230 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -17844,11 +18227,6 @@ webpackJsonp([2],[
 	}
 
 /***/ },
-/* 226 */,
-/* 227 */,
-/* 228 */,
-/* 229 */,
-/* 230 */,
 /* 231 */,
 /* 232 */,
 /* 233 */,
@@ -17893,7 +18271,12 @@ webpackJsonp([2],[
 /* 272 */,
 /* 273 */,
 /* 274 */,
-/* 275 */
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -17907,6 +18290,2862 @@ webpackJsonp([2],[
 		return module;
 	}
 
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var core_1 = __webpack_require__(25);
+	var DOMEventProducer = (function () {
+	    function DOMEventProducer(node, eventType, useCapture) {
+	        this.node = node;
+	        this.eventType = eventType;
+	        this.useCapture = useCapture;
+	        this.type = 'fromEvent';
+	    }
+	    DOMEventProducer.prototype._start = function (out) {
+	        this.listener = function (e) { return out._n(e); };
+	        this.node.addEventListener(this.eventType, this.listener, this.useCapture);
+	    };
+	    DOMEventProducer.prototype._stop = function () {
+	        this.node.removeEventListener(this.eventType, this.listener, this.useCapture);
+	        this.listener = null;
+	    };
+	    return DOMEventProducer;
+	}());
+	exports.DOMEventProducer = DOMEventProducer;
+	var NodeEventProducer = (function () {
+	    function NodeEventProducer(node, eventName) {
+	        this.node = node;
+	        this.eventName = eventName;
+	        this.type = 'fromEvent';
+	    }
+	    NodeEventProducer.prototype._start = function (out) {
+	        this.listener = function () {
+	            var args = [];
+	            for (var _i = 0; _i < arguments.length; _i++) {
+	                args[_i - 0] = arguments[_i];
+	            }
+	            return (args.length > 1) ? out._n(args) : out._n(args[0]);
+	        };
+	        this.node.addListener(this.eventName, this.listener);
+	    };
+	    NodeEventProducer.prototype._stop = function () {
+	        this.node.removeListener(this.eventName, this.listener);
+	        this.listener = null;
+	    };
+	    return NodeEventProducer;
+	}());
+	exports.NodeEventProducer = NodeEventProducer;
+	function isEmitter(element) {
+	    return element.emit && element.addListener;
+	}
+	/**
+	 * Creates a stream based on either:
+	 * - DOM events with the name `eventName` from a provided target node
+	 * - Events with the name `eventName` from a provided NodeJS EventEmitter
+	 *
+	 * When creating a stream from EventEmitters, if the source event has more than
+	 * one argument all the arguments will be aggregated into an array in the
+	 * result stream.
+	 *
+	 * Marble diagram:
+	 *
+	 * ```text
+	 *   fromEvent(element, eventName)
+	 * ---ev--ev----ev---------------
+	 * ```
+	 *
+	 * Examples:
+	 *
+	 * ```js
+	 * import fromEvent from 'xstream/extra/fromEvent'
+	 *
+	 * const stream = fromEvent(document.querySelector('.button'), 'click')
+	 *   .mapTo('Button clicked!')
+	 *
+	 * stream.addListener({
+	 *   next: i => console.log(i),
+	 *   error: err => console.error(err),
+	 *   complete: () => console.log('completed')
+	 * })
+	 * ```
+	 *
+	 * ```text
+	 * > 'Button clicked!'
+	 * > 'Button clicked!'
+	 * > 'Button clicked!'
+	 * ```
+	 *
+	 * ```js
+	 * import fromEvent from 'xstream/extra/fromEvent'
+	 * import {EventEmitter} from 'events'
+	 *
+	 * const MyEmitter = new EventEmitter()
+	 * const stream = fromEvent(MyEmitter, 'foo')
+	 *
+	 * stream.addListener({
+	 *   next: i => console.log(i),
+	 *   error: err => console.error(err),
+	 *   complete: () => console.log('completed')
+	 * })
+	 *
+	 * MyEmitter.emit('foo', 'bar')
+	 * ```
+	 *
+	 * ```text
+	 * > 'bar'
+	 * ```
+	 *
+	 * ```js
+	 * import fromEvent from 'xstream/extra/fromEvent'
+	 * import {EventEmitter} from 'events'
+	 *
+	 * const MyEmitter = new EventEmitter()
+	 * const stream = fromEvent(MyEmitter, 'foo')
+	 *
+	 * stream.addListener({
+	 *   next: i => console.log(i),
+	 *   error: err => console.error(err),
+	 *   complete: () => console.log('completed')
+	 * })
+	 *
+	 * MyEmitter.emit('foo', 'bar', 'baz', 'buzz')
+	 * ```
+	 *
+	 * ```text
+	 * > ['bar', 'baz', 'buzz']
+	 * ```
+	 *
+	 * @param {EventTarget|EventEmitter} element The element upon which to listen.
+	 * @param {string} eventName The name of the event for which to listen.
+	 * @param {boolean?} useCapture An optional boolean that indicates that events of
+	 * this type will be dispatched to the registered listener before being
+	 * dispatched to any EventTarget beneath it in the DOM tree. Defaults to false.
+	 * @return {Stream}
+	 */
+	function fromEvent(element, eventName, useCapture) {
+	    if (useCapture === void 0) { useCapture = false; }
+	    if (isEmitter(element)) {
+	        return new core_1.Stream(new NodeEventProducer(element, eventName));
+	    }
+	    else {
+	        return new core_1.Stream(new DOMEventProducer(element, eventName, useCapture));
+	    }
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = fromEvent;
+	//# sourceMappingURL=fromEvent.js.map
+
+/***/ },
+/* 282 */,
+/* 283 */,
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*! Hammer.JS - v2.0.7 - 2016-04-22
+	 * http://hammerjs.github.io/
+	 *
+	 * Copyright (c) 2016 Jorik Tangelder;
+	 * Licensed under the MIT license */
+	(function(window, document, exportName, undefined) {
+	  'use strict';
+	
+	var VENDOR_PREFIXES = ['', 'webkit', 'Moz', 'MS', 'ms', 'o'];
+	var TEST_ELEMENT = document.createElement('div');
+	
+	var TYPE_FUNCTION = 'function';
+	
+	var round = Math.round;
+	var abs = Math.abs;
+	var now = Date.now;
+	
+	/**
+	 * set a timeout with a given scope
+	 * @param {Function} fn
+	 * @param {Number} timeout
+	 * @param {Object} context
+	 * @returns {number}
+	 */
+	function setTimeoutContext(fn, timeout, context) {
+	    return setTimeout(bindFn(fn, context), timeout);
+	}
+	
+	/**
+	 * if the argument is an array, we want to execute the fn on each entry
+	 * if it aint an array we don't want to do a thing.
+	 * this is used by all the methods that accept a single and array argument.
+	 * @param {*|Array} arg
+	 * @param {String} fn
+	 * @param {Object} [context]
+	 * @returns {Boolean}
+	 */
+	function invokeArrayArg(arg, fn, context) {
+	    if (Array.isArray(arg)) {
+	        each(arg, context[fn], context);
+	        return true;
+	    }
+	    return false;
+	}
+	
+	/**
+	 * walk objects and arrays
+	 * @param {Object} obj
+	 * @param {Function} iterator
+	 * @param {Object} context
+	 */
+	function each(obj, iterator, context) {
+	    var i;
+	
+	    if (!obj) {
+	        return;
+	    }
+	
+	    if (obj.forEach) {
+	        obj.forEach(iterator, context);
+	    } else if (obj.length !== undefined) {
+	        i = 0;
+	        while (i < obj.length) {
+	            iterator.call(context, obj[i], i, obj);
+	            i++;
+	        }
+	    } else {
+	        for (i in obj) {
+	            obj.hasOwnProperty(i) && iterator.call(context, obj[i], i, obj);
+	        }
+	    }
+	}
+	
+	/**
+	 * wrap a method with a deprecation warning and stack trace
+	 * @param {Function} method
+	 * @param {String} name
+	 * @param {String} message
+	 * @returns {Function} A new function wrapping the supplied method.
+	 */
+	function deprecate(method, name, message) {
+	    var deprecationMessage = 'DEPRECATED METHOD: ' + name + '\n' + message + ' AT \n';
+	    return function() {
+	        var e = new Error('get-stack-trace');
+	        var stack = e && e.stack ? e.stack.replace(/^[^\(]+?[\n$]/gm, '')
+	            .replace(/^\s+at\s+/gm, '')
+	            .replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@') : 'Unknown Stack Trace';
+	
+	        var log = window.console && (window.console.warn || window.console.log);
+	        if (log) {
+	            log.call(window.console, deprecationMessage, stack);
+	        }
+	        return method.apply(this, arguments);
+	    };
+	}
+	
+	/**
+	 * extend object.
+	 * means that properties in dest will be overwritten by the ones in src.
+	 * @param {Object} target
+	 * @param {...Object} objects_to_assign
+	 * @returns {Object} target
+	 */
+	var assign;
+	if (typeof Object.assign !== 'function') {
+	    assign = function assign(target) {
+	        if (target === undefined || target === null) {
+	            throw new TypeError('Cannot convert undefined or null to object');
+	        }
+	
+	        var output = Object(target);
+	        for (var index = 1; index < arguments.length; index++) {
+	            var source = arguments[index];
+	            if (source !== undefined && source !== null) {
+	                for (var nextKey in source) {
+	                    if (source.hasOwnProperty(nextKey)) {
+	                        output[nextKey] = source[nextKey];
+	                    }
+	                }
+	            }
+	        }
+	        return output;
+	    };
+	} else {
+	    assign = Object.assign;
+	}
+	
+	/**
+	 * extend object.
+	 * means that properties in dest will be overwritten by the ones in src.
+	 * @param {Object} dest
+	 * @param {Object} src
+	 * @param {Boolean} [merge=false]
+	 * @returns {Object} dest
+	 */
+	var extend = deprecate(function extend(dest, src, merge) {
+	    var keys = Object.keys(src);
+	    var i = 0;
+	    while (i < keys.length) {
+	        if (!merge || (merge && dest[keys[i]] === undefined)) {
+	            dest[keys[i]] = src[keys[i]];
+	        }
+	        i++;
+	    }
+	    return dest;
+	}, 'extend', 'Use `assign`.');
+	
+	/**
+	 * merge the values from src in the dest.
+	 * means that properties that exist in dest will not be overwritten by src
+	 * @param {Object} dest
+	 * @param {Object} src
+	 * @returns {Object} dest
+	 */
+	var merge = deprecate(function merge(dest, src) {
+	    return extend(dest, src, true);
+	}, 'merge', 'Use `assign`.');
+	
+	/**
+	 * simple class inheritance
+	 * @param {Function} child
+	 * @param {Function} base
+	 * @param {Object} [properties]
+	 */
+	function inherit(child, base, properties) {
+	    var baseP = base.prototype,
+	        childP;
+	
+	    childP = child.prototype = Object.create(baseP);
+	    childP.constructor = child;
+	    childP._super = baseP;
+	
+	    if (properties) {
+	        assign(childP, properties);
+	    }
+	}
+	
+	/**
+	 * simple function bind
+	 * @param {Function} fn
+	 * @param {Object} context
+	 * @returns {Function}
+	 */
+	function bindFn(fn, context) {
+	    return function boundFn() {
+	        return fn.apply(context, arguments);
+	    };
+	}
+	
+	/**
+	 * let a boolean value also be a function that must return a boolean
+	 * this first item in args will be used as the context
+	 * @param {Boolean|Function} val
+	 * @param {Array} [args]
+	 * @returns {Boolean}
+	 */
+	function boolOrFn(val, args) {
+	    if (typeof val == TYPE_FUNCTION) {
+	        return val.apply(args ? args[0] || undefined : undefined, args);
+	    }
+	    return val;
+	}
+	
+	/**
+	 * use the val2 when val1 is undefined
+	 * @param {*} val1
+	 * @param {*} val2
+	 * @returns {*}
+	 */
+	function ifUndefined(val1, val2) {
+	    return (val1 === undefined) ? val2 : val1;
+	}
+	
+	/**
+	 * addEventListener with multiple events at once
+	 * @param {EventTarget} target
+	 * @param {String} types
+	 * @param {Function} handler
+	 */
+	function addEventListeners(target, types, handler) {
+	    each(splitStr(types), function(type) {
+	        target.addEventListener(type, handler, false);
+	    });
+	}
+	
+	/**
+	 * removeEventListener with multiple events at once
+	 * @param {EventTarget} target
+	 * @param {String} types
+	 * @param {Function} handler
+	 */
+	function removeEventListeners(target, types, handler) {
+	    each(splitStr(types), function(type) {
+	        target.removeEventListener(type, handler, false);
+	    });
+	}
+	
+	/**
+	 * find if a node is in the given parent
+	 * @method hasParent
+	 * @param {HTMLElement} node
+	 * @param {HTMLElement} parent
+	 * @return {Boolean} found
+	 */
+	function hasParent(node, parent) {
+	    while (node) {
+	        if (node == parent) {
+	            return true;
+	        }
+	        node = node.parentNode;
+	    }
+	    return false;
+	}
+	
+	/**
+	 * small indexOf wrapper
+	 * @param {String} str
+	 * @param {String} find
+	 * @returns {Boolean} found
+	 */
+	function inStr(str, find) {
+	    return str.indexOf(find) > -1;
+	}
+	
+	/**
+	 * split string on whitespace
+	 * @param {String} str
+	 * @returns {Array} words
+	 */
+	function splitStr(str) {
+	    return str.trim().split(/\s+/g);
+	}
+	
+	/**
+	 * find if a array contains the object using indexOf or a simple polyFill
+	 * @param {Array} src
+	 * @param {String} find
+	 * @param {String} [findByKey]
+	 * @return {Boolean|Number} false when not found, or the index
+	 */
+	function inArray(src, find, findByKey) {
+	    if (src.indexOf && !findByKey) {
+	        return src.indexOf(find);
+	    } else {
+	        var i = 0;
+	        while (i < src.length) {
+	            if ((findByKey && src[i][findByKey] == find) || (!findByKey && src[i] === find)) {
+	                return i;
+	            }
+	            i++;
+	        }
+	        return -1;
+	    }
+	}
+	
+	/**
+	 * convert array-like objects to real arrays
+	 * @param {Object} obj
+	 * @returns {Array}
+	 */
+	function toArray(obj) {
+	    return Array.prototype.slice.call(obj, 0);
+	}
+	
+	/**
+	 * unique array with objects based on a key (like 'id') or just by the array's value
+	 * @param {Array} src [{id:1},{id:2},{id:1}]
+	 * @param {String} [key]
+	 * @param {Boolean} [sort=False]
+	 * @returns {Array} [{id:1},{id:2}]
+	 */
+	function uniqueArray(src, key, sort) {
+	    var results = [];
+	    var values = [];
+	    var i = 0;
+	
+	    while (i < src.length) {
+	        var val = key ? src[i][key] : src[i];
+	        if (inArray(values, val) < 0) {
+	            results.push(src[i]);
+	        }
+	        values[i] = val;
+	        i++;
+	    }
+	
+	    if (sort) {
+	        if (!key) {
+	            results = results.sort();
+	        } else {
+	            results = results.sort(function sortUniqueArray(a, b) {
+	                return a[key] > b[key];
+	            });
+	        }
+	    }
+	
+	    return results;
+	}
+	
+	/**
+	 * get the prefixed property
+	 * @param {Object} obj
+	 * @param {String} property
+	 * @returns {String|Undefined} prefixed
+	 */
+	function prefixed(obj, property) {
+	    var prefix, prop;
+	    var camelProp = property[0].toUpperCase() + property.slice(1);
+	
+	    var i = 0;
+	    while (i < VENDOR_PREFIXES.length) {
+	        prefix = VENDOR_PREFIXES[i];
+	        prop = (prefix) ? prefix + camelProp : property;
+	
+	        if (prop in obj) {
+	            return prop;
+	        }
+	        i++;
+	    }
+	    return undefined;
+	}
+	
+	/**
+	 * get a unique id
+	 * @returns {number} uniqueId
+	 */
+	var _uniqueId = 1;
+	function uniqueId() {
+	    return _uniqueId++;
+	}
+	
+	/**
+	 * get the window object of an element
+	 * @param {HTMLElement} element
+	 * @returns {DocumentView|Window}
+	 */
+	function getWindowForElement(element) {
+	    var doc = element.ownerDocument || element;
+	    return (doc.defaultView || doc.parentWindow || window);
+	}
+	
+	var MOBILE_REGEX = /mobile|tablet|ip(ad|hone|od)|android/i;
+	
+	var SUPPORT_TOUCH = ('ontouchstart' in window);
+	var SUPPORT_POINTER_EVENTS = prefixed(window, 'PointerEvent') !== undefined;
+	var SUPPORT_ONLY_TOUCH = SUPPORT_TOUCH && MOBILE_REGEX.test(navigator.userAgent);
+	
+	var INPUT_TYPE_TOUCH = 'touch';
+	var INPUT_TYPE_PEN = 'pen';
+	var INPUT_TYPE_MOUSE = 'mouse';
+	var INPUT_TYPE_KINECT = 'kinect';
+	
+	var COMPUTE_INTERVAL = 25;
+	
+	var INPUT_START = 1;
+	var INPUT_MOVE = 2;
+	var INPUT_END = 4;
+	var INPUT_CANCEL = 8;
+	
+	var DIRECTION_NONE = 1;
+	var DIRECTION_LEFT = 2;
+	var DIRECTION_RIGHT = 4;
+	var DIRECTION_UP = 8;
+	var DIRECTION_DOWN = 16;
+	
+	var DIRECTION_HORIZONTAL = DIRECTION_LEFT | DIRECTION_RIGHT;
+	var DIRECTION_VERTICAL = DIRECTION_UP | DIRECTION_DOWN;
+	var DIRECTION_ALL = DIRECTION_HORIZONTAL | DIRECTION_VERTICAL;
+	
+	var PROPS_XY = ['x', 'y'];
+	var PROPS_CLIENT_XY = ['clientX', 'clientY'];
+	
+	/**
+	 * create new input type manager
+	 * @param {Manager} manager
+	 * @param {Function} callback
+	 * @returns {Input}
+	 * @constructor
+	 */
+	function Input(manager, callback) {
+	    var self = this;
+	    this.manager = manager;
+	    this.callback = callback;
+	    this.element = manager.element;
+	    this.target = manager.options.inputTarget;
+	
+	    // smaller wrapper around the handler, for the scope and the enabled state of the manager,
+	    // so when disabled the input events are completely bypassed.
+	    this.domHandler = function(ev) {
+	        if (boolOrFn(manager.options.enable, [manager])) {
+	            self.handler(ev);
+	        }
+	    };
+	
+	    this.init();
+	
+	}
+	
+	Input.prototype = {
+	    /**
+	     * should handle the inputEvent data and trigger the callback
+	     * @virtual
+	     */
+	    handler: function() { },
+	
+	    /**
+	     * bind the events
+	     */
+	    init: function() {
+	        this.evEl && addEventListeners(this.element, this.evEl, this.domHandler);
+	        this.evTarget && addEventListeners(this.target, this.evTarget, this.domHandler);
+	        this.evWin && addEventListeners(getWindowForElement(this.element), this.evWin, this.domHandler);
+	    },
+	
+	    /**
+	     * unbind the events
+	     */
+	    destroy: function() {
+	        this.evEl && removeEventListeners(this.element, this.evEl, this.domHandler);
+	        this.evTarget && removeEventListeners(this.target, this.evTarget, this.domHandler);
+	        this.evWin && removeEventListeners(getWindowForElement(this.element), this.evWin, this.domHandler);
+	    }
+	};
+	
+	/**
+	 * create new input type manager
+	 * called by the Manager constructor
+	 * @param {Hammer} manager
+	 * @returns {Input}
+	 */
+	function createInputInstance(manager) {
+	    var Type;
+	    var inputClass = manager.options.inputClass;
+	
+	    if (inputClass) {
+	        Type = inputClass;
+	    } else if (SUPPORT_POINTER_EVENTS) {
+	        Type = PointerEventInput;
+	    } else if (SUPPORT_ONLY_TOUCH) {
+	        Type = TouchInput;
+	    } else if (!SUPPORT_TOUCH) {
+	        Type = MouseInput;
+	    } else {
+	        Type = TouchMouseInput;
+	    }
+	    return new (Type)(manager, inputHandler);
+	}
+	
+	/**
+	 * handle input events
+	 * @param {Manager} manager
+	 * @param {String} eventType
+	 * @param {Object} input
+	 */
+	function inputHandler(manager, eventType, input) {
+	    var pointersLen = input.pointers.length;
+	    var changedPointersLen = input.changedPointers.length;
+	    var isFirst = (eventType & INPUT_START && (pointersLen - changedPointersLen === 0));
+	    var isFinal = (eventType & (INPUT_END | INPUT_CANCEL) && (pointersLen - changedPointersLen === 0));
+	
+	    input.isFirst = !!isFirst;
+	    input.isFinal = !!isFinal;
+	
+	    if (isFirst) {
+	        manager.session = {};
+	    }
+	
+	    // source event is the normalized value of the domEvents
+	    // like 'touchstart, mouseup, pointerdown'
+	    input.eventType = eventType;
+	
+	    // compute scale, rotation etc
+	    computeInputData(manager, input);
+	
+	    // emit secret event
+	    manager.emit('hammer.input', input);
+	
+	    manager.recognize(input);
+	    manager.session.prevInput = input;
+	}
+	
+	/**
+	 * extend the data with some usable properties like scale, rotate, velocity etc
+	 * @param {Object} manager
+	 * @param {Object} input
+	 */
+	function computeInputData(manager, input) {
+	    var session = manager.session;
+	    var pointers = input.pointers;
+	    var pointersLength = pointers.length;
+	
+	    // store the first input to calculate the distance and direction
+	    if (!session.firstInput) {
+	        session.firstInput = simpleCloneInputData(input);
+	    }
+	
+	    // to compute scale and rotation we need to store the multiple touches
+	    if (pointersLength > 1 && !session.firstMultiple) {
+	        session.firstMultiple = simpleCloneInputData(input);
+	    } else if (pointersLength === 1) {
+	        session.firstMultiple = false;
+	    }
+	
+	    var firstInput = session.firstInput;
+	    var firstMultiple = session.firstMultiple;
+	    var offsetCenter = firstMultiple ? firstMultiple.center : firstInput.center;
+	
+	    var center = input.center = getCenter(pointers);
+	    input.timeStamp = now();
+	    input.deltaTime = input.timeStamp - firstInput.timeStamp;
+	
+	    input.angle = getAngle(offsetCenter, center);
+	    input.distance = getDistance(offsetCenter, center);
+	
+	    computeDeltaXY(session, input);
+	    input.offsetDirection = getDirection(input.deltaX, input.deltaY);
+	
+	    var overallVelocity = getVelocity(input.deltaTime, input.deltaX, input.deltaY);
+	    input.overallVelocityX = overallVelocity.x;
+	    input.overallVelocityY = overallVelocity.y;
+	    input.overallVelocity = (abs(overallVelocity.x) > abs(overallVelocity.y)) ? overallVelocity.x : overallVelocity.y;
+	
+	    input.scale = firstMultiple ? getScale(firstMultiple.pointers, pointers) : 1;
+	    input.rotation = firstMultiple ? getRotation(firstMultiple.pointers, pointers) : 0;
+	
+	    input.maxPointers = !session.prevInput ? input.pointers.length : ((input.pointers.length >
+	        session.prevInput.maxPointers) ? input.pointers.length : session.prevInput.maxPointers);
+	
+	    computeIntervalInputData(session, input);
+	
+	    // find the correct target
+	    var target = manager.element;
+	    if (hasParent(input.srcEvent.target, target)) {
+	        target = input.srcEvent.target;
+	    }
+	    input.target = target;
+	}
+	
+	function computeDeltaXY(session, input) {
+	    var center = input.center;
+	    var offset = session.offsetDelta || {};
+	    var prevDelta = session.prevDelta || {};
+	    var prevInput = session.prevInput || {};
+	
+	    if (input.eventType === INPUT_START || prevInput.eventType === INPUT_END) {
+	        prevDelta = session.prevDelta = {
+	            x: prevInput.deltaX || 0,
+	            y: prevInput.deltaY || 0
+	        };
+	
+	        offset = session.offsetDelta = {
+	            x: center.x,
+	            y: center.y
+	        };
+	    }
+	
+	    input.deltaX = prevDelta.x + (center.x - offset.x);
+	    input.deltaY = prevDelta.y + (center.y - offset.y);
+	}
+	
+	/**
+	 * velocity is calculated every x ms
+	 * @param {Object} session
+	 * @param {Object} input
+	 */
+	function computeIntervalInputData(session, input) {
+	    var last = session.lastInterval || input,
+	        deltaTime = input.timeStamp - last.timeStamp,
+	        velocity, velocityX, velocityY, direction;
+	
+	    if (input.eventType != INPUT_CANCEL && (deltaTime > COMPUTE_INTERVAL || last.velocity === undefined)) {
+	        var deltaX = input.deltaX - last.deltaX;
+	        var deltaY = input.deltaY - last.deltaY;
+	
+	        var v = getVelocity(deltaTime, deltaX, deltaY);
+	        velocityX = v.x;
+	        velocityY = v.y;
+	        velocity = (abs(v.x) > abs(v.y)) ? v.x : v.y;
+	        direction = getDirection(deltaX, deltaY);
+	
+	        session.lastInterval = input;
+	    } else {
+	        // use latest velocity info if it doesn't overtake a minimum period
+	        velocity = last.velocity;
+	        velocityX = last.velocityX;
+	        velocityY = last.velocityY;
+	        direction = last.direction;
+	    }
+	
+	    input.velocity = velocity;
+	    input.velocityX = velocityX;
+	    input.velocityY = velocityY;
+	    input.direction = direction;
+	}
+	
+	/**
+	 * create a simple clone from the input used for storage of firstInput and firstMultiple
+	 * @param {Object} input
+	 * @returns {Object} clonedInputData
+	 */
+	function simpleCloneInputData(input) {
+	    // make a simple copy of the pointers because we will get a reference if we don't
+	    // we only need clientXY for the calculations
+	    var pointers = [];
+	    var i = 0;
+	    while (i < input.pointers.length) {
+	        pointers[i] = {
+	            clientX: round(input.pointers[i].clientX),
+	            clientY: round(input.pointers[i].clientY)
+	        };
+	        i++;
+	    }
+	
+	    return {
+	        timeStamp: now(),
+	        pointers: pointers,
+	        center: getCenter(pointers),
+	        deltaX: input.deltaX,
+	        deltaY: input.deltaY
+	    };
+	}
+	
+	/**
+	 * get the center of all the pointers
+	 * @param {Array} pointers
+	 * @return {Object} center contains `x` and `y` properties
+	 */
+	function getCenter(pointers) {
+	    var pointersLength = pointers.length;
+	
+	    // no need to loop when only one touch
+	    if (pointersLength === 1) {
+	        return {
+	            x: round(pointers[0].clientX),
+	            y: round(pointers[0].clientY)
+	        };
+	    }
+	
+	    var x = 0, y = 0, i = 0;
+	    while (i < pointersLength) {
+	        x += pointers[i].clientX;
+	        y += pointers[i].clientY;
+	        i++;
+	    }
+	
+	    return {
+	        x: round(x / pointersLength),
+	        y: round(y / pointersLength)
+	    };
+	}
+	
+	/**
+	 * calculate the velocity between two points. unit is in px per ms.
+	 * @param {Number} deltaTime
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @return {Object} velocity `x` and `y`
+	 */
+	function getVelocity(deltaTime, x, y) {
+	    return {
+	        x: x / deltaTime || 0,
+	        y: y / deltaTime || 0
+	    };
+	}
+	
+	/**
+	 * get the direction between two points
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @return {Number} direction
+	 */
+	function getDirection(x, y) {
+	    if (x === y) {
+	        return DIRECTION_NONE;
+	    }
+	
+	    if (abs(x) >= abs(y)) {
+	        return x < 0 ? DIRECTION_LEFT : DIRECTION_RIGHT;
+	    }
+	    return y < 0 ? DIRECTION_UP : DIRECTION_DOWN;
+	}
+	
+	/**
+	 * calculate the absolute distance between two points
+	 * @param {Object} p1 {x, y}
+	 * @param {Object} p2 {x, y}
+	 * @param {Array} [props] containing x and y keys
+	 * @return {Number} distance
+	 */
+	function getDistance(p1, p2, props) {
+	    if (!props) {
+	        props = PROPS_XY;
+	    }
+	    var x = p2[props[0]] - p1[props[0]],
+	        y = p2[props[1]] - p1[props[1]];
+	
+	    return Math.sqrt((x * x) + (y * y));
+	}
+	
+	/**
+	 * calculate the angle between two coordinates
+	 * @param {Object} p1
+	 * @param {Object} p2
+	 * @param {Array} [props] containing x and y keys
+	 * @return {Number} angle
+	 */
+	function getAngle(p1, p2, props) {
+	    if (!props) {
+	        props = PROPS_XY;
+	    }
+	    var x = p2[props[0]] - p1[props[0]],
+	        y = p2[props[1]] - p1[props[1]];
+	    return Math.atan2(y, x) * 180 / Math.PI;
+	}
+	
+	/**
+	 * calculate the rotation degrees between two pointersets
+	 * @param {Array} start array of pointers
+	 * @param {Array} end array of pointers
+	 * @return {Number} rotation
+	 */
+	function getRotation(start, end) {
+	    return getAngle(end[1], end[0], PROPS_CLIENT_XY) + getAngle(start[1], start[0], PROPS_CLIENT_XY);
+	}
+	
+	/**
+	 * calculate the scale factor between two pointersets
+	 * no scale is 1, and goes down to 0 when pinched together, and bigger when pinched out
+	 * @param {Array} start array of pointers
+	 * @param {Array} end array of pointers
+	 * @return {Number} scale
+	 */
+	function getScale(start, end) {
+	    return getDistance(end[0], end[1], PROPS_CLIENT_XY) / getDistance(start[0], start[1], PROPS_CLIENT_XY);
+	}
+	
+	var MOUSE_INPUT_MAP = {
+	    mousedown: INPUT_START,
+	    mousemove: INPUT_MOVE,
+	    mouseup: INPUT_END
+	};
+	
+	var MOUSE_ELEMENT_EVENTS = 'mousedown';
+	var MOUSE_WINDOW_EVENTS = 'mousemove mouseup';
+	
+	/**
+	 * Mouse events input
+	 * @constructor
+	 * @extends Input
+	 */
+	function MouseInput() {
+	    this.evEl = MOUSE_ELEMENT_EVENTS;
+	    this.evWin = MOUSE_WINDOW_EVENTS;
+	
+	    this.pressed = false; // mousedown state
+	
+	    Input.apply(this, arguments);
+	}
+	
+	inherit(MouseInput, Input, {
+	    /**
+	     * handle mouse events
+	     * @param {Object} ev
+	     */
+	    handler: function MEhandler(ev) {
+	        var eventType = MOUSE_INPUT_MAP[ev.type];
+	
+	        // on start we want to have the left mouse button down
+	        if (eventType & INPUT_START && ev.button === 0) {
+	            this.pressed = true;
+	        }
+	
+	        if (eventType & INPUT_MOVE && ev.which !== 1) {
+	            eventType = INPUT_END;
+	        }
+	
+	        // mouse must be down
+	        if (!this.pressed) {
+	            return;
+	        }
+	
+	        if (eventType & INPUT_END) {
+	            this.pressed = false;
+	        }
+	
+	        this.callback(this.manager, eventType, {
+	            pointers: [ev],
+	            changedPointers: [ev],
+	            pointerType: INPUT_TYPE_MOUSE,
+	            srcEvent: ev
+	        });
+	    }
+	});
+	
+	var POINTER_INPUT_MAP = {
+	    pointerdown: INPUT_START,
+	    pointermove: INPUT_MOVE,
+	    pointerup: INPUT_END,
+	    pointercancel: INPUT_CANCEL,
+	    pointerout: INPUT_CANCEL
+	};
+	
+	// in IE10 the pointer types is defined as an enum
+	var IE10_POINTER_TYPE_ENUM = {
+	    2: INPUT_TYPE_TOUCH,
+	    3: INPUT_TYPE_PEN,
+	    4: INPUT_TYPE_MOUSE,
+	    5: INPUT_TYPE_KINECT // see https://twitter.com/jacobrossi/status/480596438489890816
+	};
+	
+	var POINTER_ELEMENT_EVENTS = 'pointerdown';
+	var POINTER_WINDOW_EVENTS = 'pointermove pointerup pointercancel';
+	
+	// IE10 has prefixed support, and case-sensitive
+	if (window.MSPointerEvent && !window.PointerEvent) {
+	    POINTER_ELEMENT_EVENTS = 'MSPointerDown';
+	    POINTER_WINDOW_EVENTS = 'MSPointerMove MSPointerUp MSPointerCancel';
+	}
+	
+	/**
+	 * Pointer events input
+	 * @constructor
+	 * @extends Input
+	 */
+	function PointerEventInput() {
+	    this.evEl = POINTER_ELEMENT_EVENTS;
+	    this.evWin = POINTER_WINDOW_EVENTS;
+	
+	    Input.apply(this, arguments);
+	
+	    this.store = (this.manager.session.pointerEvents = []);
+	}
+	
+	inherit(PointerEventInput, Input, {
+	    /**
+	     * handle mouse events
+	     * @param {Object} ev
+	     */
+	    handler: function PEhandler(ev) {
+	        var store = this.store;
+	        var removePointer = false;
+	
+	        var eventTypeNormalized = ev.type.toLowerCase().replace('ms', '');
+	        var eventType = POINTER_INPUT_MAP[eventTypeNormalized];
+	        var pointerType = IE10_POINTER_TYPE_ENUM[ev.pointerType] || ev.pointerType;
+	
+	        var isTouch = (pointerType == INPUT_TYPE_TOUCH);
+	
+	        // get index of the event in the store
+	        var storeIndex = inArray(store, ev.pointerId, 'pointerId');
+	
+	        // start and mouse must be down
+	        if (eventType & INPUT_START && (ev.button === 0 || isTouch)) {
+	            if (storeIndex < 0) {
+	                store.push(ev);
+	                storeIndex = store.length - 1;
+	            }
+	        } else if (eventType & (INPUT_END | INPUT_CANCEL)) {
+	            removePointer = true;
+	        }
+	
+	        // it not found, so the pointer hasn't been down (so it's probably a hover)
+	        if (storeIndex < 0) {
+	            return;
+	        }
+	
+	        // update the event in the store
+	        store[storeIndex] = ev;
+	
+	        this.callback(this.manager, eventType, {
+	            pointers: store,
+	            changedPointers: [ev],
+	            pointerType: pointerType,
+	            srcEvent: ev
+	        });
+	
+	        if (removePointer) {
+	            // remove from the store
+	            store.splice(storeIndex, 1);
+	        }
+	    }
+	});
+	
+	var SINGLE_TOUCH_INPUT_MAP = {
+	    touchstart: INPUT_START,
+	    touchmove: INPUT_MOVE,
+	    touchend: INPUT_END,
+	    touchcancel: INPUT_CANCEL
+	};
+	
+	var SINGLE_TOUCH_TARGET_EVENTS = 'touchstart';
+	var SINGLE_TOUCH_WINDOW_EVENTS = 'touchstart touchmove touchend touchcancel';
+	
+	/**
+	 * Touch events input
+	 * @constructor
+	 * @extends Input
+	 */
+	function SingleTouchInput() {
+	    this.evTarget = SINGLE_TOUCH_TARGET_EVENTS;
+	    this.evWin = SINGLE_TOUCH_WINDOW_EVENTS;
+	    this.started = false;
+	
+	    Input.apply(this, arguments);
+	}
+	
+	inherit(SingleTouchInput, Input, {
+	    handler: function TEhandler(ev) {
+	        var type = SINGLE_TOUCH_INPUT_MAP[ev.type];
+	
+	        // should we handle the touch events?
+	        if (type === INPUT_START) {
+	            this.started = true;
+	        }
+	
+	        if (!this.started) {
+	            return;
+	        }
+	
+	        var touches = normalizeSingleTouches.call(this, ev, type);
+	
+	        // when done, reset the started state
+	        if (type & (INPUT_END | INPUT_CANCEL) && touches[0].length - touches[1].length === 0) {
+	            this.started = false;
+	        }
+	
+	        this.callback(this.manager, type, {
+	            pointers: touches[0],
+	            changedPointers: touches[1],
+	            pointerType: INPUT_TYPE_TOUCH,
+	            srcEvent: ev
+	        });
+	    }
+	});
+	
+	/**
+	 * @this {TouchInput}
+	 * @param {Object} ev
+	 * @param {Number} type flag
+	 * @returns {undefined|Array} [all, changed]
+	 */
+	function normalizeSingleTouches(ev, type) {
+	    var all = toArray(ev.touches);
+	    var changed = toArray(ev.changedTouches);
+	
+	    if (type & (INPUT_END | INPUT_CANCEL)) {
+	        all = uniqueArray(all.concat(changed), 'identifier', true);
+	    }
+	
+	    return [all, changed];
+	}
+	
+	var TOUCH_INPUT_MAP = {
+	    touchstart: INPUT_START,
+	    touchmove: INPUT_MOVE,
+	    touchend: INPUT_END,
+	    touchcancel: INPUT_CANCEL
+	};
+	
+	var TOUCH_TARGET_EVENTS = 'touchstart touchmove touchend touchcancel';
+	
+	/**
+	 * Multi-user touch events input
+	 * @constructor
+	 * @extends Input
+	 */
+	function TouchInput() {
+	    this.evTarget = TOUCH_TARGET_EVENTS;
+	    this.targetIds = {};
+	
+	    Input.apply(this, arguments);
+	}
+	
+	inherit(TouchInput, Input, {
+	    handler: function MTEhandler(ev) {
+	        var type = TOUCH_INPUT_MAP[ev.type];
+	        var touches = getTouches.call(this, ev, type);
+	        if (!touches) {
+	            return;
+	        }
+	
+	        this.callback(this.manager, type, {
+	            pointers: touches[0],
+	            changedPointers: touches[1],
+	            pointerType: INPUT_TYPE_TOUCH,
+	            srcEvent: ev
+	        });
+	    }
+	});
+	
+	/**
+	 * @this {TouchInput}
+	 * @param {Object} ev
+	 * @param {Number} type flag
+	 * @returns {undefined|Array} [all, changed]
+	 */
+	function getTouches(ev, type) {
+	    var allTouches = toArray(ev.touches);
+	    var targetIds = this.targetIds;
+	
+	    // when there is only one touch, the process can be simplified
+	    if (type & (INPUT_START | INPUT_MOVE) && allTouches.length === 1) {
+	        targetIds[allTouches[0].identifier] = true;
+	        return [allTouches, allTouches];
+	    }
+	
+	    var i,
+	        targetTouches,
+	        changedTouches = toArray(ev.changedTouches),
+	        changedTargetTouches = [],
+	        target = this.target;
+	
+	    // get target touches from touches
+	    targetTouches = allTouches.filter(function(touch) {
+	        return hasParent(touch.target, target);
+	    });
+	
+	    // collect touches
+	    if (type === INPUT_START) {
+	        i = 0;
+	        while (i < targetTouches.length) {
+	            targetIds[targetTouches[i].identifier] = true;
+	            i++;
+	        }
+	    }
+	
+	    // filter changed touches to only contain touches that exist in the collected target ids
+	    i = 0;
+	    while (i < changedTouches.length) {
+	        if (targetIds[changedTouches[i].identifier]) {
+	            changedTargetTouches.push(changedTouches[i]);
+	        }
+	
+	        // cleanup removed touches
+	        if (type & (INPUT_END | INPUT_CANCEL)) {
+	            delete targetIds[changedTouches[i].identifier];
+	        }
+	        i++;
+	    }
+	
+	    if (!changedTargetTouches.length) {
+	        return;
+	    }
+	
+	    return [
+	        // merge targetTouches with changedTargetTouches so it contains ALL touches, including 'end' and 'cancel'
+	        uniqueArray(targetTouches.concat(changedTargetTouches), 'identifier', true),
+	        changedTargetTouches
+	    ];
+	}
+	
+	/**
+	 * Combined touch and mouse input
+	 *
+	 * Touch has a higher priority then mouse, and while touching no mouse events are allowed.
+	 * This because touch devices also emit mouse events while doing a touch.
+	 *
+	 * @constructor
+	 * @extends Input
+	 */
+	
+	var DEDUP_TIMEOUT = 2500;
+	var DEDUP_DISTANCE = 25;
+	
+	function TouchMouseInput() {
+	    Input.apply(this, arguments);
+	
+	    var handler = bindFn(this.handler, this);
+	    this.touch = new TouchInput(this.manager, handler);
+	    this.mouse = new MouseInput(this.manager, handler);
+	
+	    this.primaryTouch = null;
+	    this.lastTouches = [];
+	}
+	
+	inherit(TouchMouseInput, Input, {
+	    /**
+	     * handle mouse and touch events
+	     * @param {Hammer} manager
+	     * @param {String} inputEvent
+	     * @param {Object} inputData
+	     */
+	    handler: function TMEhandler(manager, inputEvent, inputData) {
+	        var isTouch = (inputData.pointerType == INPUT_TYPE_TOUCH),
+	            isMouse = (inputData.pointerType == INPUT_TYPE_MOUSE);
+	
+	        if (isMouse && inputData.sourceCapabilities && inputData.sourceCapabilities.firesTouchEvents) {
+	            return;
+	        }
+	
+	        // when we're in a touch event, record touches to  de-dupe synthetic mouse event
+	        if (isTouch) {
+	            recordTouches.call(this, inputEvent, inputData);
+	        } else if (isMouse && isSyntheticEvent.call(this, inputData)) {
+	            return;
+	        }
+	
+	        this.callback(manager, inputEvent, inputData);
+	    },
+	
+	    /**
+	     * remove the event listeners
+	     */
+	    destroy: function destroy() {
+	        this.touch.destroy();
+	        this.mouse.destroy();
+	    }
+	});
+	
+	function recordTouches(eventType, eventData) {
+	    if (eventType & INPUT_START) {
+	        this.primaryTouch = eventData.changedPointers[0].identifier;
+	        setLastTouch.call(this, eventData);
+	    } else if (eventType & (INPUT_END | INPUT_CANCEL)) {
+	        setLastTouch.call(this, eventData);
+	    }
+	}
+	
+	function setLastTouch(eventData) {
+	    var touch = eventData.changedPointers[0];
+	
+	    if (touch.identifier === this.primaryTouch) {
+	        var lastTouch = {x: touch.clientX, y: touch.clientY};
+	        this.lastTouches.push(lastTouch);
+	        var lts = this.lastTouches;
+	        var removeLastTouch = function() {
+	            var i = lts.indexOf(lastTouch);
+	            if (i > -1) {
+	                lts.splice(i, 1);
+	            }
+	        };
+	        setTimeout(removeLastTouch, DEDUP_TIMEOUT);
+	    }
+	}
+	
+	function isSyntheticEvent(eventData) {
+	    var x = eventData.srcEvent.clientX, y = eventData.srcEvent.clientY;
+	    for (var i = 0; i < this.lastTouches.length; i++) {
+	        var t = this.lastTouches[i];
+	        var dx = Math.abs(x - t.x), dy = Math.abs(y - t.y);
+	        if (dx <= DEDUP_DISTANCE && dy <= DEDUP_DISTANCE) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	
+	var PREFIXED_TOUCH_ACTION = prefixed(TEST_ELEMENT.style, 'touchAction');
+	var NATIVE_TOUCH_ACTION = PREFIXED_TOUCH_ACTION !== undefined;
+	
+	// magical touchAction value
+	var TOUCH_ACTION_COMPUTE = 'compute';
+	var TOUCH_ACTION_AUTO = 'auto';
+	var TOUCH_ACTION_MANIPULATION = 'manipulation'; // not implemented
+	var TOUCH_ACTION_NONE = 'none';
+	var TOUCH_ACTION_PAN_X = 'pan-x';
+	var TOUCH_ACTION_PAN_Y = 'pan-y';
+	var TOUCH_ACTION_MAP = getTouchActionProps();
+	
+	/**
+	 * Touch Action
+	 * sets the touchAction property or uses the js alternative
+	 * @param {Manager} manager
+	 * @param {String} value
+	 * @constructor
+	 */
+	function TouchAction(manager, value) {
+	    this.manager = manager;
+	    this.set(value);
+	}
+	
+	TouchAction.prototype = {
+	    /**
+	     * set the touchAction value on the element or enable the polyfill
+	     * @param {String} value
+	     */
+	    set: function(value) {
+	        // find out the touch-action by the event handlers
+	        if (value == TOUCH_ACTION_COMPUTE) {
+	            value = this.compute();
+	        }
+	
+	        if (NATIVE_TOUCH_ACTION && this.manager.element.style && TOUCH_ACTION_MAP[value]) {
+	            this.manager.element.style[PREFIXED_TOUCH_ACTION] = value;
+	        }
+	        this.actions = value.toLowerCase().trim();
+	    },
+	
+	    /**
+	     * just re-set the touchAction value
+	     */
+	    update: function() {
+	        this.set(this.manager.options.touchAction);
+	    },
+	
+	    /**
+	     * compute the value for the touchAction property based on the recognizer's settings
+	     * @returns {String} value
+	     */
+	    compute: function() {
+	        var actions = [];
+	        each(this.manager.recognizers, function(recognizer) {
+	            if (boolOrFn(recognizer.options.enable, [recognizer])) {
+	                actions = actions.concat(recognizer.getTouchAction());
+	            }
+	        });
+	        return cleanTouchActions(actions.join(' '));
+	    },
+	
+	    /**
+	     * this method is called on each input cycle and provides the preventing of the browser behavior
+	     * @param {Object} input
+	     */
+	    preventDefaults: function(input) {
+	        var srcEvent = input.srcEvent;
+	        var direction = input.offsetDirection;
+	
+	        // if the touch action did prevented once this session
+	        if (this.manager.session.prevented) {
+	            srcEvent.preventDefault();
+	            return;
+	        }
+	
+	        var actions = this.actions;
+	        var hasNone = inStr(actions, TOUCH_ACTION_NONE) && !TOUCH_ACTION_MAP[TOUCH_ACTION_NONE];
+	        var hasPanY = inStr(actions, TOUCH_ACTION_PAN_Y) && !TOUCH_ACTION_MAP[TOUCH_ACTION_PAN_Y];
+	        var hasPanX = inStr(actions, TOUCH_ACTION_PAN_X) && !TOUCH_ACTION_MAP[TOUCH_ACTION_PAN_X];
+	
+	        if (hasNone) {
+	            //do not prevent defaults if this is a tap gesture
+	
+	            var isTapPointer = input.pointers.length === 1;
+	            var isTapMovement = input.distance < 2;
+	            var isTapTouchTime = input.deltaTime < 250;
+	
+	            if (isTapPointer && isTapMovement && isTapTouchTime) {
+	                return;
+	            }
+	        }
+	
+	        if (hasPanX && hasPanY) {
+	            // `pan-x pan-y` means browser handles all scrolling/panning, do not prevent
+	            return;
+	        }
+	
+	        if (hasNone ||
+	            (hasPanY && direction & DIRECTION_HORIZONTAL) ||
+	            (hasPanX && direction & DIRECTION_VERTICAL)) {
+	            return this.preventSrc(srcEvent);
+	        }
+	    },
+	
+	    /**
+	     * call preventDefault to prevent the browser's default behavior (scrolling in most cases)
+	     * @param {Object} srcEvent
+	     */
+	    preventSrc: function(srcEvent) {
+	        this.manager.session.prevented = true;
+	        srcEvent.preventDefault();
+	    }
+	};
+	
+	/**
+	 * when the touchActions are collected they are not a valid value, so we need to clean things up. *
+	 * @param {String} actions
+	 * @returns {*}
+	 */
+	function cleanTouchActions(actions) {
+	    // none
+	    if (inStr(actions, TOUCH_ACTION_NONE)) {
+	        return TOUCH_ACTION_NONE;
+	    }
+	
+	    var hasPanX = inStr(actions, TOUCH_ACTION_PAN_X);
+	    var hasPanY = inStr(actions, TOUCH_ACTION_PAN_Y);
+	
+	    // if both pan-x and pan-y are set (different recognizers
+	    // for different directions, e.g. horizontal pan but vertical swipe?)
+	    // we need none (as otherwise with pan-x pan-y combined none of these
+	    // recognizers will work, since the browser would handle all panning
+	    if (hasPanX && hasPanY) {
+	        return TOUCH_ACTION_NONE;
+	    }
+	
+	    // pan-x OR pan-y
+	    if (hasPanX || hasPanY) {
+	        return hasPanX ? TOUCH_ACTION_PAN_X : TOUCH_ACTION_PAN_Y;
+	    }
+	
+	    // manipulation
+	    if (inStr(actions, TOUCH_ACTION_MANIPULATION)) {
+	        return TOUCH_ACTION_MANIPULATION;
+	    }
+	
+	    return TOUCH_ACTION_AUTO;
+	}
+	
+	function getTouchActionProps() {
+	    if (!NATIVE_TOUCH_ACTION) {
+	        return false;
+	    }
+	    var touchMap = {};
+	    var cssSupports = window.CSS && window.CSS.supports;
+	    ['auto', 'manipulation', 'pan-y', 'pan-x', 'pan-x pan-y', 'none'].forEach(function(val) {
+	
+	        // If css.supports is not supported but there is native touch-action assume it supports
+	        // all values. This is the case for IE 10 and 11.
+	        touchMap[val] = cssSupports ? window.CSS.supports('touch-action', val) : true;
+	    });
+	    return touchMap;
+	}
+	
+	/**
+	 * Recognizer flow explained; *
+	 * All recognizers have the initial state of POSSIBLE when a input session starts.
+	 * The definition of a input session is from the first input until the last input, with all it's movement in it. *
+	 * Example session for mouse-input: mousedown -> mousemove -> mouseup
+	 *
+	 * On each recognizing cycle (see Manager.recognize) the .recognize() method is executed
+	 * which determines with state it should be.
+	 *
+	 * If the recognizer has the state FAILED, CANCELLED or RECOGNIZED (equals ENDED), it is reset to
+	 * POSSIBLE to give it another change on the next cycle.
+	 *
+	 *               Possible
+	 *                  |
+	 *            +-----+---------------+
+	 *            |                     |
+	 *      +-----+-----+               |
+	 *      |           |               |
+	 *   Failed      Cancelled          |
+	 *                          +-------+------+
+	 *                          |              |
+	 *                      Recognized       Began
+	 *                                         |
+	 *                                      Changed
+	 *                                         |
+	 *                                  Ended/Recognized
+	 */
+	var STATE_POSSIBLE = 1;
+	var STATE_BEGAN = 2;
+	var STATE_CHANGED = 4;
+	var STATE_ENDED = 8;
+	var STATE_RECOGNIZED = STATE_ENDED;
+	var STATE_CANCELLED = 16;
+	var STATE_FAILED = 32;
+	
+	/**
+	 * Recognizer
+	 * Every recognizer needs to extend from this class.
+	 * @constructor
+	 * @param {Object} options
+	 */
+	function Recognizer(options) {
+	    this.options = assign({}, this.defaults, options || {});
+	
+	    this.id = uniqueId();
+	
+	    this.manager = null;
+	
+	    // default is enable true
+	    this.options.enable = ifUndefined(this.options.enable, true);
+	
+	    this.state = STATE_POSSIBLE;
+	
+	    this.simultaneous = {};
+	    this.requireFail = [];
+	}
+	
+	Recognizer.prototype = {
+	    /**
+	     * @virtual
+	     * @type {Object}
+	     */
+	    defaults: {},
+	
+	    /**
+	     * set options
+	     * @param {Object} options
+	     * @return {Recognizer}
+	     */
+	    set: function(options) {
+	        assign(this.options, options);
+	
+	        // also update the touchAction, in case something changed about the directions/enabled state
+	        this.manager && this.manager.touchAction.update();
+	        return this;
+	    },
+	
+	    /**
+	     * recognize simultaneous with an other recognizer.
+	     * @param {Recognizer} otherRecognizer
+	     * @returns {Recognizer} this
+	     */
+	    recognizeWith: function(otherRecognizer) {
+	        if (invokeArrayArg(otherRecognizer, 'recognizeWith', this)) {
+	            return this;
+	        }
+	
+	        var simultaneous = this.simultaneous;
+	        otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this);
+	        if (!simultaneous[otherRecognizer.id]) {
+	            simultaneous[otherRecognizer.id] = otherRecognizer;
+	            otherRecognizer.recognizeWith(this);
+	        }
+	        return this;
+	    },
+	
+	    /**
+	     * drop the simultaneous link. it doesnt remove the link on the other recognizer.
+	     * @param {Recognizer} otherRecognizer
+	     * @returns {Recognizer} this
+	     */
+	    dropRecognizeWith: function(otherRecognizer) {
+	        if (invokeArrayArg(otherRecognizer, 'dropRecognizeWith', this)) {
+	            return this;
+	        }
+	
+	        otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this);
+	        delete this.simultaneous[otherRecognizer.id];
+	        return this;
+	    },
+	
+	    /**
+	     * recognizer can only run when an other is failing
+	     * @param {Recognizer} otherRecognizer
+	     * @returns {Recognizer} this
+	     */
+	    requireFailure: function(otherRecognizer) {
+	        if (invokeArrayArg(otherRecognizer, 'requireFailure', this)) {
+	            return this;
+	        }
+	
+	        var requireFail = this.requireFail;
+	        otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this);
+	        if (inArray(requireFail, otherRecognizer) === -1) {
+	            requireFail.push(otherRecognizer);
+	            otherRecognizer.requireFailure(this);
+	        }
+	        return this;
+	    },
+	
+	    /**
+	     * drop the requireFailure link. it does not remove the link on the other recognizer.
+	     * @param {Recognizer} otherRecognizer
+	     * @returns {Recognizer} this
+	     */
+	    dropRequireFailure: function(otherRecognizer) {
+	        if (invokeArrayArg(otherRecognizer, 'dropRequireFailure', this)) {
+	            return this;
+	        }
+	
+	        otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this);
+	        var index = inArray(this.requireFail, otherRecognizer);
+	        if (index > -1) {
+	            this.requireFail.splice(index, 1);
+	        }
+	        return this;
+	    },
+	
+	    /**
+	     * has require failures boolean
+	     * @returns {boolean}
+	     */
+	    hasRequireFailures: function() {
+	        return this.requireFail.length > 0;
+	    },
+	
+	    /**
+	     * if the recognizer can recognize simultaneous with an other recognizer
+	     * @param {Recognizer} otherRecognizer
+	     * @returns {Boolean}
+	     */
+	    canRecognizeWith: function(otherRecognizer) {
+	        return !!this.simultaneous[otherRecognizer.id];
+	    },
+	
+	    /**
+	     * You should use `tryEmit` instead of `emit` directly to check
+	     * that all the needed recognizers has failed before emitting.
+	     * @param {Object} input
+	     */
+	    emit: function(input) {
+	        var self = this;
+	        var state = this.state;
+	
+	        function emit(event) {
+	            self.manager.emit(event, input);
+	        }
+	
+	        // 'panstart' and 'panmove'
+	        if (state < STATE_ENDED) {
+	            emit(self.options.event + stateStr(state));
+	        }
+	
+	        emit(self.options.event); // simple 'eventName' events
+	
+	        if (input.additionalEvent) { // additional event(panleft, panright, pinchin, pinchout...)
+	            emit(input.additionalEvent);
+	        }
+	
+	        // panend and pancancel
+	        if (state >= STATE_ENDED) {
+	            emit(self.options.event + stateStr(state));
+	        }
+	    },
+	
+	    /**
+	     * Check that all the require failure recognizers has failed,
+	     * if true, it emits a gesture event,
+	     * otherwise, setup the state to FAILED.
+	     * @param {Object} input
+	     */
+	    tryEmit: function(input) {
+	        if (this.canEmit()) {
+	            return this.emit(input);
+	        }
+	        // it's failing anyway
+	        this.state = STATE_FAILED;
+	    },
+	
+	    /**
+	     * can we emit?
+	     * @returns {boolean}
+	     */
+	    canEmit: function() {
+	        var i = 0;
+	        while (i < this.requireFail.length) {
+	            if (!(this.requireFail[i].state & (STATE_FAILED | STATE_POSSIBLE))) {
+	                return false;
+	            }
+	            i++;
+	        }
+	        return true;
+	    },
+	
+	    /**
+	     * update the recognizer
+	     * @param {Object} inputData
+	     */
+	    recognize: function(inputData) {
+	        // make a new copy of the inputData
+	        // so we can change the inputData without messing up the other recognizers
+	        var inputDataClone = assign({}, inputData);
+	
+	        // is is enabled and allow recognizing?
+	        if (!boolOrFn(this.options.enable, [this, inputDataClone])) {
+	            this.reset();
+	            this.state = STATE_FAILED;
+	            return;
+	        }
+	
+	        // reset when we've reached the end
+	        if (this.state & (STATE_RECOGNIZED | STATE_CANCELLED | STATE_FAILED)) {
+	            this.state = STATE_POSSIBLE;
+	        }
+	
+	        this.state = this.process(inputDataClone);
+	
+	        // the recognizer has recognized a gesture
+	        // so trigger an event
+	        if (this.state & (STATE_BEGAN | STATE_CHANGED | STATE_ENDED | STATE_CANCELLED)) {
+	            this.tryEmit(inputDataClone);
+	        }
+	    },
+	
+	    /**
+	     * return the state of the recognizer
+	     * the actual recognizing happens in this method
+	     * @virtual
+	     * @param {Object} inputData
+	     * @returns {Const} STATE
+	     */
+	    process: function(inputData) { }, // jshint ignore:line
+	
+	    /**
+	     * return the preferred touch-action
+	     * @virtual
+	     * @returns {Array}
+	     */
+	    getTouchAction: function() { },
+	
+	    /**
+	     * called when the gesture isn't allowed to recognize
+	     * like when another is being recognized or it is disabled
+	     * @virtual
+	     */
+	    reset: function() { }
+	};
+	
+	/**
+	 * get a usable string, used as event postfix
+	 * @param {Const} state
+	 * @returns {String} state
+	 */
+	function stateStr(state) {
+	    if (state & STATE_CANCELLED) {
+	        return 'cancel';
+	    } else if (state & STATE_ENDED) {
+	        return 'end';
+	    } else if (state & STATE_CHANGED) {
+	        return 'move';
+	    } else if (state & STATE_BEGAN) {
+	        return 'start';
+	    }
+	    return '';
+	}
+	
+	/**
+	 * direction cons to string
+	 * @param {Const} direction
+	 * @returns {String}
+	 */
+	function directionStr(direction) {
+	    if (direction == DIRECTION_DOWN) {
+	        return 'down';
+	    } else if (direction == DIRECTION_UP) {
+	        return 'up';
+	    } else if (direction == DIRECTION_LEFT) {
+	        return 'left';
+	    } else if (direction == DIRECTION_RIGHT) {
+	        return 'right';
+	    }
+	    return '';
+	}
+	
+	/**
+	 * get a recognizer by name if it is bound to a manager
+	 * @param {Recognizer|String} otherRecognizer
+	 * @param {Recognizer} recognizer
+	 * @returns {Recognizer}
+	 */
+	function getRecognizerByNameIfManager(otherRecognizer, recognizer) {
+	    var manager = recognizer.manager;
+	    if (manager) {
+	        return manager.get(otherRecognizer);
+	    }
+	    return otherRecognizer;
+	}
+	
+	/**
+	 * This recognizer is just used as a base for the simple attribute recognizers.
+	 * @constructor
+	 * @extends Recognizer
+	 */
+	function AttrRecognizer() {
+	    Recognizer.apply(this, arguments);
+	}
+	
+	inherit(AttrRecognizer, Recognizer, {
+	    /**
+	     * @namespace
+	     * @memberof AttrRecognizer
+	     */
+	    defaults: {
+	        /**
+	         * @type {Number}
+	         * @default 1
+	         */
+	        pointers: 1
+	    },
+	
+	    /**
+	     * Used to check if it the recognizer receives valid input, like input.distance > 10.
+	     * @memberof AttrRecognizer
+	     * @param {Object} input
+	     * @returns {Boolean} recognized
+	     */
+	    attrTest: function(input) {
+	        var optionPointers = this.options.pointers;
+	        return optionPointers === 0 || input.pointers.length === optionPointers;
+	    },
+	
+	    /**
+	     * Process the input and return the state for the recognizer
+	     * @memberof AttrRecognizer
+	     * @param {Object} input
+	     * @returns {*} State
+	     */
+	    process: function(input) {
+	        var state = this.state;
+	        var eventType = input.eventType;
+	
+	        var isRecognized = state & (STATE_BEGAN | STATE_CHANGED);
+	        var isValid = this.attrTest(input);
+	
+	        // on cancel input and we've recognized before, return STATE_CANCELLED
+	        if (isRecognized && (eventType & INPUT_CANCEL || !isValid)) {
+	            return state | STATE_CANCELLED;
+	        } else if (isRecognized || isValid) {
+	            if (eventType & INPUT_END) {
+	                return state | STATE_ENDED;
+	            } else if (!(state & STATE_BEGAN)) {
+	                return STATE_BEGAN;
+	            }
+	            return state | STATE_CHANGED;
+	        }
+	        return STATE_FAILED;
+	    }
+	});
+	
+	/**
+	 * Pan
+	 * Recognized when the pointer is down and moved in the allowed direction.
+	 * @constructor
+	 * @extends AttrRecognizer
+	 */
+	function PanRecognizer() {
+	    AttrRecognizer.apply(this, arguments);
+	
+	    this.pX = null;
+	    this.pY = null;
+	}
+	
+	inherit(PanRecognizer, AttrRecognizer, {
+	    /**
+	     * @namespace
+	     * @memberof PanRecognizer
+	     */
+	    defaults: {
+	        event: 'pan',
+	        threshold: 10,
+	        pointers: 1,
+	        direction: DIRECTION_ALL
+	    },
+	
+	    getTouchAction: function() {
+	        var direction = this.options.direction;
+	        var actions = [];
+	        if (direction & DIRECTION_HORIZONTAL) {
+	            actions.push(TOUCH_ACTION_PAN_Y);
+	        }
+	        if (direction & DIRECTION_VERTICAL) {
+	            actions.push(TOUCH_ACTION_PAN_X);
+	        }
+	        return actions;
+	    },
+	
+	    directionTest: function(input) {
+	        var options = this.options;
+	        var hasMoved = true;
+	        var distance = input.distance;
+	        var direction = input.direction;
+	        var x = input.deltaX;
+	        var y = input.deltaY;
+	
+	        // lock to axis?
+	        if (!(direction & options.direction)) {
+	            if (options.direction & DIRECTION_HORIZONTAL) {
+	                direction = (x === 0) ? DIRECTION_NONE : (x < 0) ? DIRECTION_LEFT : DIRECTION_RIGHT;
+	                hasMoved = x != this.pX;
+	                distance = Math.abs(input.deltaX);
+	            } else {
+	                direction = (y === 0) ? DIRECTION_NONE : (y < 0) ? DIRECTION_UP : DIRECTION_DOWN;
+	                hasMoved = y != this.pY;
+	                distance = Math.abs(input.deltaY);
+	            }
+	        }
+	        input.direction = direction;
+	        return hasMoved && distance > options.threshold && direction & options.direction;
+	    },
+	
+	    attrTest: function(input) {
+	        return AttrRecognizer.prototype.attrTest.call(this, input) &&
+	            (this.state & STATE_BEGAN || (!(this.state & STATE_BEGAN) && this.directionTest(input)));
+	    },
+	
+	    emit: function(input) {
+	
+	        this.pX = input.deltaX;
+	        this.pY = input.deltaY;
+	
+	        var direction = directionStr(input.direction);
+	
+	        if (direction) {
+	            input.additionalEvent = this.options.event + direction;
+	        }
+	        this._super.emit.call(this, input);
+	    }
+	});
+	
+	/**
+	 * Pinch
+	 * Recognized when two or more pointers are moving toward (zoom-in) or away from each other (zoom-out).
+	 * @constructor
+	 * @extends AttrRecognizer
+	 */
+	function PinchRecognizer() {
+	    AttrRecognizer.apply(this, arguments);
+	}
+	
+	inherit(PinchRecognizer, AttrRecognizer, {
+	    /**
+	     * @namespace
+	     * @memberof PinchRecognizer
+	     */
+	    defaults: {
+	        event: 'pinch',
+	        threshold: 0,
+	        pointers: 2
+	    },
+	
+	    getTouchAction: function() {
+	        return [TOUCH_ACTION_NONE];
+	    },
+	
+	    attrTest: function(input) {
+	        return this._super.attrTest.call(this, input) &&
+	            (Math.abs(input.scale - 1) > this.options.threshold || this.state & STATE_BEGAN);
+	    },
+	
+	    emit: function(input) {
+	        if (input.scale !== 1) {
+	            var inOut = input.scale < 1 ? 'in' : 'out';
+	            input.additionalEvent = this.options.event + inOut;
+	        }
+	        this._super.emit.call(this, input);
+	    }
+	});
+	
+	/**
+	 * Press
+	 * Recognized when the pointer is down for x ms without any movement.
+	 * @constructor
+	 * @extends Recognizer
+	 */
+	function PressRecognizer() {
+	    Recognizer.apply(this, arguments);
+	
+	    this._timer = null;
+	    this._input = null;
+	}
+	
+	inherit(PressRecognizer, Recognizer, {
+	    /**
+	     * @namespace
+	     * @memberof PressRecognizer
+	     */
+	    defaults: {
+	        event: 'press',
+	        pointers: 1,
+	        time: 251, // minimal time of the pointer to be pressed
+	        threshold: 9 // a minimal movement is ok, but keep it low
+	    },
+	
+	    getTouchAction: function() {
+	        return [TOUCH_ACTION_AUTO];
+	    },
+	
+	    process: function(input) {
+	        var options = this.options;
+	        var validPointers = input.pointers.length === options.pointers;
+	        var validMovement = input.distance < options.threshold;
+	        var validTime = input.deltaTime > options.time;
+	
+	        this._input = input;
+	
+	        // we only allow little movement
+	        // and we've reached an end event, so a tap is possible
+	        if (!validMovement || !validPointers || (input.eventType & (INPUT_END | INPUT_CANCEL) && !validTime)) {
+	            this.reset();
+	        } else if (input.eventType & INPUT_START) {
+	            this.reset();
+	            this._timer = setTimeoutContext(function() {
+	                this.state = STATE_RECOGNIZED;
+	                this.tryEmit();
+	            }, options.time, this);
+	        } else if (input.eventType & INPUT_END) {
+	            return STATE_RECOGNIZED;
+	        }
+	        return STATE_FAILED;
+	    },
+	
+	    reset: function() {
+	        clearTimeout(this._timer);
+	    },
+	
+	    emit: function(input) {
+	        if (this.state !== STATE_RECOGNIZED) {
+	            return;
+	        }
+	
+	        if (input && (input.eventType & INPUT_END)) {
+	            this.manager.emit(this.options.event + 'up', input);
+	        } else {
+	            this._input.timeStamp = now();
+	            this.manager.emit(this.options.event, this._input);
+	        }
+	    }
+	});
+	
+	/**
+	 * Rotate
+	 * Recognized when two or more pointer are moving in a circular motion.
+	 * @constructor
+	 * @extends AttrRecognizer
+	 */
+	function RotateRecognizer() {
+	    AttrRecognizer.apply(this, arguments);
+	}
+	
+	inherit(RotateRecognizer, AttrRecognizer, {
+	    /**
+	     * @namespace
+	     * @memberof RotateRecognizer
+	     */
+	    defaults: {
+	        event: 'rotate',
+	        threshold: 0,
+	        pointers: 2
+	    },
+	
+	    getTouchAction: function() {
+	        return [TOUCH_ACTION_NONE];
+	    },
+	
+	    attrTest: function(input) {
+	        return this._super.attrTest.call(this, input) &&
+	            (Math.abs(input.rotation) > this.options.threshold || this.state & STATE_BEGAN);
+	    }
+	});
+	
+	/**
+	 * Swipe
+	 * Recognized when the pointer is moving fast (velocity), with enough distance in the allowed direction.
+	 * @constructor
+	 * @extends AttrRecognizer
+	 */
+	function SwipeRecognizer() {
+	    AttrRecognizer.apply(this, arguments);
+	}
+	
+	inherit(SwipeRecognizer, AttrRecognizer, {
+	    /**
+	     * @namespace
+	     * @memberof SwipeRecognizer
+	     */
+	    defaults: {
+	        event: 'swipe',
+	        threshold: 10,
+	        velocity: 0.3,
+	        direction: DIRECTION_HORIZONTAL | DIRECTION_VERTICAL,
+	        pointers: 1
+	    },
+	
+	    getTouchAction: function() {
+	        return PanRecognizer.prototype.getTouchAction.call(this);
+	    },
+	
+	    attrTest: function(input) {
+	        var direction = this.options.direction;
+	        var velocity;
+	
+	        if (direction & (DIRECTION_HORIZONTAL | DIRECTION_VERTICAL)) {
+	            velocity = input.overallVelocity;
+	        } else if (direction & DIRECTION_HORIZONTAL) {
+	            velocity = input.overallVelocityX;
+	        } else if (direction & DIRECTION_VERTICAL) {
+	            velocity = input.overallVelocityY;
+	        }
+	
+	        return this._super.attrTest.call(this, input) &&
+	            direction & input.offsetDirection &&
+	            input.distance > this.options.threshold &&
+	            input.maxPointers == this.options.pointers &&
+	            abs(velocity) > this.options.velocity && input.eventType & INPUT_END;
+	    },
+	
+	    emit: function(input) {
+	        var direction = directionStr(input.offsetDirection);
+	        if (direction) {
+	            this.manager.emit(this.options.event + direction, input);
+	        }
+	
+	        this.manager.emit(this.options.event, input);
+	    }
+	});
+	
+	/**
+	 * A tap is ecognized when the pointer is doing a small tap/click. Multiple taps are recognized if they occur
+	 * between the given interval and position. The delay option can be used to recognize multi-taps without firing
+	 * a single tap.
+	 *
+	 * The eventData from the emitted event contains the property `tapCount`, which contains the amount of
+	 * multi-taps being recognized.
+	 * @constructor
+	 * @extends Recognizer
+	 */
+	function TapRecognizer() {
+	    Recognizer.apply(this, arguments);
+	
+	    // previous time and center,
+	    // used for tap counting
+	    this.pTime = false;
+	    this.pCenter = false;
+	
+	    this._timer = null;
+	    this._input = null;
+	    this.count = 0;
+	}
+	
+	inherit(TapRecognizer, Recognizer, {
+	    /**
+	     * @namespace
+	     * @memberof PinchRecognizer
+	     */
+	    defaults: {
+	        event: 'tap',
+	        pointers: 1,
+	        taps: 1,
+	        interval: 300, // max time between the multi-tap taps
+	        time: 250, // max time of the pointer to be down (like finger on the screen)
+	        threshold: 9, // a minimal movement is ok, but keep it low
+	        posThreshold: 10 // a multi-tap can be a bit off the initial position
+	    },
+	
+	    getTouchAction: function() {
+	        return [TOUCH_ACTION_MANIPULATION];
+	    },
+	
+	    process: function(input) {
+	        var options = this.options;
+	
+	        var validPointers = input.pointers.length === options.pointers;
+	        var validMovement = input.distance < options.threshold;
+	        var validTouchTime = input.deltaTime < options.time;
+	
+	        this.reset();
+	
+	        if ((input.eventType & INPUT_START) && (this.count === 0)) {
+	            return this.failTimeout();
+	        }
+	
+	        // we only allow little movement
+	        // and we've reached an end event, so a tap is possible
+	        if (validMovement && validTouchTime && validPointers) {
+	            if (input.eventType != INPUT_END) {
+	                return this.failTimeout();
+	            }
+	
+	            var validInterval = this.pTime ? (input.timeStamp - this.pTime < options.interval) : true;
+	            var validMultiTap = !this.pCenter || getDistance(this.pCenter, input.center) < options.posThreshold;
+	
+	            this.pTime = input.timeStamp;
+	            this.pCenter = input.center;
+	
+	            if (!validMultiTap || !validInterval) {
+	                this.count = 1;
+	            } else {
+	                this.count += 1;
+	            }
+	
+	            this._input = input;
+	
+	            // if tap count matches we have recognized it,
+	            // else it has began recognizing...
+	            var tapCount = this.count % options.taps;
+	            if (tapCount === 0) {
+	                // no failing requirements, immediately trigger the tap event
+	                // or wait as long as the multitap interval to trigger
+	                if (!this.hasRequireFailures()) {
+	                    return STATE_RECOGNIZED;
+	                } else {
+	                    this._timer = setTimeoutContext(function() {
+	                        this.state = STATE_RECOGNIZED;
+	                        this.tryEmit();
+	                    }, options.interval, this);
+	                    return STATE_BEGAN;
+	                }
+	            }
+	        }
+	        return STATE_FAILED;
+	    },
+	
+	    failTimeout: function() {
+	        this._timer = setTimeoutContext(function() {
+	            this.state = STATE_FAILED;
+	        }, this.options.interval, this);
+	        return STATE_FAILED;
+	    },
+	
+	    reset: function() {
+	        clearTimeout(this._timer);
+	    },
+	
+	    emit: function() {
+	        if (this.state == STATE_RECOGNIZED) {
+	            this._input.tapCount = this.count;
+	            this.manager.emit(this.options.event, this._input);
+	        }
+	    }
+	});
+	
+	/**
+	 * Simple way to create a manager with a default set of recognizers.
+	 * @param {HTMLElement} element
+	 * @param {Object} [options]
+	 * @constructor
+	 */
+	function Hammer(element, options) {
+	    options = options || {};
+	    options.recognizers = ifUndefined(options.recognizers, Hammer.defaults.preset);
+	    return new Manager(element, options);
+	}
+	
+	/**
+	 * @const {string}
+	 */
+	Hammer.VERSION = '2.0.7';
+	
+	/**
+	 * default settings
+	 * @namespace
+	 */
+	Hammer.defaults = {
+	    /**
+	     * set if DOM events are being triggered.
+	     * But this is slower and unused by simple implementations, so disabled by default.
+	     * @type {Boolean}
+	     * @default false
+	     */
+	    domEvents: false,
+	
+	    /**
+	     * The value for the touchAction property/fallback.
+	     * When set to `compute` it will magically set the correct value based on the added recognizers.
+	     * @type {String}
+	     * @default compute
+	     */
+	    touchAction: TOUCH_ACTION_COMPUTE,
+	
+	    /**
+	     * @type {Boolean}
+	     * @default true
+	     */
+	    enable: true,
+	
+	    /**
+	     * EXPERIMENTAL FEATURE -- can be removed/changed
+	     * Change the parent input target element.
+	     * If Null, then it is being set the to main element.
+	     * @type {Null|EventTarget}
+	     * @default null
+	     */
+	    inputTarget: null,
+	
+	    /**
+	     * force an input class
+	     * @type {Null|Function}
+	     * @default null
+	     */
+	    inputClass: null,
+	
+	    /**
+	     * Default recognizer setup when calling `Hammer()`
+	     * When creating a new Manager these will be skipped.
+	     * @type {Array}
+	     */
+	    preset: [
+	        // RecognizerClass, options, [recognizeWith, ...], [requireFailure, ...]
+	        [RotateRecognizer, {enable: false}],
+	        [PinchRecognizer, {enable: false}, ['rotate']],
+	        [SwipeRecognizer, {direction: DIRECTION_HORIZONTAL}],
+	        [PanRecognizer, {direction: DIRECTION_HORIZONTAL}, ['swipe']],
+	        [TapRecognizer],
+	        [TapRecognizer, {event: 'doubletap', taps: 2}, ['tap']],
+	        [PressRecognizer]
+	    ],
+	
+	    /**
+	     * Some CSS properties can be used to improve the working of Hammer.
+	     * Add them to this method and they will be set when creating a new Manager.
+	     * @namespace
+	     */
+	    cssProps: {
+	        /**
+	         * Disables text selection to improve the dragging gesture. Mainly for desktop browsers.
+	         * @type {String}
+	         * @default 'none'
+	         */
+	        userSelect: 'none',
+	
+	        /**
+	         * Disable the Windows Phone grippers when pressing an element.
+	         * @type {String}
+	         * @default 'none'
+	         */
+	        touchSelect: 'none',
+	
+	        /**
+	         * Disables the default callout shown when you touch and hold a touch target.
+	         * On iOS, when you touch and hold a touch target such as a link, Safari displays
+	         * a callout containing information about the link. This property allows you to disable that callout.
+	         * @type {String}
+	         * @default 'none'
+	         */
+	        touchCallout: 'none',
+	
+	        /**
+	         * Specifies whether zooming is enabled. Used by IE10>
+	         * @type {String}
+	         * @default 'none'
+	         */
+	        contentZooming: 'none',
+	
+	        /**
+	         * Specifies that an entire element should be draggable instead of its contents. Mainly for desktop browsers.
+	         * @type {String}
+	         * @default 'none'
+	         */
+	        userDrag: 'none',
+	
+	        /**
+	         * Overrides the highlight color shown when the user taps a link or a JavaScript
+	         * clickable element in iOS. This property obeys the alpha value, if specified.
+	         * @type {String}
+	         * @default 'rgba(0,0,0,0)'
+	         */
+	        tapHighlightColor: 'rgba(0,0,0,0)'
+	    }
+	};
+	
+	var STOP = 1;
+	var FORCED_STOP = 2;
+	
+	/**
+	 * Manager
+	 * @param {HTMLElement} element
+	 * @param {Object} [options]
+	 * @constructor
+	 */
+	function Manager(element, options) {
+	    this.options = assign({}, Hammer.defaults, options || {});
+	
+	    this.options.inputTarget = this.options.inputTarget || element;
+	
+	    this.handlers = {};
+	    this.session = {};
+	    this.recognizers = [];
+	    this.oldCssProps = {};
+	
+	    this.element = element;
+	    this.input = createInputInstance(this);
+	    this.touchAction = new TouchAction(this, this.options.touchAction);
+	
+	    toggleCssProps(this, true);
+	
+	    each(this.options.recognizers, function(item) {
+	        var recognizer = this.add(new (item[0])(item[1]));
+	        item[2] && recognizer.recognizeWith(item[2]);
+	        item[3] && recognizer.requireFailure(item[3]);
+	    }, this);
+	}
+	
+	Manager.prototype = {
+	    /**
+	     * set options
+	     * @param {Object} options
+	     * @returns {Manager}
+	     */
+	    set: function(options) {
+	        assign(this.options, options);
+	
+	        // Options that need a little more setup
+	        if (options.touchAction) {
+	            this.touchAction.update();
+	        }
+	        if (options.inputTarget) {
+	            // Clean up existing event listeners and reinitialize
+	            this.input.destroy();
+	            this.input.target = options.inputTarget;
+	            this.input.init();
+	        }
+	        return this;
+	    },
+	
+	    /**
+	     * stop recognizing for this session.
+	     * This session will be discarded, when a new [input]start event is fired.
+	     * When forced, the recognizer cycle is stopped immediately.
+	     * @param {Boolean} [force]
+	     */
+	    stop: function(force) {
+	        this.session.stopped = force ? FORCED_STOP : STOP;
+	    },
+	
+	    /**
+	     * run the recognizers!
+	     * called by the inputHandler function on every movement of the pointers (touches)
+	     * it walks through all the recognizers and tries to detect the gesture that is being made
+	     * @param {Object} inputData
+	     */
+	    recognize: function(inputData) {
+	        var session = this.session;
+	        if (session.stopped) {
+	            return;
+	        }
+	
+	        // run the touch-action polyfill
+	        this.touchAction.preventDefaults(inputData);
+	
+	        var recognizer;
+	        var recognizers = this.recognizers;
+	
+	        // this holds the recognizer that is being recognized.
+	        // so the recognizer's state needs to be BEGAN, CHANGED, ENDED or RECOGNIZED
+	        // if no recognizer is detecting a thing, it is set to `null`
+	        var curRecognizer = session.curRecognizer;
+	
+	        // reset when the last recognizer is recognized
+	        // or when we're in a new session
+	        if (!curRecognizer || (curRecognizer && curRecognizer.state & STATE_RECOGNIZED)) {
+	            curRecognizer = session.curRecognizer = null;
+	        }
+	
+	        var i = 0;
+	        while (i < recognizers.length) {
+	            recognizer = recognizers[i];
+	
+	            // find out if we are allowed try to recognize the input for this one.
+	            // 1.   allow if the session is NOT forced stopped (see the .stop() method)
+	            // 2.   allow if we still haven't recognized a gesture in this session, or the this recognizer is the one
+	            //      that is being recognized.
+	            // 3.   allow if the recognizer is allowed to run simultaneous with the current recognized recognizer.
+	            //      this can be setup with the `recognizeWith()` method on the recognizer.
+	            if (session.stopped !== FORCED_STOP && ( // 1
+	                    !curRecognizer || recognizer == curRecognizer || // 2
+	                    recognizer.canRecognizeWith(curRecognizer))) { // 3
+	                recognizer.recognize(inputData);
+	            } else {
+	                recognizer.reset();
+	            }
+	
+	            // if the recognizer has been recognizing the input as a valid gesture, we want to store this one as the
+	            // current active recognizer. but only if we don't already have an active recognizer
+	            if (!curRecognizer && recognizer.state & (STATE_BEGAN | STATE_CHANGED | STATE_ENDED)) {
+	                curRecognizer = session.curRecognizer = recognizer;
+	            }
+	            i++;
+	        }
+	    },
+	
+	    /**
+	     * get a recognizer by its event name.
+	     * @param {Recognizer|String} recognizer
+	     * @returns {Recognizer|Null}
+	     */
+	    get: function(recognizer) {
+	        if (recognizer instanceof Recognizer) {
+	            return recognizer;
+	        }
+	
+	        var recognizers = this.recognizers;
+	        for (var i = 0; i < recognizers.length; i++) {
+	            if (recognizers[i].options.event == recognizer) {
+	                return recognizers[i];
+	            }
+	        }
+	        return null;
+	    },
+	
+	    /**
+	     * add a recognizer to the manager
+	     * existing recognizers with the same event name will be removed
+	     * @param {Recognizer} recognizer
+	     * @returns {Recognizer|Manager}
+	     */
+	    add: function(recognizer) {
+	        if (invokeArrayArg(recognizer, 'add', this)) {
+	            return this;
+	        }
+	
+	        // remove existing
+	        var existing = this.get(recognizer.options.event);
+	        if (existing) {
+	            this.remove(existing);
+	        }
+	
+	        this.recognizers.push(recognizer);
+	        recognizer.manager = this;
+	
+	        this.touchAction.update();
+	        return recognizer;
+	    },
+	
+	    /**
+	     * remove a recognizer by name or instance
+	     * @param {Recognizer|String} recognizer
+	     * @returns {Manager}
+	     */
+	    remove: function(recognizer) {
+	        if (invokeArrayArg(recognizer, 'remove', this)) {
+	            return this;
+	        }
+	
+	        recognizer = this.get(recognizer);
+	
+	        // let's make sure this recognizer exists
+	        if (recognizer) {
+	            var recognizers = this.recognizers;
+	            var index = inArray(recognizers, recognizer);
+	
+	            if (index !== -1) {
+	                recognizers.splice(index, 1);
+	                this.touchAction.update();
+	            }
+	        }
+	
+	        return this;
+	    },
+	
+	    /**
+	     * bind event
+	     * @param {String} events
+	     * @param {Function} handler
+	     * @returns {EventEmitter} this
+	     */
+	    on: function(events, handler) {
+	        if (events === undefined) {
+	            return;
+	        }
+	        if (handler === undefined) {
+	            return;
+	        }
+	
+	        var handlers = this.handlers;
+	        each(splitStr(events), function(event) {
+	            handlers[event] = handlers[event] || [];
+	            handlers[event].push(handler);
+	        });
+	        return this;
+	    },
+	
+	    /**
+	     * unbind event, leave emit blank to remove all handlers
+	     * @param {String} events
+	     * @param {Function} [handler]
+	     * @returns {EventEmitter} this
+	     */
+	    off: function(events, handler) {
+	        if (events === undefined) {
+	            return;
+	        }
+	
+	        var handlers = this.handlers;
+	        each(splitStr(events), function(event) {
+	            if (!handler) {
+	                delete handlers[event];
+	            } else {
+	                handlers[event] && handlers[event].splice(inArray(handlers[event], handler), 1);
+	            }
+	        });
+	        return this;
+	    },
+	
+	    /**
+	     * emit event to the listeners
+	     * @param {String} event
+	     * @param {Object} data
+	     */
+	    emit: function(event, data) {
+	        // we also want to trigger dom events
+	        if (this.options.domEvents) {
+	            triggerDomEvent(event, data);
+	        }
+	
+	        // no handlers, so skip it all
+	        var handlers = this.handlers[event] && this.handlers[event].slice();
+	        if (!handlers || !handlers.length) {
+	            return;
+	        }
+	
+	        data.type = event;
+	        data.preventDefault = function() {
+	            data.srcEvent.preventDefault();
+	        };
+	
+	        var i = 0;
+	        while (i < handlers.length) {
+	            handlers[i](data);
+	            i++;
+	        }
+	    },
+	
+	    /**
+	     * destroy the manager and unbinds all events
+	     * it doesn't unbind dom events, that is the user own responsibility
+	     */
+	    destroy: function() {
+	        this.element && toggleCssProps(this, false);
+	
+	        this.handlers = {};
+	        this.session = {};
+	        this.input.destroy();
+	        this.element = null;
+	    }
+	};
+	
+	/**
+	 * add/remove the css properties as defined in manager.options.cssProps
+	 * @param {Manager} manager
+	 * @param {Boolean} add
+	 */
+	function toggleCssProps(manager, add) {
+	    var element = manager.element;
+	    if (!element.style) {
+	        return;
+	    }
+	    var prop;
+	    each(manager.options.cssProps, function(value, name) {
+	        prop = prefixed(element.style, name);
+	        if (add) {
+	            manager.oldCssProps[prop] = element.style[prop];
+	            element.style[prop] = value;
+	        } else {
+	            element.style[prop] = manager.oldCssProps[prop] || '';
+	        }
+	    });
+	    if (!add) {
+	        manager.oldCssProps = {};
+	    }
+	}
+	
+	/**
+	 * trigger dom event
+	 * @param {String} event
+	 * @param {Object} data
+	 */
+	function triggerDomEvent(event, data) {
+	    var gestureEvent = document.createEvent('Event');
+	    gestureEvent.initEvent(event, true, true);
+	    gestureEvent.gesture = data;
+	    data.target.dispatchEvent(gestureEvent);
+	}
+	
+	assign(Hammer, {
+	    INPUT_START: INPUT_START,
+	    INPUT_MOVE: INPUT_MOVE,
+	    INPUT_END: INPUT_END,
+	    INPUT_CANCEL: INPUT_CANCEL,
+	
+	    STATE_POSSIBLE: STATE_POSSIBLE,
+	    STATE_BEGAN: STATE_BEGAN,
+	    STATE_CHANGED: STATE_CHANGED,
+	    STATE_ENDED: STATE_ENDED,
+	    STATE_RECOGNIZED: STATE_RECOGNIZED,
+	    STATE_CANCELLED: STATE_CANCELLED,
+	    STATE_FAILED: STATE_FAILED,
+	
+	    DIRECTION_NONE: DIRECTION_NONE,
+	    DIRECTION_LEFT: DIRECTION_LEFT,
+	    DIRECTION_RIGHT: DIRECTION_RIGHT,
+	    DIRECTION_UP: DIRECTION_UP,
+	    DIRECTION_DOWN: DIRECTION_DOWN,
+	    DIRECTION_HORIZONTAL: DIRECTION_HORIZONTAL,
+	    DIRECTION_VERTICAL: DIRECTION_VERTICAL,
+	    DIRECTION_ALL: DIRECTION_ALL,
+	
+	    Manager: Manager,
+	    Input: Input,
+	    TouchAction: TouchAction,
+	
+	    TouchInput: TouchInput,
+	    MouseInput: MouseInput,
+	    PointerEventInput: PointerEventInput,
+	    TouchMouseInput: TouchMouseInput,
+	    SingleTouchInput: SingleTouchInput,
+	
+	    Recognizer: Recognizer,
+	    AttrRecognizer: AttrRecognizer,
+	    Tap: TapRecognizer,
+	    Pan: PanRecognizer,
+	    Swipe: SwipeRecognizer,
+	    Pinch: PinchRecognizer,
+	    Rotate: RotateRecognizer,
+	    Press: PressRecognizer,
+	
+	    on: addEventListeners,
+	    off: removeEventListeners,
+	    each: each,
+	    merge: merge,
+	    extend: extend,
+	    assign: assign,
+	    inherit: inherit,
+	    bindFn: bindFn,
+	    prefixed: prefixed
+	});
+	
+	// this prevents errors when Hammer is loaded in the presence of an AMD
+	//  style loader but by script tag, not by the loader.
+	var freeGlobal = (typeof window !== 'undefined' ? window : (typeof self !== 'undefined' ? self : {})); // jshint ignore:line
+	freeGlobal.Hammer = Hammer;
+	
+	if (true) {
+	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	        return Hammer;
+	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else if (typeof module != 'undefined' && module.exports) {
+	    module.exports = Hammer;
+	} else {
+	    window[exportName] = Hammer;
+	}
+	
+	})(window, document, 'Hammer');
+
+
+/***/ },
+/* 285 */,
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
+	var _xstream = __webpack_require__(2);
+	
+	var _xstream2 = _interopRequireDefault(_xstream);
+	
+	var _hammerjs = __webpack_require__(284);
+	
+	var _hammerjs2 = _interopRequireDefault(_hammerjs);
+	
+	var _ramda = __webpack_require__(5);
+	
+	var _ramda2 = _interopRequireDefault(_ramda);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function Gestures(_ref) {
+	    var DOM = _ref.DOM;
+	    var recognizers$ = _ref.recognizers$;
+	    var element$ = _ref.element$;
+	
+	    var vdom$ = _xstream2.default.combine(element$, recognizers$).map(function (_ref2) {
+	        var _ref3 = _slicedToArray(_ref2, 2);
+	
+	        var element = _ref3[0];
+	        var recognizers = _ref3[1];
+	
+	        var hooks = _ramda2.default.pathOr({}, ['data', 'hook'], element);
+	        var origInsert = _ramda2.default.path(['insert'], hooks);
+	        hooks.insert = function (vnode) {
+	            var mc = new _hammerjs2.default.Manager(vnode.elm, {
+	                recognizers: recognizers
+	            });
+	            mc.on('swipe', function (event) {
+	                console.log(event);
+	            });
+	        };
+	        element.data.hook = hooks;
+	        return element;
+	    });
+	    return {
+	        DOM: vdom$
+	    };
+	}
+	
+	exports.default = Gestures;
 
 /***/ }
 ]);

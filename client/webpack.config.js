@@ -52,7 +52,7 @@ var config = {
                 test: /\.scss$|\.sass$/,
                 loader: ExtractTextPlugin.extract('css?modules&localIdentName=[local]-[hash:base64]!sass')
             },
-            { test: /\.(ttf|eot|svg|png|jpg|woff|woff2)$/, loader: 'file-loader'}
+            { test: /\.(ttf|eot|svg|png|jpg|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader'}
         ]
     },
     sassLoader: {

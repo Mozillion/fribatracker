@@ -12,7 +12,7 @@ function Home(sources) {
             <Column col={3} left={5}>Homepage 2!</Column>
         </Row>
     );
-    return  {
+    return {
         DOM: vdom$
     }
 }

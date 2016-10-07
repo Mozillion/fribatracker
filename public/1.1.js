@@ -1,6 +1,6 @@
 webpackJsonp([1],{
 
-/***/ 26:
+/***/ 28:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60,7 +60,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 49:
+/***/ 53:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79,19 +79,19 @@ webpackJsonp([1],{
 	
 	var _isolate2 = _interopRequireDefault(_isolate);
 	
-	var _mainLayout = __webpack_require__(19);
+	var _mainLayout = __webpack_require__(20);
 	
 	var _mainLayout2 = _interopRequireDefault(_mainLayout);
 	
-	var _requireLogin = __webpack_require__(26);
+	var _requireLogin = __webpack_require__(28);
 	
 	var _requireLogin2 = _interopRequireDefault(_requireLogin);
 	
-	var _goBackable = __webpack_require__(129);
+	var _goBackable = __webpack_require__(131);
 	
 	var _goBackable2 = _interopRequireDefault(_goBackable);
 	
-	var _courseForm = __webpack_require__(116);
+	var _courseForm = __webpack_require__(119);
 	
 	var _courseForm2 = _interopRequireDefault(_courseForm);
 	
@@ -108,7 +108,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 50:
+/***/ 54:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -127,11 +127,11 @@ webpackJsonp([1],{
 	
 	var _isolate2 = _interopRequireDefault(_isolate);
 	
-	var _mainLayout = __webpack_require__(19);
+	var _mainLayout = __webpack_require__(20);
 	
 	var _mainLayout2 = _interopRequireDefault(_mainLayout);
 	
-	var _requireLogin = __webpack_require__(26);
+	var _requireLogin = __webpack_require__(28);
 	
 	var _requireLogin2 = _interopRequireDefault(_requireLogin);
 	
@@ -139,21 +139,37 @@ webpackJsonp([1],{
 	
 	var _routes2 = _interopRequireDefault(_routes);
 	
+	var _course = __webpack_require__(30);
+	
+	var _course2 = _interopRequireDefault(_course);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function Courses(sources) {
-	    var vdom$ = _xstream2.default.of((0, _snabbdomJsx.html)(
-	        'a',
-	        { href: _routes2.default.courses.add },
-	        'Lisää'
-	    ));
-	    var click$ = sources.DOM.select('a').events('click');
+	function Courses(_ref) {
+	    var DOM = _ref.DOM;
+	    var db = _ref.db;
+	
+	    var vdom$ = db.select('getCourses').flatten().startWith(null).map(function (courses) {
+	        return (0, _snabbdomJsx.html)(
+	            'div',
+	            null,
+	            Array.isArray(courses) ? '' : '',
+	            (0, _snabbdomJsx.html)(
+	                'a',
+	                { href: _routes2.default.courses.add },
+	                'Lisää'
+	            )
+	        );
+	    });
+	    var click$ = DOM.select('a').events('click');
+	    var query = _xstream2.default.of(_course2.default.query('getCourses').findAll());
 	    return {
 	        DOM: vdom$,
 	        router: click$.map(function (event) {
 	            return event.target.getAttribute('href');
 	        }),
-	        preventDefault: click$
+	        preventDefault: click$,
+	        db: query
 	    };
 	}
 	
@@ -163,7 +179,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 51:
+/***/ 55:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -182,15 +198,15 @@ webpackJsonp([1],{
 	
 	var _isolate2 = _interopRequireDefault(_isolate);
 	
-	var _mainLayout = __webpack_require__(19);
+	var _mainLayout = __webpack_require__(20);
 	
 	var _mainLayout2 = _interopRequireDefault(_mainLayout);
 	
-	var _requireLogin = __webpack_require__(26);
+	var _requireLogin = __webpack_require__(28);
 	
 	var _requireLogin2 = _interopRequireDefault(_requireLogin);
 	
-	var _grid = __webpack_require__(48);
+	var _grid = __webpack_require__(29);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -220,7 +236,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 52:
+/***/ 56:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -241,11 +257,11 @@ webpackJsonp([1],{
 	
 	var _isolate2 = _interopRequireDefault(_isolate);
 	
-	var _plainLayout = __webpack_require__(136);
+	var _plainLayout = __webpack_require__(139);
 	
 	var _plainLayout2 = _interopRequireDefault(_plainLayout);
 	
-	var _loginForm = __webpack_require__(46);
+	var _loginForm = __webpack_require__(50);
 	
 	var _loginForm2 = _interopRequireDefault(_loginForm);
 	
@@ -269,7 +285,7 @@ webpackJsonp([1],{
 	        return user;
 	    }).mapTo(_routes2.default.home), _xstream2.default.combine(sources.location$, loginForm.afterSubmit$.filter(function (_ref) {
 	        var response = _ref.response;
-	        return response.ok;
+	        return response && response.ok;
 	    })).map(function (_ref2) {
 	        var _ref3 = _slicedToArray(_ref2, 1);
 	
@@ -287,7 +303,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 116:
+/***/ 119:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -308,11 +324,11 @@ webpackJsonp([1],{
 	
 	var _isolate2 = _interopRequireDefault(_isolate);
 	
-	var _form = __webpack_require__(47);
+	var _form = __webpack_require__(52);
 	
-	var _constants = __webpack_require__(131);
+	var _constants = __webpack_require__(133);
 	
-	var _button = __webpack_require__(18);
+	var _button = __webpack_require__(19);
 	
 	var _button2 = _interopRequireDefault(_button);
 	
@@ -320,9 +336,27 @@ webpackJsonp([1],{
 	
 	var _ramda2 = _interopRequireDefault(_ramda);
 	
-	var _pairwise = __webpack_require__(276);
+	var _grid = __webpack_require__(29);
+	
+	var _pairwise = __webpack_require__(282);
 	
 	var _pairwise2 = _interopRequireDefault(_pairwise);
+	
+	var _dropRepeats = __webpack_require__(44);
+	
+	var _dropRepeats2 = _interopRequireDefault(_dropRepeats);
+	
+	var _courseForm = __webpack_require__(185);
+	
+	var _courseForm2 = _interopRequireDefault(_courseForm);
+	
+	var _course = __webpack_require__(30);
+	
+	var _course2 = _interopRequireDefault(_course);
+	
+	var _alert = __webpack_require__(51);
+	
+	var _alert2 = _interopRequireDefault(_alert);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -339,30 +373,32 @@ webpackJsonp([1],{
 	        }),
 	        validators$: _xstream2.default.of([['required'], ['length', { min: 1, max: 100 }]])
 	    });
-	    var par = FormComponent(_form.TextField, {
+	    var par = FormComponent(_form.AddDecField, {
 	        layout$: _xstream2.default.of('none'),
-	        prepend$: _xstream2.default.of('Par'),
+	        label$: _xstream2.default.of('Par'),
 	        props$: _xstream2.default.of({
-	            type: 'number'
-	        })
+	            style: { width: '3.2rem' },
+	            value: 3
+	        }),
+	        min$: _xstream2.default.of(1),
+	        max$: _xstream2.default.of(8)
 	    });
 	    var length = FormComponent(_form.TextField, {
 	        layout$: _xstream2.default.of('none'),
-	        prepend$: _xstream2.default.of('Pituus'),
 	        append$: _xstream2.default.of('m'),
 	        props$: _xstream2.default.of({
 	            type: 'number'
-	        })
+	        }),
+	        validators$: _xstream2.default.of([['int', { min: 1, max: 1000 }]])
 	    });
 	    var relief = FormComponent(_form.TextField, {
 	        layout$: _xstream2.default.of('none'),
-	        prepend$: _xstream2.default.of('Korkeusero'),
 	        append$: _xstream2.default.of('m'),
 	        props$: _xstream2.default.of({
 	            type: 'number',
 	            step: 0.1
-	            // placeholder: 'Pituus'
-	        })
+	        }),
+	        validators$: _xstream2.default.of([['float', { min: -1000, max: 1000 }]])
 	    });
 	    return { name: name, par: par, length: length, relief: relief };
 	}
@@ -381,7 +417,7 @@ webpackJsonp([1],{
 	            look: 'primary'
 	        })
 	    });
-	    var fairwayButton = FormComponent(_form.AddDecField, {
+	    var fairwayCount = FormComponent(_form.AddDecField, {
 	        label$: _xstream2.default.of('Väyliä'),
 	        props$: _xstream2.default.of({
 	            style: { width: '3.2rem' },
@@ -391,15 +427,26 @@ webpackJsonp([1],{
 	        max$: _xstream2.default.of(100)
 	    });
 	
-	    var change$ = fairwayButton.value$.compose(_pairwise2.default).map(function (_ref2) {
+	    var change$ = fairwayCount.value$.compose(_pairwise2.default).map(function (_ref2) {
 	        var _ref3 = _slicedToArray(_ref2, 2);
 	
 	        var prev = _ref3[0];
 	        var next = _ref3[1];
 	        return next - prev;
 	    }).startWith(0);
-	    // const response$ = sources.HTTP.select('login').flatten();
+	    var response$ = sources.db.select('courseForm').flatten();
+	
+	    var alert = response$.map(function (response) {
+	        return (0, _alert2.default)({
+	            DOM: DOM,
+	            content$: _xstream2.default.of('Rata tallennettu'),
+	            type$: _xstream2.default.of('success'),
+	            close$: submitButton.click$
+	        }).DOM;
+	    }).flatten().startWith('');
+	
 	    return {
+	        reset$: response$,
 	        elements$: _xstream2.default.of({
 	            name: FormComponent(_form.TextField, {
 	                label$: _xstream2.default.of('Nimi'),
@@ -414,8 +461,7 @@ webpackJsonp([1],{
 	                    return { value: value, text: text };
 	                }, _constants.courseRatings, _constants.courseRatings))
 	            }),
-	            fairwayButton: fairwayButton,
-	            fairways: fairwayButton.value$.fold(function (acc, value) {
+	            fairways: fairwayCount.value$.compose((0, _dropRepeats2.default)()).fold(function (acc, value) {
 	                var change = value - acc.length;
 	                if (change > 0) {
 	                    var fairways = _ramda2.default.range(acc.length, value).map(function (idx) {
@@ -436,45 +482,97 @@ webpackJsonp([1],{
 	        actions$: _xstream2.default.of({
 	            submit: submitButton
 	        }),
-	        render$: _xstream2.default.of(function (alerts, elements, actions, styles) {
-	            return (0, _snabbdomJsx.html)(
-	                'form',
-	                { className: styles.grid },
-	                alerts,
-	                elements.name,
-	                elements.rating,
-	                elements.fairwayButton,
-	                elements.fairways.map(function (_ref4, idx) {
-	                    var name = _ref4.name;
-	                    var par = _ref4.par;
-	                    var length = _ref4.length;
-	                    var relief = _ref4.relief;
-	                    return (0, _snabbdomJsx.html)(
+	        render$: _xstream2.default.combine(alert, fairwayCount.DOM).map(function (_ref4) {
+	            var _ref5 = _slicedToArray(_ref4, 2);
+	
+	            var alert = _ref5[0];
+	            var fairwayButton = _ref5[1];
+	            return _xstream2.default.of(function (alerts, elements, actions, formStyles) {
+	                return (0, _snabbdomJsx.html)(
+	                    'form',
+	                    { className: formStyles.grid },
+	                    alert,
+	                    alerts,
+	                    elements.name,
+	                    elements.rating,
+	                    fairwayButton,
+	                    elements.fairways.map(function (_ref6, idx) {
+	                        var name = _ref6.name;
+	                        var par = _ref6.par;
+	                        var length = _ref6.length;
+	                        var relief = _ref6.relief;
+	                        return (0, _snabbdomJsx.html)(
+	                            'div',
+	                            { className: _courseForm2.default.fairway, key: idx },
+	                            (0, _snabbdomJsx.html)(
+	                                _grid.Row,
+	                                null,
+	                                (0, _snabbdomJsx.html)(
+	                                    _grid.Column,
+	                                    { col: 4 },
+	                                    name
+	                                ),
+	                                (0, _snabbdomJsx.html)(
+	                                    _grid.Column,
+	                                    { col: 8 },
+	                                    par
+	                                )
+	                            ),
+	                            (0, _snabbdomJsx.html)(
+	                                _grid.Row,
+	                                null,
+	                                (0, _snabbdomJsx.html)(
+	                                    _grid.Column,
+	                                    { col: 4 },
+	                                    (0, _snabbdomJsx.html)(
+	                                        'label',
+	                                        null,
+	                                        'Pituus'
+	                                    )
+	                                ),
+	                                (0, _snabbdomJsx.html)(
+	                                    _grid.Column,
+	                                    { col: 8 },
+	                                    length
+	                                )
+	                            ),
+	                            (0, _snabbdomJsx.html)(
+	                                _grid.Row,
+	                                null,
+	                                (0, _snabbdomJsx.html)(
+	                                    _grid.Column,
+	                                    { col: 4 },
+	                                    (0, _snabbdomJsx.html)(
+	                                        'label',
+	                                        null,
+	                                        'Korkeusero'
+	                                    )
+	                                ),
+	                                (0, _snabbdomJsx.html)(
+	                                    _grid.Column,
+	                                    { col: 8 },
+	                                    relief
+	                                )
+	                            )
+	                        );
+	                    }),
+	                    actions ? (0, _snabbdomJsx.html)(
 	                        'div',
-	                        { className: styles.inlineGroup, key: idx },
-	                        name,
-	                        par,
-	                        length,
-	                        relief
-	                    );
-	                }),
-	                actions ? (0, _snabbdomJsx.html)(
-	                    'div',
-	                    { className: styles.actions },
-	                    actions.submit
-	                ) : ''
-	            );
+	                        { className: formStyles.actions },
+	                        actions.submit
+	                    ) : ''
+	                );
+	            });
+	        }).flatten(),
+	        db: validatedValuesAfterSubmit$.map(function (values) {
+	            return {
+	                category: 'courseForm',
+	                table: 'courses',
+	                add: new _course2.default(values)
+	            };
 	        }),
-	        // HTTP: validatedValuesAfterSubmit$.map(values => {
-	        //     return {
-	        //         url: '/login',
-	        //         method: 'POST',
-	        //         send: values,
-	        //         category: 'login'
-	        //     }
-	        // }),
 	        submitOn$: submitButton.click$,
-	        afterSubmit$: _xstream2.default.never()
+	        afterSubmit$: response$
 	    };
 	}
 	
@@ -484,7 +582,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 129:
+/***/ 131:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -503,9 +601,13 @@ webpackJsonp([1],{
 	
 	var _mergeSinks2 = _interopRequireDefault(_mergeSinks);
 	
-	var _goBackable = __webpack_require__(185);
+	var _goBackable = __webpack_require__(190);
 	
 	var _goBackable2 = _interopRequireDefault(_goBackable);
+	
+	var _icon = __webpack_require__(14);
+	
+	var _icon2 = _interopRequireDefault(_icon);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -524,7 +626,7 @@ webpackJsonp([1],{
 	                        (0, _snabbdomJsx.html)(
 	                            'a',
 	                            { href: '#' },
-	                            (0, _snabbdomJsx.html)('i', { className: 'fa fa-long-arrow-left' })
+	                            (0, _snabbdomJsx.html)(_icon2.default, { glyph: 'long-arrow-left' })
 	                        )
 	                    ),
 	                    component
@@ -541,7 +643,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 131:
+/***/ 133:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -555,7 +657,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 136:
+/***/ 139:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -594,15 +696,23 @@ webpackJsonp([1],{
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+	module.exports = {"menu-item":"menu-item-1kFurCYeEM2h2RvJEvIRLk","open":"open-5AIl_2GU_Y03LYvpejX8O","button-dropdown":"button-dropdown-1Ai6Uvld42efQ86Z9wgxjp","dismiss-modal":"dismiss-modal-3z3KZHLIRFL9E3lB179p9k","errors":"errors-1z6hlDsQi_l2SJEay74vvY","warnings":"warnings-1za7YLh0s-3dLsxIisIzAQ","successes":"successes-j0o1gOduPIApFKAEYiRh","error":"error-346-waS-4PW5TU_FDmKLy5","warning":"warning-3hHdeymVFaIMfKh9N9ESMe","success":"success-YcRClaWjhCcqTyufd8i3V","growl_container":"growl_container-j_gA9ZJddeLknXy7jgEA0","growl":"growl-2MItNktw4tmJPq39s0ObBU","show":"show-3gFj3WWByhYE7WAzOEsFWs","hide":"hide-vXBd7Z7781eln4jvBSdLP","fadeInDown":"fadeInDown-1F4qQrcJQs8vJSX8sWdljX","status_bar":"status_bar-2ErhyTzj_wTbqs8si2NC5Y","status_bar-status":"status_bar-status-3FDSq07yMWQMN9n7-vO0ej","tooltip":"tooltip-19iZV4i52ypLApcMSH5KyN","tooltip-bottom":"tooltip-bottom-1KBtw1ENmFk-tQxE3ASGSV","tooltip-left":"tooltip-left-3Jk_rZ1DgiGzV15c2w97Hi","tooltip-right":"tooltip-right-3hutum2LpkdVgDqgprZGGr","tooltip-red":"tooltip-red-1zI-d-5cuSNrtWf0bM1WHe","tooltip-orange":"tooltip-orange-2-53Ut9DmIRZziej2SX4HR","tooltip-yellow":"tooltip-yellow-vHF5AmCWW7ItmCwv9KeXP","tooltip-green":"tooltip-green-zmlFxXZPITwRhNJFG6zO9","tooltip-blue":"tooltip-blue-2-_Z9ZhxWOhhTkDZVVIZzP","tooltip-violet":"tooltip-violet-3aav51W6dKxJNY8FhM23Ax","tooltip-primary":"tooltip-primary-2FsrpMrVLILM8TeucXGuKQ","tooltip-secondary":"tooltip-secondary-HTFw7kcaqX7D6cmf9lyQW","fairway":"fairway-15Tb-xp29qtLF36ok3fIgu"};
+
+/***/ },
+
+/***/ 190:
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 	module.exports = {"goBack":"goBack-mqPHeClHjwWtMG3R0b36M"};
 
 /***/ },
 
-/***/ 276:
+/***/ 282:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var core_1 = __webpack_require__(40);
+	var core_1 = __webpack_require__(25);
 	var PairwiseOperator = (function () {
 	    function PairwiseOperator(ins) {
 	        this.ins = ins;
@@ -694,20 +804,20 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 277:
+/***/ 283:
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./courses/add/index": 49,
-		"./courses/add/index.js": 49,
-		"./courses/index": 50,
-		"./courses/index.js": 50,
-		"./home/index": 51,
-		"./home/index.js": 51,
-		"./login/index": 52,
-		"./login/index.js": 52,
-		"./not-found/index": 27,
-		"./not-found/index.js": 27
+		"./courses/add/index": 53,
+		"./courses/add/index.js": 53,
+		"./courses/index": 54,
+		"./courses/index.js": 54,
+		"./home/index": 55,
+		"./home/index.js": 55,
+		"./login/index": 56,
+		"./login/index.js": 56,
+		"./not-found/index": 31,
+		"./not-found/index.js": 31
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -720,7 +830,7 @@ webpackJsonp([1],{
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 277;
+	webpackContext.id = 283;
 
 
 /***/ }

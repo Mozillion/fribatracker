@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "dexie": "^1.4.2",
+    "font-awesome": "^4.6.3",
+    "hammerjs": "^2.0.8",
     "ramda": "^0.22.1",
     "switch-path": "^1.1.8"
   },

@@ -14,7 +14,6 @@ use \Propel\Runtime\Map\TableMap;
         </script>
         <script defer type="text/javascript" src="/vendor.js"></script>
         <script defer type="text/javascript" src="/app.js"></script>
-        <link rel="stylesheet" type="text/css" href="/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="/app.css">
     </head>
     <body>

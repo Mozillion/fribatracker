@@ -3,6 +3,7 @@ import {html} from 'snabbdom-jsx';
 import classes from 'helpers/classes';
 import styles from './alerts.scss';
 import isolate from '@cycle/isolate';
+import Icon from 'components/ui/icon';
 
 function intent({DOM, close$}) {
     return {
@@ -26,7 +27,7 @@ function view({state, props$, header$, content$, type$, closable$}) {
         return (
             <div {...props} hidden={!open}>
                 {header ? <h1>{header}</h1> : ''}
-                {closable ? <button type="button" className={styles.closeButton}><i className="fa fa-times"></i></button> : ''}
+                {closable ? <button type="button" className={styles.closeButton}><Icon glyph="times" /></button> : ''}
                 {content ? content : ''}
             </div>
         );

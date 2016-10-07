@@ -3,6 +3,7 @@ import {html} from 'snabbdom-jsx';
 import styles from './button.scss';
 import classes from 'helpers/classes';
 import isolate from '@cycle/isolate';
+import Icon from 'components/ui/icon';
 
 function Button({DOM, submitting$ = xs.of(false), props$}) {
 
@@ -13,7 +14,7 @@ function Button({DOM, submitting$ = xs.of(false), props$}) {
         }
         let spinner = '';
         if (props.type == 'submit' && submitting) {
-            spinner = <i className="fa fa-circle-o-notch fa-spin"></i>;
+            spinner = <Icon glyph="circle-o-notch" spin={true} />;
             others.disabled = true;
         }
         if (others.disabled === undefined) {

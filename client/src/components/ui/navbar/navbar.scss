@@ -2,4 +2,8 @@
 
 .navbar {
     @include navbar($layout: 'fluid', $background-color: #000, $breakpoint: 0);
+
+    nav > ul > li {
+        padding: 10px 6px;
+    }
 }

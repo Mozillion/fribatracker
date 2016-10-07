@@ -6,9 +6,20 @@ import styles from './form.scss';
 import classes from 'helpers/classes';
 
 function FormField(Component) {
-    return function({validators$ = xs.of([]), label$ = xs.of(false), layout$ = xs.of('grid'), append$ = xs.of(false), prepend$ = xs.of(false), submitTried$ = xs.of(false), ...sources}) {
-        sources.props$ = sources.props$ || xs.of({});
-        const sinks = Component(sources);
+    return function({
+            validators$ = xs.of([]),
+            label$ = xs.of(false),
+            layout$ = xs.of('grid'),
+            append$ = xs.of(false),
+            prepend$ = xs.of(false),
+            submitTried$ = xs.of(false),
+            props$ = xs.of({}),
+            reset$ = xs.never(),
+            ...sources
+        }) {
+
+        const resettableProps$ = props$.map(props => reset$.mapTo(props).startWith(props)).flatten().remember();
+        const sinks = Component({props$: resettableProps$, ...sources});
         const error$ = xs.combine(sinks.value$, validators$).map(([value, validators]) => {
             const ok = validate(value, validators);
             if (ok === true) {
@@ -16,7 +27,7 @@ function FormField(Component) {
             }
             return ok;
         }).remember();
-        const dirty$ = sinks.value$.drop(1).take(1).mapTo(true).startWith(false);
+        const dirty$ = reset$.map(() => sinks.value$.drop(1).take(1).mapTo(true).startWith(false)).flatten().startWith(false);
         sinks.DOM = xs.combine(sinks.DOM, layout$, label$, error$, submitTried$, validators$, dirty$, append$, prepend$)
         .map(([input, layout, label, error, submitTried, validators, dirty, append, prepend]) => {
             let labelProps = {};

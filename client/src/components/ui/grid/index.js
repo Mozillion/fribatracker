@@ -20,7 +20,8 @@ function Layout({type, width, ...other}, children) {
 }
 
 function Row(props, children) {
-    return <div className={styles.row}>{children}</div>;
+    const p = classes(props).add(styles.row).normalize();
+    return <div {...p}>{children}</div>;
 }
 
 function Column(props, children) {

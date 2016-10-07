@@ -4,6 +4,7 @@ import isolate from '@cycle/isolate';
 import FormField from './../form-field';
 import styles from './add-dec-field.scss';
 import R from 'ramda';
+import Icon from 'components/ui/icon';
 
 function AddDecField({DOM, props$ = xs.of({}), min$ = xs.of(null), max$ = xs.of(null)}) {
     const dec$ = xs.create();
@@ -36,9 +37,9 @@ function AddDecField({DOM, props$ = xs.of({}), min$ = xs.of(null), max$ = xs.of(
     const vdom$ = xs.combine(props$, value$).map(([props, value]) => {
         return (
             <div className={styles.addDecField}>
-                <button type="button" classNames={[styles.button, 'addButton']}><i className="fa fa-minus-circle"></i></button>
+                <button type="button" classNames={[styles.button, 'addButton']}><Icon glyph="minus-circle" /></button>
                 <input type="number" {...R.omit(['value'], props)} liveProps-value={value} />
-                <button type="button" classNames={[styles.button, 'decButton']}><i className="fa fa-plus-circle"></i></button>
+                <button type="button" classNames={[styles.button, 'decButton']}><Icon glyph="plus-circle" /></button>
             </div>
         );
     });

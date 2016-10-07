@@ -5,7 +5,12 @@ import {Form, TextField, AddDecField, Select} from 'components/ui/form';
 import {courseRatings} from 'constants';
 import Button from 'components/ui/button';
 import R from 'ramda';
+import {Row, Column} from 'components/ui/grid';
 import pairwise from 'xstream/extra/pairwise';
+import dropRepeats from 'xstream/extra/dropRepeats';
+import styles from './course-form.scss';
+import Course from 'models/course';
+import Alert from 'components/ui/alert';
 
 function fairway(idx, FormComponent) {
     const name = FormComponent(TextField, {
@@ -21,44 +26,36 @@ function fairway(idx, FormComponent) {
             ['length', {min: 1, max: 100}]
         ])
     });
-    const par = FormComponent(TextField, {
+    const par = FormComponent(AddDecField, {
         layout$: xs.of('none'),
-        prepend$: xs.of('Par'),
+        label$: xs.of('Par'),
         props$: xs.of({
-            type: 'number',
-            // placeholder: 'Pituus'
+            style: {width: '3.2rem'},
+            value: 3
         }),
-        // validators$: xs.of([
-        //     ['required'],
-        //     ['length', {min: 1, max: 100}]
-        // ])
+        min$: xs.of(1),
+        max$: xs.of(8)
     });
     const length = FormComponent(TextField, {
         layout$: xs.of('none'),
-        prepend$: xs.of('Pituus'),
         append$: xs.of('m'),
         props$: xs.of({
             type: 'number',
-            // placeholder: 'Pituus'
         }),
-        // validators$: xs.of([
-        //     ['required'],
-        //     ['length', {min: 1, max: 100}]
-        // ])
+        validators$: xs.of([
+            ['int', {min: 1, max: 1000}]
+        ])
     });
     const relief = FormComponent(TextField, {
         layout$: xs.of('none'),
-        prepend$: xs.of('Korkeusero'),
         append$: xs.of('m'),
         props$: xs.of({
             type: 'number',
-            step: 0.1
-            // placeholder: 'Pituus'
+            step: 0.1,
         }),
-        // validators$: xs.of([
-        //     ['required'],
-        //     ['length', {min: 1, max: 100}]
-        // ])
+        validators$: xs.of([
+            ['float', {min: -1000, max: 1000}]
+        ])
     });
     return {name, par, length, relief};
 }
@@ -71,7 +68,7 @@ function CourseForm({DOM, FormComponent, validatedValuesAfterSubmit$, ...sources
             look: 'primary'
         })
     });
-    const fairwayButton = FormComponent(AddDecField, {
+    const fairwayCount = FormComponent(AddDecField, {
         label$: xs.of('Väyliä'),
         props$: xs.of({
             style: {width: '3.2rem'},
@@ -81,9 +78,20 @@ function CourseForm({DOM, FormComponent, validatedValuesAfterSubmit$, ...sources
         max$: xs.of(100)
     });
 
-    const change$ = fairwayButton.value$.compose(pairwise).map(([prev, next]) => next - prev).startWith(0);
-    // const response$ = sources.HTTP.select('login').flatten();
+    const change$ = fairwayCount.value$.compose(pairwise).map(([prev, next]) => next - prev).startWith(0);
+    const response$ = sources.db.select('courseForm').flatten();
+
+    const alert = response$.map(response =>
+        Alert({
+            DOM,
+            content$: xs.of('Rata tallennettu'),
+            type$: xs.of('success'),
+            close$: submitButton.click$
+        }).DOM
+    ).flatten().startWith('');
+
     return {
+        reset$: response$,
         elements$: xs.of({
             name: FormComponent(TextField, {
                 label$: xs.of('Nimi'),
@@ -99,8 +107,7 @@ function CourseForm({DOM, FormComponent, validatedValuesAfterSubmit$, ...sources
                 label$: xs.of('Luokitus'),
                 options$: xs.of(R.zipWith((value, text) => ({value, text}), courseRatings, courseRatings))
             }),
-            fairwayButton,
-            fairways: fairwayButton.value$.fold((acc, value) => {
+            fairways: fairwayCount.value$.compose(dropRepeats()).fold((acc, value) => {
                 const change = value - acc.length;
                 if (change > 0) {
                     const fairways = R.range(acc.length, value).map(idx => fairway(idx + 1, FormComponent));
@@ -113,16 +120,32 @@ function CourseForm({DOM, FormComponent, validatedValuesAfterSubmit$, ...sources
         actions$: xs.of({
             submit: submitButton
         }),
-        render$: xs.of((alerts, elements, actions, styles) => (
-            <form className={styles.grid}>
+        render$: xs.combine(alert, fairwayCount.DOM).map(([alert, fairwayButton]) => xs.of((alerts, elements, actions, formStyles) => (
+            <form className={formStyles.grid}>
+                {alert}
                 {alerts}
                 {elements.name}
                 {elements.rating}
-                {elements.fairwayButton}
-                {elements.fairways.map(({name, par, length, relief}, idx) => <div className={styles.inlineGroup} key={idx}>{name}{par}{length}{relief}</div>)}
+                {fairwayButton}
+                {elements.fairways.map(({name, par, length, relief}, idx) => (
+                    <div className={styles.fairway} key={idx}>
+                        <Row>
+                            <Column col={4}>{name}</Column>
+                            <Column col={8}>{par}</Column>
+                        </Row>
+                        <Row>
+                            <Column col={4}><label>Pituus</label></Column>
+                            <Column col={8}>{length}</Column>
+                        </Row>
+                        <Row>
+                            <Column col={4}><label>Korkeusero</label></Column>
+                            <Column col={8}>{relief}</Column>
+                        </Row>
+                    </div>
+                ))}
                 {do {
                     if (actions) {
-                        <div className={styles.actions}>
+                        <div className={formStyles.actions}>
                             {actions.submit}
                         </div>
                     } else {
@@ -130,17 +153,16 @@ function CourseForm({DOM, FormComponent, validatedValuesAfterSubmit$, ...sources
                     }
                 }}
             </form>
-        )),
-        // HTTP: validatedValuesAfterSubmit$.map(values => {
-        //     return {
-        //         url: '/login',
-        //         method: 'POST',
-        //         send: values,
-        //         category: 'login'
-        //     }
-        // }),
+        ))).flatten(),
+        db: validatedValuesAfterSubmit$.map(values => {
+            return {
+                category: 'courseForm',
+                table: 'courses',
+                add: new Course(values)
+            }
+        }),
         submitOn$: submitButton.click$,
-        afterSubmit$: xs.never()
+        afterSubmit$: response$
     };
 }
 

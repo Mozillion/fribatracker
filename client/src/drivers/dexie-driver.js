@@ -1,6 +1,6 @@
 import Dexie from 'dexie';
 import xs from 'xstream';
-
+import R from 'ramda';
 
         // db: xs.of({
         //     category: 'query',
@@ -65,6 +65,11 @@ function makeDexieDriver(dbName, versions, config = {}) {
             config.populate(db);
         });
     }
+    if (config.classMap) {
+        for (const [table, prototype] of R.toPairs(config.classMap)) {
+            db[table].mapToClass(prototype);
+        }
+    }
     return function(query$) {
         const stream$$ = query$.map(query => {
             const params = [
@@ -109,13 +114,13 @@ function makeDexieDriver(dbName, versions, config = {}) {
                 q = q.toArray();
             }
 
-            const out$ = xs.fromPromise(q);
+            const out$ = xs.fromPromise(q);//.replaceError(e => xs.of(e));
             out$.category = query.category;
             return out$;
         });
         stream$$.addListener({
             next: () => {},
-            error: (e) => {console.log(e)},
+            error: () => {},
             complete: () => {}
         });
         return Object.assign({}, {

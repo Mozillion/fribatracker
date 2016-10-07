@@ -1,0 +1,17 @@
+@import "theme";
+
+.fairway {
+    background: #cacaca;
+    &:nth-child(odd) {
+        background: #dadada;
+    }
+    padding: 1rem;
+    gt($phablet) {
+        > div >:first-child {
+            text-align: right;
+        }
+    }
+    &:nth-last-child(2) {
+        margin-bottom: 1rem;
+    }
+}

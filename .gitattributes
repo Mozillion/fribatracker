@@ -1,0 +1,5 @@
+* text=auto
+/client/node_modules/* linguist-vendored
+/server/vendor/* linguist-vendored
+/server/generated-sql/* linguist-vendored
+/public/* linguist-vendored

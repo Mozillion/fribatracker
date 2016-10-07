@@ -31,22 +31,6 @@
 }
 .group {
     @include form_group();
-    // input[type="date"],
-    // input[type="datetime"],
-    // input[type="datetime-local"],
-    // input[type="email"],
-    // input[type="month"],
-    // input[type="number"],
-    // input[type="password"],
-    // input[type="tel"],
-    // input[type="search"],
-    // input[type="text"],
-    // input[type="time"],
-    // input[type="url"],
-    // input[type="week"] {
-    //     width: 100%;
-    // }
-    // width: 100%;
     span, div, p {
         &.error, &.warning, &.success {
             margin-left: 7.5px;
@@ -64,13 +48,13 @@
         display: inline-block;
     }
     label {
-        @include column('third');
+        @include column(4);
         &.radio {
             margin-left: 0;
         }
     }
     .inputGroup {
-        @include column('twothirds');
+        @include column(8);
     }
     @include notifications {
         margin-left: 15px;
@@ -102,11 +86,21 @@
 }
 .horizontal {
     @include form('horizontal');
+    @include inputs {
+        display: inline-block;
+    }
 }
 .grid {
     @include form('left');
+    // label:not(.checkbox):not(.radio) {
+        // text-align: right
+    // }
+    @include inputs {
+        display: inline-block;
+    }
     .actions {
-        @include column('twothirds', $left: 'third');
+        margin-left: calc(33.33333% + #{$grid-gutter/2});
+        // @include column(8, 4);
     }
 }
 .required {
@@ -114,14 +108,27 @@
 }
 
 
+@mixin addonGroup() {
+    display: table-row;
+    white-space: nowrap;
+    > * {
+        display: table-cell;
+    }
+    @include inputs {
+        width: 100%;
+    }
+    @include notifications {
+        margin-left: 5px;
+    }
+}
 @mixin addon() {
     background: #e6e6e6;
     line-height: 1.45rem;
-    padding: 6px 8px 7px 8px;
+    padding: 5px 8px 5px 8px;
     border: 1px solid #CCC;
 }
 .appendGroup {
-    white-space: nowrap;
+    @include addonGroup();
     @include inputs {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
@@ -136,7 +143,7 @@
     border-left: none;
 }
 .prependGroup {
-    white-space: nowrap;
+    @include addonGroup();
     @include inputs {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;

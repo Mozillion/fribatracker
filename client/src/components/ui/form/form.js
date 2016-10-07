@@ -26,14 +26,16 @@ function pluckCombineNestedObject(prop) {
 
 function Form(FormConfigComponent) {
     return ({renderActions$ = xs.of(true), ...sources}) => {
-        const alerts$ = sources.HTTP.select().flatten().map(({response}) => response.body.alerts).startWith([]);
+        const alerts$ = sources.HTTP.select().flatten().filter(({response}) => response && response.body).map(({response}) => response.body.alerts).startWith([]);
         const submitting$ = xs.create();
         const submitTried$ = xs.create();
+        const reset$ = xs.create();
         const FormComponent = function(Component, cSources) {
             return Component({
                 DOM: sources.DOM,
                 submitTried$: submitTried$.startWith(false),
                 submitting$: submitting$.startWith(false),
+                reset$,
                 ...cSources
             })
         };
@@ -60,6 +62,9 @@ function Form(FormConfigComponent) {
         const {render$, ...sinks} = FormConfigComponent({FormComponent, validatedValuesAfterSubmit$, ...sources});
         submitOn$.imitate(sinks.submitOn$);
         submitTried$.imitate(sinks.submitOn$.take(1));
+        if (sinks.reset$) {
+            reset$.imitate(sinks.reset$);
+        }
         delete sinks.submitOn$;
         elementsProxy$.imitate(sinks.elements$);
         submitting$.imitate(xs.merge(validatedValuesAfterSubmit$.mapTo(true), sinks.afterSubmit$.mapTo(false)));
